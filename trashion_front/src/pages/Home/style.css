@@ -1,0 +1,13 @@
+.main {
+  height: 1500px;
+}
+
+.wrap-content {
+  width: 1500px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.contents {
+  list-style: none;
+}

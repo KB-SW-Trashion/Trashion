@@ -1,11 +1,26 @@
 import React from 'react';
-import { Navbar } from 'components';
+import { Product, Navbar } from 'components';
+
+import './style.css';
 
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <h1>Home</h1>
+      <div className="main">
+        <div className="wrap-content">
+          <ul className="contents">
+            <Product />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
+            <Product />
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
