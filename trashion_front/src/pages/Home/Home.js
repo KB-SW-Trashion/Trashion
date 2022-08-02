@@ -7,9 +7,9 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="main">
-        <div className="wrap-content">
-          <ul className="contents">
+      <div className="homeMain">
+        <div className="home-wrap-content">
+          <ul className="home-contents">
             <Product />
             <Product />
             <Product />
