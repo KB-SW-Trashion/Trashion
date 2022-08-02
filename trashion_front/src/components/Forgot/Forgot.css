@@ -1,0 +1,12 @@
+.forgotBox {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.find {
+  color: grey;
+}
+
+.find:hover {
+  color: #78c7d2;
+}

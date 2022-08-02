@@ -1,13 +1,13 @@
-.main {
+.homeMain {
   height: 1500px;
 }
 
-.wrap-content {
+.home-wrap-content {
   width: 1500px;
   height: 100%;
   margin: 0 auto;
 }
 
-.contents {
+.home-contents {
   list-style: none;
 }
