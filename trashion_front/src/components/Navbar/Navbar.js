@@ -2,11 +2,15 @@ import React from 'react';
 import './Navbar.css';
 import logo from './Trashion_logo.png';
 import { Link } from 'react-router-dom';
-
+import { PersistentDrawerLeft } from 'components';
 export default function Navbar() {
   return (
     <>
       <div className="logobox">
+        <div className="drawerbox">
+          <PersistentDrawerLeft />
+        </div>
+
         <div className="buttonbox">
           <Link to="/">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-chats">
@@ -53,7 +57,7 @@ export default function Navbar() {
               />
             </svg>
           </Link>
-          <Link to="/">
+          <a href="/login">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
               <path
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +68,7 @@ export default function Navbar() {
                 d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
               />
             </svg>
-          </Link>
+          </a>
         </div>
         <img className="logo" src={logo}></img>
       </div>

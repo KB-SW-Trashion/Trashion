@@ -28,3 +28,14 @@ a {
   text-decoration: none;
   color: black;
 }
+
+.drawerbox {
+  float: left;
+  margin-left: 1rem;
+}
+
+button {
+  margin-left: 3rem;
+  width: 3rem;
+  height: 3rem;
+}
