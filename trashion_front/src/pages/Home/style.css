@@ -1,0 +1,13 @@
+.homeMain {
+  height: 1500px;
+}
+
+.home-wrap-content {
+  width: 1500px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.home-contents {
+  list-style: none;
+}
