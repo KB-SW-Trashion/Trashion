@@ -8,12 +8,12 @@ const Product = () => {
     <li className="product">
       <Link to="/">
         <div className="thumbnail">
-          <img className="productImg" src={logo} />
+          <img className="product-img" src={logo} />
         </div>
       </Link>
-      <div className="discription">
-        <span className="price">0000원</span>
-        <span className="size">Free</span>
+      <div className="product-discription">
+        <span className="product-price">0000원</span>
+        <span className="product-size">Free</span>
       </div>
     </li>
   );

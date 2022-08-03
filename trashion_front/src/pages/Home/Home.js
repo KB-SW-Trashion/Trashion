@@ -8,7 +8,7 @@ export default function Home() {
     <div>
       <Navbar />
 
-      <div className="homeMain">
+      <div className="home-main">
         <div className="home-wrap-content">
           <ul className="home-contents">
             <Product />
