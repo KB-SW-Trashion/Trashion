@@ -1,0 +1,41 @@
+.logobox {
+  align-content: center;
+  margin-top: 1rem;
+}
+
+.logo {
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 40%;
+  margin-right: 20%;
+}
+
+.buttonbox {
+  display: flex;
+  justify-content: right;
+  align-items: right;
+  margin-right: 0.5rem;
+}
+
+svg {
+  width: 40px;
+  margin: 0.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.drawerbox {
+  float: left;
+  margin-left: 3rem;
+}
+
+button {
+  margin-left: 3rem;
+  width: 3rem;
+  height: 3rem;
+}

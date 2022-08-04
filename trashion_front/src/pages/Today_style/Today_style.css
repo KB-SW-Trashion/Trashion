@@ -2,6 +2,12 @@
   height: 1500px;
 }
 
+.title {
+  margin-left: 3rem;
+  font-size: 50px;
+  font-weight: bold;
+}
+
 .home-wrap-content {
   width: 1500px;
   height: 100%;
