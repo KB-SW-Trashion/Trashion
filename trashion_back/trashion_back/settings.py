@@ -41,14 +41,19 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.kakao',
-    'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
    
 ]
 
-SITE_ID = 1
+SITE_ID = 2
 
 AUTH_USER_MODEL = 'accounts.User'
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.SignUpSerializer'
+}
+
+ACCOUNT_ADAPTER = 'accounts.adapters.CustomAccountAdapter'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (

@@ -12,12 +12,15 @@ from allauth.socialaccount.providers.kakao import views as kakao_view
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.models import SocialAccount
 from .models import User
+from django.shortcuts import render
+from rest_framework import generics
 
 BASE_URL = 'http://localhost:8000/'
 GOOGLE_CALLBACK_URI = BASE_URL + 'accounts/google/callback/'
 KAKAO_CALLBACK_URI = BASE_URL + 'accounts/kakao/callback/'
 
 state = os.environ.get('STATE')
+
 
 def google_login(request):
     """
@@ -126,7 +129,7 @@ def kakao_callback(request):
     카카오톡 프로필 이미지, 배경 이미지 url 가져올 수 있음
     print(kakao_account) 참고
     """
-    print(kakao_account)
+    #print(kakao_account)
     email = kakao_account.get('email')
     """
     Signup or Signin Request
@@ -153,6 +156,7 @@ def kakao_callback(request):
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
         data = {'access_token': access_token, 'code': code}
+        print(data)
         accept = requests.post(
             f"{BASE_URL}accounts/kakao/login/finish/", data=data)
         accept_status = accept.status_code
@@ -162,6 +166,7 @@ def kakao_callback(request):
         accept_json = accept.json()
         accept_json.pop('user', None)
         return JsonResponse(accept_json)
+
 
 class KakaoLogin(SocialLoginView):
     adapter_class = kakao_view.KakaoOAuth2Adapter

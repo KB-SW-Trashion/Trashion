@@ -7,7 +7,7 @@ export default function Today_style() {
   return (
     <div>
       <Navbar />
-      <div className="home-main">
+      <div className="homeMain">
         <p className="title">Today &#39; style</p>
         <div className="home-wrap-content">
           <ul className="home-contents">
