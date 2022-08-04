@@ -1,15 +1,8 @@
 import React from 'react';
-import './style.css';
-// import Button from '@mui/material/Button';
-
-const submitButton = (props) => {
+export default function submitButton() {
   return (
     <>
-      <button className="submit-btn">
-        <span>{props.name}</span>
-      </button>
+      <button>submit</button>
     </>
   );
-};
-
-export default submitButton;
+}
