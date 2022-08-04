@@ -1,19 +1,25 @@
-.login-area {
+.register-area {
   width: 320px;
   margin: 0 auto;
   margin-top: 70px;
 }
 
-.login-home {
+.register-home {
   margin: 0 auto;
   margin-bottom: 70px;
   margin-left: 20px;
 }
 
-.login-home img {
+.register-home img {
   width: 300px;
 }
 
-.login-buttonBox {
+.register-buttonBox {
   margin-top: 20px;
+}
+
+.button-content {
+  position: relative;
+  z-index: 1;
+  color: white;
 }

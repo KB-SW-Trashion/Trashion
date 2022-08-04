@@ -10,20 +10,20 @@
   margin-bottom: 10px;
 }
 
-.productImg {
+.product-img {
   width: 318px;
   height: 428px;
 }
 
-.discription span {
+.product-discription span {
   font-weight: bold;
 }
 
-.price {
+.product-price {
   margin-left: 10px;
 }
 
-.size {
+.product-size {
   float: right;
   margin-right: 10px;
 }

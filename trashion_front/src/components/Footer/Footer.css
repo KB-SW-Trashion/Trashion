@@ -3,6 +3,7 @@
   color: white;
   position: absolute;
   width: 100%;
+
   /* bottom: 0; */
 }
 
@@ -11,8 +12,6 @@
   border-right: 1px solid white;
   width: 50%;
   text-align: center;
-
-  position: absolute;
 }
 
 .footer_div_right {

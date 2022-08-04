@@ -3,7 +3,8 @@
   "plugins": ["prettier"],
   "rules": {
     "prettier/prettier": ["error", { "endOfLine": "auto" }],
-    "quotes": [1, "single"]
+    "quotes": [1, "single"],
+    "react/prop-types": "off"
   },
   "env": {
     "browser": true,
