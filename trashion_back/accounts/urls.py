@@ -1,5 +1,7 @@
-from django.urls import path
-from accounts import views
+from django.urls import path, include
+from . import views
+from rest_framework import urls
+
 urlpatterns = [
     path('google/login', views.google_login, name='google_login'),
     path('google/callback/', views.google_callback,      name='google_callback'),  
