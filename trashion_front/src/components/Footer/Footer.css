@@ -11,12 +11,15 @@
   border-right: 1px solid white;
   width: 50%;
   text-align: center;
-  white-space: pre-wrap;
+
+  position: absolute;
 }
 
 .footer_div_right {
   float: right;
+  position: relative;
   text-align: center;
   width: 50%;
+  margin-top: 0;
   white-space: pre-wrap;
 }
