@@ -6,7 +6,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'height', 'weight']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone']
         
 class CustomTokenRefreshSerializer(serializers.Serializer):
     refresh_token = serializers.CharField()

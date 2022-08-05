@@ -1,18 +1,18 @@
 import requests
 import os
 from django.shortcuts import redirect
-from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 from django.http import JsonResponse
 from json.decoder import JSONDecodeError
 from rest_framework import status
+from rest_framework.response import Response
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.google import views as google_view
 from allauth.socialaccount.providers.kakao import views as kakao_view
 from allauth.socialaccount.providers.naver import views as naver_view
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.models import SocialAccount
-from .models import User
+from .models import Profile, User
 
 BASE_URL = 'http://localhost:8000/'
 GOOGLE_CALLBACK_URI = BASE_URL + 'accounts/google/callback/'
@@ -25,7 +25,7 @@ def google_login(request):
     """
     Code Request
     """
-    scope = "https://www.googleapis.com/auth/userinfo.email"
+    scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
     
     client_id = os.environ.get("SOCIAL_AUTH_GOOGLE_CLIENT_ID")
     return redirect(f"https://accounts.google.com/o/oauth2/v2/auth?client_id={client_id}&response_type=code&redirect_uri={GOOGLE_CALLBACK_URI}&scope={scope}")
@@ -48,13 +48,19 @@ def google_callback(request):
     """
     Email Request
     """
-    email_req = requests.get(
-        f"https://www.googleapis.com/oauth2/v1/tokeninfo?access_token={access_token}")
-    email_req_status = email_req.status_code
-    if email_req_status != 200:
+    profile_request = requests.get(
+        f"https://www.googleapis.com/oauth2/v1/userinfo?access_token={access_token}")
+    
+    profile_request_status = profile_request.status_code
+    if profile_request_status != 200:
         return JsonResponse({'err_msg': 'failed to get email'}, status=status.HTTP_400_BAD_REQUEST)
-    email_req_json = email_req.json()
-    email = email_req_json.get('email')
+    
+    profile_request_json = profile_request.json()
+    email = profile_request_json.get('email')
+    print(profile_request_json)
+    realname = profile_request_json.get('name')
+    nickname = profile_request_json.get('given_name')
+    profile_image = profile_request_json.get('picture')    
     """
     Signup or Signin Request
     """
@@ -76,6 +82,15 @@ def google_callback(request):
             return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
         accept_json.pop('user', None)
+        User.objects.filter(email=email).update(
+            realname = realname,
+            nickname = nickname
+        )
+        Profile.objects.update(
+            user = user,
+            username = email,
+            profile_image = profile_image
+        )
         return JsonResponse(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
@@ -87,6 +102,16 @@ def google_callback(request):
             return JsonResponse({'err_msg': 'failed to signup'}, status=accept_status)
         accept_json = accept.json()
         accept_json.pop('user', None)
+        User.objects.filter(email=email).update(
+            realname = realname,
+            nickname = nickname
+        )
+        user = User.objects.get(email=email)
+        Profile.objects.create(
+            user = user,
+            username = email,
+            profile_image = profile_image
+        )
         return JsonResponse(accept_json)
 
 class GoogleLogin(SocialLoginView):
@@ -122,13 +147,15 @@ def kakao_callback(request):
         "https://kapi.kakao.com/v2/user/me", headers={"Authorization": f"Bearer {access_token}"})
     profile_json = profile_request.json()
     kakao_account = profile_json.get('kakao_account')
-    print(profile_json)
     """
     kakao_account에서 이메일 외에
     카카오톡 프로필 이미지, 배경 이미지 url 가져올 수 있음
     print(kakao_account) 참고
     """
     email = kakao_account.get('email')
+    profile = kakao_account.get('profile')
+    realname = profile.get('nickname') #사용자 설정 이름
+    profile_image = profile.get('thumbnail_image_url')
     """
     Signup or Signin Request
     """
@@ -150,6 +177,16 @@ def kakao_callback(request):
             return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
         accept_json.pop('user', None)
+        User.objects.filter(email=email).update(
+            realname = realname,
+            nickname = realname
+        )
+
+        Profile.objects.update(
+            user = user,
+            username = email,
+            profile_image = profile_image
+        )
         return JsonResponse(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
@@ -160,8 +197,19 @@ def kakao_callback(request):
         if accept_status != 200:
             return JsonResponse({'err_msg': 'failed to signup'}, status=accept_status)
         # user의 pk, email, first name, last name과 Access Token, Refresh token 가져옴
+        #카카오에서 전화번호, 주소 받으려면 사업자 등록 해야됨.
         accept_json = accept.json()
         accept_json.pop('user', None)
+        User.objects.filter(email=email).update(
+            realname = realname,
+            nickname = realname
+        )
+        user = User.objects.get(email=email)
+        Profile.objects.create(
+            user = user,
+            username = email,
+            profile_image = profile_image
+        )
         return JsonResponse(accept_json)
 
 class KakaoLogin(SocialLoginView):
@@ -204,8 +252,11 @@ def naver_callback(request):
     네이버 프로필 이미지, 배경 이미지 url 가져올 수 있음
     print(naver_account) 참고
     """
-    print(naver_account)
     email = naver_account.get('email')
+    realname = naver_account.get('name')
+    phone = naver_account.get('mobile')
+    nickname = naver_account.get('nickname')
+    profile_image = naver_account.get('profile_image')
     """
     Signup or Signin Request
     """
@@ -227,6 +278,19 @@ def naver_callback(request):
             return JsonResponse({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
         accept_json.pop('user', None)
+        User.objects.filter(email=email).update(
+            realname = realname,
+            nickname = nickname,
+            phone = phone,
+        )
+
+        user = User.objects.get(email=email)
+        Profile.objects.filter(username=email).update(
+            user = user,
+            username = email,
+            profile_image = profile_image
+        )
+            
         return JsonResponse(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
@@ -237,27 +301,19 @@ def naver_callback(request):
         if accept_status != 200:
             return JsonResponse({'err_msg': 'failed to signup'}, status=accept_status)
         # user의 pk, email, first name, last name과 Access Token, Refresh token 가져옴
-        """
-        realname = naver_account.get('name')
-        phone = naver_account.get('mobile')
-        nickname = naver_account.get('nickname')
-        new_user_db = User.objects.create(
-            email = email,
+        User.objects.filter(email=email).update(
             realname = realname,
             nickname = nickname,
             phone = phone
         )
-        new_user_db.set_unusable_password()
-        new_user_db.save()
         
-        uid = naver_account.get('id')
-        new_social_db = SocialAccount.objects.create(
-            user = User.id,
-            uid = uid,
-            extra_data = profile_json
+        user = User.objects.get(email=email)
+
+        Profile.objects.create(
+            user = user,
+            username = email,
+            profile_image = profile_image
         )
-        new_social_db.save()
-        """
         accept_json = accept.json()
         accept_json.pop('user', None)
         return JsonResponse(accept_json)

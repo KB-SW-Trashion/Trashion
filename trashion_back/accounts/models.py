@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
@@ -35,8 +36,6 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     username = None
-    first_name = None
-    last_name = None
     email = models.EmailField(max_length=255, unique=True)
     
     USERNAME_FIELD = 'email'
@@ -48,15 +47,17 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=50, blank=True)
     address = models.CharField(max_length=200, blank=True)
     phone = models.CharField(max_length=100, blank=True)
-    height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
-    weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+
 
     def __str__(self):
-            return self.email
+        return self.email
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/', blank=True, null=True) #프로필 사진
-
+    username = models.EmailField(max_length=254, unique=True, null=True)
+    profile_image = models.ImageField(upload_to='profile/', blank=True, null=True) #프로필 사진
+    height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    
     def __str__(self):
-        return self.user.username
+        return self.username
