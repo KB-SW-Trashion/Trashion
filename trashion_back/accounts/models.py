@@ -1,3 +1,4 @@
+from statistics import mode
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
@@ -48,13 +49,15 @@ class User(AbstractUser):
     phone = models.CharField(max_length=100, blank=True)
     height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    social_profile = models.URLField(null=True,blank=True)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
     def __str__(self):
             return self.email
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/', blank=True, null=True) #프로필 사진
+# class Profile(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#      #프로필 사진
 
-    def __str__(self):
-        return self.user.username
+#     def __str__(self):
+#         return self.user.username

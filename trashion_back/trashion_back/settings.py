@@ -43,16 +43,22 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.kakao',
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
+    #django-cors
+    'corsheaders',
    
 ]
 
-SITE_ID = 1
+SITE_ID = 2
+
+# 실수로 1번 사이트 지워버려서 2로 했음
+#django.contrib.sites.models.Site.DoesNotExist: Site matching query does not exist. 
+#위 에러나면 social application에 있는 소셜앱이랑 몇번 사이트 매칭됬는지 확인하삼
 
 AUTH_USER_MODEL = 'accounts.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
+        # 'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -78,9 +84,13 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 }
 
+CORS_ORIGIN_ALLOW_ALL=True
+CORS_ALLOW_CREDENTIALS = True
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
