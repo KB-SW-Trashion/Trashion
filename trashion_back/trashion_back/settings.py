@@ -41,14 +41,14 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.kakao',
-    'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.naver',
     #django-cors
     'corsheaders',
    
 ]
 
-SITE_ID = 2
+SITE_ID = 1
 
 # 실수로 1번 사이트 지워버려서 2로 했음
 #django.contrib.sites.models.Site.DoesNotExist: Site matching query does not exist. 
@@ -64,6 +64,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ],
+}
+
+REST_AUTH_SERIALIZERS = {
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.UserSerializer',
 }
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None # username 필드 사용 x
@@ -154,7 +158,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
@@ -172,3 +176,6 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)

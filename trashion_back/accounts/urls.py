@@ -1,5 +1,8 @@
 from django.urls import path
 from accounts import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
   
     path('google/authenticate/', views.authenticate_google,      name='google_callback'),  
@@ -7,4 +10,9 @@ urlpatterns = [
   
     path('kakao/authenticate/', views.authenticate_kakao),
     path('kakao/login/allauth/', views.KakaoLogin.as_view()),
+
+    path('naver/login/', views.naver_login, name='naver_login'),
+    path('naver/callback/', views.naver_callback, name='naver_callback'),
+    path('naver/login/finish/', views.NaverLogin.as_view(),
+         name='naver_login_todjango'),
 ]
