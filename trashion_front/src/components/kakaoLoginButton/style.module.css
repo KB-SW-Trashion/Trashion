@@ -1,0 +1,28 @@
+
+.kakao {
+    all: unset;
+    background-color: '#fee500';
+    cursor: pointer;
+    border-radius: 5px;
+    height: 76px;
+    border: solid 1.4px #ededed;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    gap: 90px;
+    padding: 0 22px;
+  
+    /* @media screen and (max-width: 1440px) {
+      height: 62px;
+      gap: 70px;
+      font-size: 20px;
+    }
+    @media screen and (max-width: 1280px) {
+      height: 54px;
+      gap: 50px;
+      font-size: 18px;
+    } */
+}
