@@ -6,3 +6,4 @@ export { default as Password } from './Password/Password';
 export { default as Forgot } from './Forgot/Forgot';
 export { default as Footer } from './Footer/Footer';
 export { default as PersistentDrawerLeft } from './Drawer/Drawer';
+export { default as KakaoLoginButton } from './kakaoLoginButton/kakaoLoginButton';
