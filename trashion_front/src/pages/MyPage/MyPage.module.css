@@ -1,0 +1,32 @@
+.body {
+  width: 100%;
+}
+
+.MyPage_footerbox {
+  background-color: black;
+  color: white;
+  position: relative;
+  width: 100%;
+  bottom: 0;
+}
+
+.MyPage_bodybox {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  display: flex;
+}
+
+.MyPage_bodyleft {
+  text-align: center;
+  width: 50%;
+}
+
+.MyPage_bodyright {
+  text-align: center;
+}
+
+.MyPage_list {
+  margin-left: 3rem;
+  font-size: larger;
+  padding-bottom: 10rem;
+}
