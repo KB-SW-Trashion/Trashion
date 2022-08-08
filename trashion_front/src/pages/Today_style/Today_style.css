@@ -1,5 +1,12 @@
-.home-main {
+
+.homeMain {
   height: 1500px;
+}
+
+.title {
+  margin-left: 3rem;
+  font-size: 50px;
+  font-weight: bold;
 }
 
 .home-wrap-content {

@@ -90,21 +90,22 @@ function Login() {
   };
 
   return (
-    <div className="wrap">
-      <div className="loginArea">
+    <div className="login-wrap">
+      <div className="login-area">
         <Link to="/">
-          <div className="home">
+          <div className="login-home">
             <img src={logo} />
           </div>
         </Link>
 
-        <ID />
-        <Password />
+        <ID name="아이디" />
+        <Password name="비밀번호" />
         <Forgot />
         <KakaoLoginButton kakaoLogin={kakaoLogin} />
         <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
-        <div className="buttonBox">
-          <SubmitButton />
+
+        <div className="login-buttonBox">
+          <SubmitButton name="로그인" />
         </div>
       </div>
     </div>

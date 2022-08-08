@@ -1,4 +1,4 @@
-.btn {
+.submit-btn {
   width: 300px;
   border: none;
   display: block;
@@ -10,19 +10,19 @@
   position: relative;
   color: #fff;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14px;
   background-color: #222;
-  padding: 17px 60px;
+  padding: 13px 60px;
   margin: 0 auto;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.btn span {
+.submit-btn span {
   position: relative;
   z-index: 1;
 }
 
-.btn:after {
+.submit-btn:after {
   content: '';
   position: absolute;
   left: 50%;
@@ -36,7 +36,7 @@
   transform: translateX(-98%) translateY(-25%) rotate(45deg);
 }
 
-.btn:hover:after {
-  -webkit-transform: translateX(-9%) translateY(-25%) rotate(45deg);
-  transform: translateX(-45%) translateY(-25%) rotate(45deg);
+.submit-btn:hover:after {
+  -webkit-transform: translateX(-42%) translateY(-15%) rotate(45deg);
+  transform: translateX(-42%) translateY(-15%) rotate(45deg);
 }

@@ -2,12 +2,14 @@ import React from 'react';
 import './style.css';
 // import Button from '@mui/material/Button';
 
-export default function submitButton() {
+const submitButton = (props) => {
   return (
     <>
-      <button className="btn">
-        <span>로그인</span>
+      <button className="submit-btn">
+        <span>{props.name}</span>
       </button>
     </>
   );
-}
+};
+
+export default submitButton;
