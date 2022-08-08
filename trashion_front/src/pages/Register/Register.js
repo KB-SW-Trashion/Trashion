@@ -1,15 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { SubmitButton, ID, Password } from 'components';
-import './Register.css';
+import styles from './Register.module.css';
 import logo from '../../components/Navbar/Trashion_logo.png';
 
 const Register = () => {
   return (
-    <div className="register-wrap">
-      <div className="register-area">
+    <div className={styles.wrap}>
+      <div className={styles.area}>
         <Link to="/">
-          <div className="register-home">
+          <div className={styles.home}>
             <img src={logo} />
           </div>
         </Link>
@@ -18,7 +18,7 @@ const Register = () => {
         <Password name="비밀번호" />
         <Password name="비밀번호 확인" />
         <ID name="이메일" />
-        <div className="register-buttonBox">
+        <div className={styles.buttonBox}>
           <SubmitButton name="회원가입" />
         </div>
       </div>

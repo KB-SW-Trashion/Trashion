@@ -14,3 +14,10 @@
   width: 318px;
   height: 428px;
 }
+.discription span {
+  font-weight: bold;
+}
+
+.styletitle {
+  margin-left: 40%;
+}

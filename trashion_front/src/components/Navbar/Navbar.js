@@ -1,17 +1,17 @@
 import React from 'react';
-import './Navbar.css';
+import styles from './Navbar.module.css';
 import logo from './Trashion_logo.png';
 import { Link } from 'react-router-dom';
 import { PersistentDrawerLeft } from 'components';
 export default function Navbar() {
   return (
     <>
-      <div className="logobox">
-        <div className="drawerbox">
+      <div className={styles.logobox}>
+        <div className={styles.drawerbox}>
           <PersistentDrawerLeft />
         </div>
 
-        <div className="buttonbox">
+        <div className={styles.buttonbox}>
           <Link to="/">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-chats">
               <path
@@ -70,7 +70,7 @@ export default function Navbar() {
             </svg>
           </Link>
         </div>
-        <img className="logo" src={logo}></img>
+        <img className={styles.logo} src={logo}></img>
       </div>
     </>
   );

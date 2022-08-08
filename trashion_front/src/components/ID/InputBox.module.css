@@ -1,9 +1,9 @@
-.int-area {
+.int_area {
   position: relative;
   margin-top: 20px;
 }
 
-.int-area input {
+.int_area input {
   width: 300px;
   padding: 20px 10px 10px;
   background-color: transparent;
@@ -13,11 +13,11 @@
   outline: none;
 }
 
-.int-area input:focus {
+.int_area input:focus {
   border-bottom: 1px solid #78c7d2;
 }
 
-.int-area label {
+.int_area label {
   position: absolute;
   left: 10px;
   top: 15px;
@@ -25,8 +25,8 @@
   transition: top 0.5s ease;
 }
 
-.int-area input:focus + label,
-.int-area input:valid + label {
+.int_area input:focus + label,
+.int_area input:valid + label {
   top: -2px;
   font-size: 13px;
   color: #78c7d2;

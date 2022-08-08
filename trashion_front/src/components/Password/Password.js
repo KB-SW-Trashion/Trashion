@@ -1,10 +1,10 @@
 import React from 'react';
 // import TextField from '@mui/material/TextField';
-import '../ID/InputBox.css';
+import styles from '../ID/InputBox.module.css';
 
 const Password = (props) => {
   return (
-    <div className="int-area">
+    <div className={styles.int_area}>
       <input type="password" name="password" id="password" autoComplete="off" required />
       <label htmlFor="password">{props.name}</label>
     </div>

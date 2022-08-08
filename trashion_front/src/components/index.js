@@ -7,3 +7,5 @@ export { default as Forgot } from './Forgot/Forgot';
 export { default as Footer } from './Footer/Footer';
 export { default as PersistentDrawerLeft } from './Drawer/Drawer';
 export { default as Today_product } from './Today_product/Today_product';
+export { default as Product_img } from './Product_img/Product_img';
+export { default as Toggle_button } from './Toggle_button/Toggle_button';

@@ -1,4 +1,4 @@
-.submit-btn {
+.submit_btn {
   width: 300px;
   border: none;
   display: block;
@@ -17,12 +17,12 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-.submit-btn span {
+.submit_btn span {
   position: relative;
   z-index: 1;
 }
 
-.submit-btn:after {
+.submit_btn:after {
   content: '';
   position: absolute;
   left: 50%;
@@ -36,7 +36,7 @@
   transform: translateX(-98%) translateY(-25%) rotate(45deg);
 }
 
-.submit-btn:hover:after {
+.submit_btn:hover:after {
   -webkit-transform: translateX(-42%) translateY(-15%) rotate(45deg);
   transform: translateX(-42%) translateY(-15%) rotate(45deg);
 }

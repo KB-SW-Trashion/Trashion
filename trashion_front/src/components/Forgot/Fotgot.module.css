@@ -1,15 +1,15 @@
-.forgot-box {
+.forgot_box {
   margin-top: 20px;
   text-align: center;
 }
 
-.forgot-find {
+.forgot_find {
   color: grey;
 }
 
-.forgot-find:hover {
+.forgot_find:hover {
   color: #78c7d2;
 }
-.forgot-box span {
+.forgot_box span {
   color: grey;
 }
