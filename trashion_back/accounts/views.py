@@ -17,6 +17,7 @@ from allauth.socialaccount.providers.naver import views as naver_view
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from allauth.socialaccount.models import SocialAccount
 
+
 User = get_user_model()
 from .models import Profile
 
