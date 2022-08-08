@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     # my app
     'accounts',
+    'item_post',
     # django-rest-framework
     'rest_framework',
     'rest_framework.authtoken',
