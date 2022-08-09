@@ -8,16 +8,26 @@ const Register = () => {
   return (
     <div className={styles.wrap}>
       <div className={styles.area}>
-        <Link to="/">
-          <div className={styles.home}>
-            <img src={logo} />
-          </div>
-        </Link>
+        <div className={styles.link_wrap}>
+          <Link to="/">
+            <div className={styles.home}>
+              <img src={logo} />
+            </div>
+          </Link>
+        </div>
+        <div className={styles.wrap_input}>
+          <ID name="아이디" />
+        </div>
+        <div className={styles.wrap_input}>
+          <Password name="비밀번호" />
+        </div>
+        <div className={styles.wrap_input}>
+          <Password name="비밀번호 확인" />
+        </div>
+        <div className={styles.wrap_input}>
+          <ID name="이메일" />
+        </div>
 
-        <ID name="아이디" />
-        <Password name="비밀번호" />
-        <Password name="비밀번호 확인" />
-        <ID name="이메일" />
         <div className={styles.buttonBox}>
           <SubmitButton name="회원가입" />
         </div>

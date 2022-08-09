@@ -12,10 +12,10 @@ export default function ToggleButtonSizes() {
 
   const children = [
     <ToggleButton value="left" key="left">
-      띵
+      띵댕
     </ToggleButton>,
     <ToggleButton value="center" key="center">
-      동
+      동동
     </ToggleButton>,
   ];
 
@@ -36,7 +36,7 @@ export default function ToggleButtonSizes() {
         '& > :not(style) + :not(style)': { mt: 2 },
       }}
     >
-      <ToggleButtonGroup size="small" {...control}>
+      <ToggleButtonGroup size="large" {...control}>
         {children}
       </ToggleButtonGroup>
     </Box>

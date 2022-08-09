@@ -8,14 +8,20 @@ function Login() {
   return (
     <div className={styles.wrap}>
       <div className={styles.area}>
-        <Link to="/">
-          <div className={styles.home}>
-            <img src={logo} />
-          </div>
-        </Link>
+        <div className={styles.link_wrap}>
+          <Link to="/">
+            <div className={styles.home}>
+              <img src={logo} />
+            </div>
+          </Link>
+        </div>
 
-        <ID name="아이디" />
-        <Password name="비밀번호" />
+        <div className={styles.wrap_input}>
+          <ID name="아이디" />
+        </div>
+        <div className={styles.wrap_input}>
+          <Password name="비밀번호" />
+        </div>
         <Forgot />
         <div className={styles.buttonBox}>
           <SubmitButton name="로그인" />

@@ -11,6 +11,7 @@ export default function Home() {
         <div className={styles.wrap_content}>
           <ul className={styles.contents}>
             <Product />
+
             <Product />
             <Product />
             <Product />

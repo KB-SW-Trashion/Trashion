@@ -1,13 +1,29 @@
+.wrap {
+  width: 100%;
+  height: 100vh;
+  background-color: rgb(241, 241, 241);
+}
+
+.link_wrap {
+  padding-top: 100px;
+}
+
 .area {
-  width: 320px;
+  width: 470px;
+  height: 100%;
   margin: 0 auto;
-  margin-top: 70px;
+  background-color: white;
+}
+
+.wrap_input {
+  display: flex;
 }
 
 .home {
+  width: 300px;
   margin: 0 auto;
+
   margin-bottom: 70px;
-  margin-left: 20px;
 }
 
 .home img {
