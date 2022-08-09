@@ -2,14 +2,6 @@
   width: 100%;
 }
 
-.MyPage_footerbox {
-  background-color: black;
-  color: white;
-  position: relative;
-  width: 100%;
-  bottom: 0;
-}
-
 .MyPage_bodybox {
   padding-top: 3rem;
   padding-bottom: 3rem;
@@ -18,6 +10,7 @@
 
 .MyPage_bodyleft {
   text-align: center;
+  align-content: center;
   width: 50%;
 }
 
@@ -27,6 +20,21 @@
 
 .MyPage_list {
   margin-left: 3rem;
-  font-size: larger;
+  margin-right: 3rem;
+  font-size: large;
+  font-weight: bold;
   padding-bottom: 10rem;
+}
+
+.MyPage_list_title {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #f2bcf8;
+}
+
+.MyPage_footerbox {
+  background-color: black;
+  color: white;
+  position: relative;
+  width: 100%;
+  bottom: 0;
 }
