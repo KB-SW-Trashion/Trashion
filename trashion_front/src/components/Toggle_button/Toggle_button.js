@@ -7,14 +7,17 @@ export default function ToggleButtonSizes() {
   const [alignment, setAlignment] = React.useState('left');
 
   const handleChange = (event, newAlignment) => {
-    setAlignment(newAlignment);
+    if (newAlignment !== null) {
+      setAlignment(newAlignment);
+      console.log(alignment);
+    }
   };
 
   const children = [
     <ToggleButton value="left" key="left">
       띵댕
     </ToggleButton>,
-    <ToggleButton value="center" key="center">
+    <ToggleButton value="right" key="right">
       동동
     </ToggleButton>,
   ];
@@ -36,7 +39,7 @@ export default function ToggleButtonSizes() {
         '& > :not(style) + :not(style)': { mt: 2 },
       }}
     >
-      <ToggleButtonGroup size="large" {...control}>
+      <ToggleButtonGroup size="large" {...control} tog={alignment}>
         {children}
       </ToggleButtonGroup>
     </Box>

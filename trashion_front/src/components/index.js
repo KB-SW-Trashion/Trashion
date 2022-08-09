@@ -9,3 +9,5 @@ export { default as PersistentDrawerLeft } from './Drawer/Drawer';
 export { default as Today_product } from './Today_product/Today_product';
 export { default as Product_img } from './Product_img/Product_img';
 export { default as Toggle_button } from './Toggle_button/Toggle_button';
+export { default as Styles_img } from './Styles_img/Styles_img';
+export { default as Styles } from './Styles/Styles';

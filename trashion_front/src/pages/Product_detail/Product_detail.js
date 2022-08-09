@@ -1,8 +1,24 @@
 import React from 'react';
-import { Navbar, Product_img, Toggle_button } from 'components';
+import { useState } from 'react';
+import { Navbar, Product_img, Styles, Product } from 'components';
 import styles from './Product_detail.module.css';
 
 const Product_detail = () => {
+  const [tabState, setTabState] = useState({
+    tabProduct: true,
+    tabStyle: false,
+  });
+
+  const tabHandler = (e) => {
+    const newTabState = { ...tabState };
+    const activeTab = e.currentTarget.id;
+    for (let key in newTabState) {
+      key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
+    }
+    setTabState(newTabState);
+    console.log(activeTab);
+  };
+
   return (
     <>
       <Navbar />
@@ -28,9 +44,20 @@ const Product_detail = () => {
             </div>
           </div>
         </div>
-        <Toggle_button />
+
         <div className={styles.contents_wrap}>
-          <div className={styles.img_wrap}>
+          <div id="tabProduct" onClick={tabHandler}>
+            4455
+          </div>
+          <div id="tabStyle" onClick={tabHandler}>
+            4466
+          </div>
+
+          <div className="contents">
+            {tabState.tabProduct ? <Product /> : ''}
+            {tabState.tabStyle ? <Styles /> : ''}
+          </div>
+          {/* <div className={styles.img_wrap}>
             <Product_img />
           </div>
           <p>
@@ -50,7 +77,7 @@ const Product_detail = () => {
           <div className={styles.img_wrap}>
             <Product_img />
           </div>
-          <p>내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.</p>
+          <p>내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.</p> */}
         </div>
       </div>
     </>
