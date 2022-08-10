@@ -1,22 +1,34 @@
-import json
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from .models import Follow
+from .models import Follow, Like
+from .serializers import FollowSerializer, LikeSerializer
 
 User = get_user_model()
 
+class FollowAPIView(generics.ListCreateAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
+    
+class UnFollowAPIView(generics.RetrieveDestroyAPIView):
+    queryset = Follow.objects.all()
+    serializer_class = FollowSerializer
 
-#팔로우 버튼 누르면 링크 실행 -> 함수 실행
-#유저정보(email)로 해당 유저가 DB에 있는지 검사
+class LikeAPIView(generics.ListCreateAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    
+class UnLikeAPIView(generics.RetrieveDestroyAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+
+"""
 @api_view(['GET'])
 def follow(request, id):
     follower_user = request.user
-    followed_user = User.objects.get(id=id)
+    followed_user = User.objects.get(id=id) #팔로우할 사람의 id
     follow = Follow.objects.filter(follower_id = follower_user.id, followed_id = followed_user.id)
 
     if follow:
@@ -28,4 +40,5 @@ def follow(request, id):
             followed_id = followed_user
         )
         message = 'Following'
-    return JsonResponse({'message':message}, status=200)
+    return Response({'message':message}, status.HTTP_204_NO_CONTENT) 
+    """
