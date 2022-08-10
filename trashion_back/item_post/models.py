@@ -42,13 +42,13 @@ class LocationSet(models.Model):
 
 class Photo(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='photo_sets')
-    photo = models.ImageField(upload_to='item_post', null=True)
+    photo = models.ImageField(upload_to='item_post', blank=True, null=True)
 
 
 class StylePhoto(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='style_photo_sets')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='style_photo_sets')
-    photo = models.ImageField(upload_to='item_post', null=True)
+    photo = models.ImageField(upload_to='item_post', blank=True, null=True)
 
 
 class Like(models.Model):
