@@ -17,6 +17,9 @@ class Category(models.Model):
     big_category = models.CharField(max_length=20, choices=NATIONAL_CHOICES)
     small_category = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.get_big_category_display()
+
 
 class Item(models.Model):
     user_id = models.ForeignKey(User, related_name='item_sets', on_delete=models.CASCADE)
@@ -27,6 +30,8 @@ class Item(models.Model):
     size = models.CharField(max_length=6)
     wear_count = models.IntegerField()
     price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class Location(models.Model):
@@ -51,7 +56,5 @@ class StylePhoto(models.Model):
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
 
 
-class Like(models.Model):
-    like_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='like_sets')
-    like_item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='like_sets')
+
 

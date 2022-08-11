@@ -33,37 +33,11 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ItemSerializer(serializers.ModelSerializer):
-    user = UserSerializer(source="user_id", read_only=True)
-    photos = PhotoSerializer()
-    style_photos = StylePhotoSerializer()
-    category = CategorySerializer(source="category_id")
+    photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
+    style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
 
     class Meta:
         model = Item
-        fields = [
-            'user',
-            'description',
-            'feature',
-            'product_defect',
-            'size',
-            'wear_count',
-            'price',
-            'category',
-            'photos',
-            'style_photos',
-        ]
+        fields = '__all__'
 
-    def create(self, validated_data):
-        category = validated_data.pop('category')
-
-        try:
-            category = Category.objects.get(big_category=category.get('big_category'))
-        except ObjectDoesNotExist:
-            category_serializer = CategorySerializer(data=category)
-            category_serializer.is_valid(raise_exception=True)
-            category = category_serializer.save()
-        else:
-            validated_data['category'] = category
-
-        return super(ItemSerializer, self).create(validated_data)
 
