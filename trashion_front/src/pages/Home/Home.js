@@ -1,5 +1,5 @@
 import React from 'react';
-import { Product, Navbar, Footer, Styles } from 'components';
+import { Product, Navbar, Footer, Styles, Category } from 'components';
 import { useState } from 'react';
 import styles from './Home.module.css';
 
@@ -23,6 +23,9 @@ export default function Home() {
       <Navbar />
 
       <div className={styles.main}>
+        <div className={styles.category}>
+          <Category />
+        </div>
         <div className={styles.wrap_content}>
           <div className={styles.button_wrap}>
             <div id="tabProduct" onClick={tabHandler}>

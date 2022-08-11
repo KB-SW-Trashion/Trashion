@@ -1,11 +1,15 @@
 .main {
   height: 1900px;
+  display: flex;
+}
+
+.category {
+  width: 250px;
 }
 
 .wrap_content {
   width: 1500px;
   height: 100%;
-  margin: 0 auto;
 }
 
 .contents {

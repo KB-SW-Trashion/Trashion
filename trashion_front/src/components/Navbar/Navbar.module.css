@@ -28,9 +28,3 @@ a {
   text-decoration: none;
   color: black;
 }
-
-.drawerbox {
-  float: left;
-  margin-left: 1rem;
-  width: 300px;
-}
