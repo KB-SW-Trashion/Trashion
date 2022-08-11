@@ -1,8 +1,24 @@
 import React from 'react';
-import { Navbar, Product_img, Toggle_button } from 'components';
+// import { useState } from 'react';
+import { Navbar, Product_img } from 'components';
 import styles from './Product_detail.module.css';
 
 const Product_detail = () => {
+  // const [tabState, setTabState] = useState({
+  //   tabProduct: true,
+  //   tabStyle: false,
+  // });
+
+  // const tabHandler = (e) => {
+  //   const newTabState = { ...tabState };
+  //   const activeTab = e.currentTarget.id;
+  //   for (let key in newTabState) {
+  //     key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
+  //   }
+  //   setTabState(newTabState);
+  //   console.log(activeTab);
+  // };
+
   return (
     <>
       <Navbar />
@@ -28,7 +44,7 @@ const Product_detail = () => {
             </div>
           </div>
         </div>
-        <Toggle_button />
+
         <div className={styles.contents_wrap}>
           <div className={styles.img_wrap}>
             <Product_img />

@@ -2,13 +2,13 @@ import React from 'react';
 import styles from './Navbar.module.css';
 import logo from './Trashion_logo.png';
 import { Link } from 'react-router-dom';
-import { PersistentDrawerLeft } from 'components';
+import { Category } from 'components';
 export default function Navbar() {
   return (
     <>
       <div className={styles.logobox}>
         <div className={styles.drawerbox}>
-          <PersistentDrawerLeft />
+          <Category />
         </div>
 
         <div className={styles.buttonbox}>
