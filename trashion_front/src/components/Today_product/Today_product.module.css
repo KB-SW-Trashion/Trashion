@@ -1,0 +1,23 @@
+.product {
+  position: relative;
+  width: 318px;
+  float: left;
+  height: 500px;
+  margin: 30px 0 70px 30px;
+}
+
+.thumbnail {
+  margin-bottom: 10px;
+}
+
+.productImg {
+  width: 318px;
+  height: 428px;
+}
+.discription span {
+  font-weight: bold;
+}
+
+.styletitle {
+  margin-left: 40%;
+}

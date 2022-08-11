@@ -18,7 +18,7 @@ class Category(models.Model):
     small_category = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.small_category
+        return self.get_big_category_display()
 
 class Item(models.Model):
     user_id = models.ForeignKey(User, related_name='item_sets', on_delete=models.CASCADE)
@@ -29,6 +29,8 @@ class Item(models.Model):
     size = models.CharField(max_length=6)
     wear_count = models.IntegerField()
     price = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.description

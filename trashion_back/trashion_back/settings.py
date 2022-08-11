@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver',
     #django-cors
     'corsheaders',
+    'django_filters',
    
 ]
 
