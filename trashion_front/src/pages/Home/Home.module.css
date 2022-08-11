@@ -1,5 +1,5 @@
 .main {
-  height: 1500px;
+  height: 1900px;
 }
 
 .wrap_content {
@@ -10,4 +10,11 @@
 
 .contents {
   list-style: none;
+}
+
+.button_wrap {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

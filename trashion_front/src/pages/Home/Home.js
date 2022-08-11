@@ -24,13 +24,60 @@ export default function Home() {
 
       <div className={styles.main}>
         <div className={styles.wrap_content}>
-          <div id="tabProduct" onClick={tabHandler}>
-            옷버튼
+          <div className={styles.button_wrap}>
+            <div id="tabProduct" onClick={tabHandler}>
+              옷버튼
+            </div>
+            <div id="tabStyle" onClick={tabHandler}>
+              착장버튼
+            </div>
           </div>
-          <div id="tabStyle" onClick={tabHandler}>
-            착장버튼
-          </div>
+
           <ul className={styles.contents}>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
+            <div className="contents">
+              {tabState.tabProduct ? <Product /> : ''}
+              {tabState.tabStyle ? <Styles /> : ''}
+            </div>
             <div className="contents">
               {tabState.tabProduct ? <Product /> : ''}
               {tabState.tabStyle ? <Styles /> : ''}

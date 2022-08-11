@@ -11,3 +11,4 @@ export { default as Product_img } from './Product_img/Product_img';
 export { default as Toggle_button } from './Toggle_button/Toggle_button';
 export { default as Styles_img } from './Styles_img/Styles_img';
 export { default as Styles } from './Styles/Styles';
+export { default as Category } from './Category/Category';
