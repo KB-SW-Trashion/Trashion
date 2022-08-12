@@ -5,7 +5,7 @@ import styles from './submitButton.module.css';
 const submitButton = (props) => {
   return (
     <>
-      <button className={styles.submit_btn}>
+      <button type="submit" className={styles.submit_btn}>
         <span>{props.name}</span>
       </button>
     </>

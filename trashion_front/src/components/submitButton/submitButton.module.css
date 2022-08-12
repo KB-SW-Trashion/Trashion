@@ -27,7 +27,7 @@
   position: absolute;
   left: 50%;
   top: 0;
-  height: 490%;
+  height: 520%;
   width: 200%;
   background: #78c7d2;
   -webkit-transition: all 0.5s ease-in-out;
@@ -37,6 +37,6 @@
 }
 
 .submit_btn:hover:after {
-  -webkit-transform: translateX(-42%) translateY(-15%) rotate(45deg);
-  transform: translateX(-42%) translateY(-15%) rotate(45deg);
+  -webkit-transform: translateX(-43%) translateY(-15.5%) rotate(45deg);
+  transform: translateX(-43%) translateY(-15.5%) rotate(45deg);
 }

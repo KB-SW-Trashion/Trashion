@@ -2,6 +2,8 @@ import React from 'react';
 import { Product, Navbar, Footer, Styles, Category } from 'components';
 import { useState } from 'react';
 import styles from './Home.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShirt, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 export default function Home() {
   const [tabState, setTabState] = useState({
@@ -28,11 +30,12 @@ export default function Home() {
         </div>
         <div className={styles.wrap_content}>
           <div className={styles.button_wrap}>
-            <div id="tabProduct" onClick={tabHandler}>
-              옷버튼
+            <div className={styles.toggleIcon} id="tabProduct" onClick={tabHandler}>
+              <FontAwesomeIcon icon={faShirt} size="4x" />
             </div>
-            <div id="tabStyle" onClick={tabHandler}>
-              착장버튼
+            <span className={styles.line}>|</span>
+            <div className={styles.toggleIcon} id="tabStyle" onClick={tabHandler}>
+              <FontAwesomeIcon icon={faUserTie} size="2x" />
             </div>
           </div>
 
