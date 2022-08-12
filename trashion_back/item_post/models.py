@@ -20,6 +20,7 @@ class Category(models.Model):
     def __str__(self):
         return self.get_big_category_display()
 
+
 class Item(models.Model):
     user_id = models.ForeignKey(User, related_name='item_sets', on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, related_name='item_sets', on_delete=models.DO_NOTHING)
@@ -34,10 +35,15 @@ class Item(models.Model):
 
     def __str__(self):
         return self.description
+
+
 class Location(models.Model):
     city = models.CharField(max_length=10)
     gu = models.CharField(max_length=10)
     dong = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.city+" "+self.gu+" "+self.dong
 
 
 class LocationSet(models.Model):

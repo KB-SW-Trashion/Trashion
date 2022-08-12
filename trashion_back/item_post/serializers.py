@@ -41,3 +41,13 @@ class ItemSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = '__all__'
+
+
+class LocationSetSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocationSet
+        fields = '__all__'

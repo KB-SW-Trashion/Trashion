@@ -24,12 +24,17 @@ class ItemViewSet(ModelViewSet):
     ordering_fields = ['-created_at']  # ?ordering=
     ordering = ['-created_at']
 
-    # 오류발생
-    # @action(method=['GET'], detail=False)
-    # def view_category(self, request):
-    #     queryset = self.get_queryset().filter(big_category=request.big_category)
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
+    @action(detail=False, methods=['GET'])
+    def price_18000(self, request):
+        items = self.get_queryset().filter(price=18000)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['GET'])
+    def category_item(self, request):
+        items = self.get_queryset().filter(category_id=request.category_id)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class PhotoViewSet(ModelViewSet):
@@ -47,3 +52,13 @@ class StylePhotoViewSet(ModelViewSet):
     #     item = self.get_object()
     #     serializer = self.get_serializer(item)
     #     return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class LocationViewSet(ModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+
+
+class LocationSetViewSet(ModelViewSet):
+    queryset = LocationSet.objects.all()
+    serializer_class = LocationSetSerializer
