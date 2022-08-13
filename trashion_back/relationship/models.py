@@ -13,4 +13,4 @@ class Follow(models.Model):
     
 class Like(models.Model):
     like_user_id = models.ForeignKey(User, related_name="like_user_id", on_delete=models.CASCADE)
-    like_item = models.ForeignKey(Item, related_name="like_item", on_delete=models.CASCADE)
+    like_item_id = models.ForeignKey(Item, related_name="like_item_id", on_delete=models.CASCADE)
