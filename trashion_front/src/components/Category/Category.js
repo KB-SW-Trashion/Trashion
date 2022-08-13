@@ -42,7 +42,7 @@ const Category = () => {
 
   return (
     <List
-      sx={{ width: '100%', maxWidth: 307, bgcolor: 'background.paper', mt: '100px' }}
+      sx={{ width: '100%', maxWidth: 250, bgcolor: 'background.paper', mt: '100px' }}
       component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
