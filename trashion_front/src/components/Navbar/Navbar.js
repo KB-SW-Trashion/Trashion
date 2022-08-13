@@ -2,15 +2,11 @@ import React from 'react';
 import styles from './Navbar.module.css';
 import logo from './Trashion_logo.png';
 import { Link } from 'react-router-dom';
-import { Category } from 'components';
+
 export default function Navbar() {
   return (
     <>
       <div className={styles.logobox}>
-        <div className={styles.drawerbox}>
-          <Category />
-        </div>
-
         <div className={styles.buttonbox}>
           <Link to="/">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-chats">
