@@ -24,16 +24,45 @@ class ItemViewSet(ModelViewSet):
     ordering_fields = ['-created_at']  # ?ordering=
     ordering = ['-created_at']
 
+    # 내가 판매중인 아이템 조회
     @action(detail=False, methods=['GET'])
-    def price_18000(self, request):
-        items = self.get_queryset().filter(price=18000)
+    def my_item(self, request):
+        items = Item.objects.filter(user_id=request.data['user_id'])
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    # 카테고리별 아이템 조회
     @action(detail=False, methods=['GET'])
     def category_item(self, request):
-        items = self.get_queryset().filter(category_id=request.category_id)
+        items = Item.objects.filter(category_id=request.data['category_id'])
         serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 지역별 아이템 조회 <오류발생: 필드에 값이 안들어옴>
+    @action(detail=False, methods=['GET'])
+    def location_item(self, request):
+        locations = Location.objects.all()
+        city = request.GET.get('city', None)  # 시는 한개
+        gu = request.GET.getlist('gu', None)  # 구는 여러개 선택 가능
+        dong = request.GET.getlist('dong', None)  # 동은 여러개 선택 가능
+        print(city, " ", gu, " ", dong)  # >> None   []   []
+        if city:
+            locations = locations.filter(city=city)
+        if gu:
+            locations = locations.filter(gu__in=gu).distinct()
+        if dong:
+            locations = locations.filter(dong__in=dong).distinct()
+
+        location_ids = []
+        for i in locations:
+            location_ids.append(i.id)
+
+        locationsets = LocationSet.objects.filter(location_id__in=location_ids)
+
+        item_ids = []
+        for i in locationsets:
+            item_ids.append(i.item_id)
+        serializer = self.get_serializer(item_ids, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -45,13 +74,6 @@ class PhotoViewSet(ModelViewSet):
 class StylePhotoViewSet(ModelViewSet):
     queryset = StylePhoto.objects.all()
     serializer_class = StylePhotoSerializer
-
-    # 예시
-    # @action(methods=['GET'], detail=True)
-    # def view_first(self, request, *args, **kwargs):
-    #     item = self.get_object()
-    #     serializer = self.get_serializer(item)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class LocationViewSet(ModelViewSet):

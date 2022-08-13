@@ -29,7 +29,7 @@ class StylePhotoSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['big_category', 'small_category']
+        fields = '__all__'
 
 
 class ItemSerializer(serializers.ModelSerializer):
