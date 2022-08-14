@@ -1,0 +1,20 @@
+.product {
+  position: relative;
+  width: 318px;
+  float: left;
+  height: 500px;
+  margin: 30px 0 70px 30px;
+}
+
+.product_discription span {
+  font-weight: bold;
+}
+
+.product_price {
+  margin-left: 10px;
+}
+
+.product_size {
+  float: right;
+  margin-right: 10px;
+}

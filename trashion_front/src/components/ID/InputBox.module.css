@@ -1,0 +1,33 @@
+.int_area {
+  position: relative;
+  margin-top: 20px;
+}
+
+.int_area input {
+  width: 300px;
+  padding: 20px 10px 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid black;
+  font-size: 18px;
+  outline: none;
+}
+
+.int_area input:focus {
+  border-bottom: 1px solid #78c7d2;
+}
+
+.int_area label {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  font-size: 16px;
+  transition: top 0.5s ease;
+}
+
+.int_area input:focus + label,
+.int_area input:valid + label {
+  top: -2px;
+  font-size: 13px;
+  color: #78c7d2;
+}

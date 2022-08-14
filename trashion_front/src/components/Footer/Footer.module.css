@@ -1,0 +1,24 @@
+.body {
+  background-color: black;
+  color: white;
+  position: absolute;
+  width: 100%;
+
+  /* bottom: 0; */
+}
+
+.footer_div_left {
+  float: left;
+  border-right: 1px solid white;
+  width: 50%;
+  text-align: center;
+}
+
+.footer_div_right {
+  float: right;
+  position: relative;
+  text-align: center;
+  width: 50%;
+  margin-top: 0;
+  white-space: pre-wrap;
+}

@@ -1,0 +1,19 @@
+.area {
+  width: 320px;
+  margin: 0 auto;
+  margin-top: 70px;
+}
+
+.home {
+  margin: 0 auto;
+  margin-bottom: 70px;
+  margin-left: 20px;
+}
+
+.home img {
+  width: 300px;
+}
+
+.buttonBox {
+  margin-top: 20px;
+}
