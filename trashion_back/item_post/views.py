@@ -27,25 +27,25 @@ class ItemViewSet(ModelViewSet):
     # 내가 판매중인 아이템 조회
     @action(detail=False, methods=['GET'])
     def my_item(self, request):
-        items = Item.objects.filter(user_id=request.data['user_id'])
+        items = Item.objects.filter(user_id=request.GET.get('user_id'))
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 카테고리별 아이템 조회
     @action(detail=False, methods=['GET'])
     def category_item(self, request):
-        items = Item.objects.filter(category_id=request.data['category_id'])
+        items = Item.objects.filter(category_id=request.GET.get('category_id'))
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # 지역별 아이템 조회 <오류발생: 필드에 값이 안들어옴>
+    # 지역별 아이템 조회
     @action(detail=False, methods=['GET'])
     def location_item(self, request):
         locations = Location.objects.all()
         city = request.GET.get('city', None)  # 시는 한개
         gu = request.GET.getlist('gu', None)  # 구는 여러개 선택 가능
         dong = request.GET.getlist('dong', None)  # 동은 여러개 선택 가능
-        print(city, " ", gu, " ", dong)  # >> None   []   []
+        print(city, " ", gu, " ", dong)
         if city:
             locations = locations.filter(city=city)
         if gu:
