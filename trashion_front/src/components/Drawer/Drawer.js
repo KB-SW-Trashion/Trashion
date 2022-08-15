@@ -14,6 +14,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import styles from './Drawer.module.css';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -49,8 +51,8 @@ export default function PersistentDrawerLeft() {
   return (
     <Box>
       {/* <CssBaseline /> */}
-      <IconButton aria-label="open drawer" onClick={handleDrawerOpen} edge="start" sx={{ mr: 2, ...(open && { display: 'none' }) }}>
-        <MenuIcon />
+      <IconButton className={styles.button} aria-label="open drawer" onClick={handleDrawerOpen} edge="start" sx={{ mr: 2, ...(open && { display: 'none' }) }}>
+        <MenuIcon width="3rem" height="3rem" />
       </IconButton>
       <Drawer
         sx={{
@@ -65,15 +67,26 @@ export default function PersistentDrawerLeft() {
         anchor="left"
         open={open}
       >
-        <IconButton onClick={handleDrawerClose}>{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}</IconButton>
+        <IconButton className={styles.button} onClick={handleDrawerClose}>
+          {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+        </IconButton>
 
         <Divider />
         <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {['Home', "Today's style"].map((text, index) => (
             <ListItem key={text} disablePadding>
               <ListItemButton>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemIcon>
+                  {index % 2 === 0 ? (
+                    <Link to="/">
+                      <ListItemText primary={text} />
+                    </Link>
+                  ) : (
+                    <Link to="/today_style">
+                      <ListItemText primary={text} />
+                    </Link>
+                  )}
+                </ListItemIcon>
               </ListItemButton>
             </ListItem>
           ))}

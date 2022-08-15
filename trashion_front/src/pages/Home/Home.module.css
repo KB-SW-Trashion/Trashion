@@ -1,13 +1,35 @@
 .main {
-  height: 1500px;
+  height: 1900px;
+  display: flex;
+}
+
+.category {
+  width: 250px;
 }
 
 .wrap_content {
   width: 1500px;
   height: 100%;
-  margin: 0 auto;
 }
 
 .contents {
   list-style: none;
+}
+
+.toggleIcon {
+  margin: 0 5px;
+}
+
+.button_wrap {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.line {
+  font-size: 20px;
+}
+
+.toggleIcon:hover {
+  cursor: pointer;
 }

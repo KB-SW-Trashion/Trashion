@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Raleway:200,300,400,500,600);
+
 .body {
   width: 100%;
 }
@@ -28,7 +30,6 @@
 
 .MyPage_list_title {
   padding-bottom: 5px;
-  border-bottom: 1px solid #f2bcf8;
 }
 
 .MyPage_footerbox {
@@ -36,5 +37,42 @@
   color: white;
   position: relative;
   width: 100%;
+  bottom: 0;
+}
+
+.Mypage_hr {
+  height: 2px;
+  /* overflow: visible; */
+  color: #999;
+  position: relative;
+  margin: 2em auto;
+}
+.Mypage_hr::before {
+  content: '';
+  background: linear-gradient(to right, transparent, currentColor, transparent);
+  height: 2px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+}
+.Mypage_hr[data-content] {
+  text-align: center;
+}
+.Mypage_hr[data-content]::after {
+  content: attr(data-content);
+  position: relative;
+
+  padding: 0 1.5rem;
+  top: -0.475em;
+  font-size: 3em;
+  line-height: 1;
+  font-family: serif;
+  font-style: italic;
+  color: currentColor;
+}
+
+.Mypage_buttonbox {
+  display: flex;
+  margin-top: 2rem;
   bottom: 0;
 }
