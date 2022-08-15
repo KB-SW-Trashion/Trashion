@@ -29,7 +29,8 @@
   top: 0;
   height: 520%;
   width: 200%;
-  background: #78c7d2;
+  background: #f8bbd0;
+
   -webkit-transition: all 0.5s ease-in-out;
   transition: all 0.5s ease-in-out;
   -webkit-transform: translateX(-98%) translateY(-25%) rotate(45deg);

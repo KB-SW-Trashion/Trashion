@@ -7,13 +7,11 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         data = form.cleaned_data
         # 기본 저장 필드: username, email
         user = super().save_user(request, user, form, False)
-        # 추가 저장 필드: realname, nickname, address, phone, height, weight
+        # 추가 저장 필드: realname, nickname, address, phone
         realname = data.get('realname')
         nickname = data.get('nickname')
         address = data.get('nickname')
         phone = data.get('phone')
-        height = data.get('height')
-        weight = data.get('weight')
         if realname:
             user.realname = realname
         if nickname:
@@ -22,9 +20,5 @@ class CustomAccountAdapter(DefaultAccountAdapter):
             user.address = address
         if phone:
             user.phone = phone
-        if height:
-            user.height = height
-        if weight:
-            user.weight = weight
         user.save()
         return user
