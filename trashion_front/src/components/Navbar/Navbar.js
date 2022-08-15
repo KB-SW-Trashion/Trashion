@@ -1,9 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
 import logo from './Trashion_logo.png';
 import { Link } from 'react-router-dom';
 
 export default function Navbar() {
+  const [auth, setAuth] = useState('');
+
+  useEffect(() => {
+    if (localStorage.getItem('token') !== null) {
+      setAuth(true);
+    }
+  }, []);
+
+  // const handleLogout = () => {
+
+  //   fetch('http://127.0.0.1:8000/api/v1/mall/auth/logout/', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Token ${localStorage.getItem('token')}`
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       console.log(data);
+  //       localStorage.clear();
+  //       window.location.replace('http://localhost:3000/login');
+  //     });
+  //  };
+
   return (
     <>
       <div className={styles.logobox}>
@@ -53,18 +78,34 @@ export default function Navbar() {
               />
             </svg>
           </Link>
-          <Link to="/login">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
-              <path
-                xmlns="http://www.w3.org/2000/svg"
-                stroke="currentColor"
-                strokelinecap="round"
-                strokelinejoin="round"
-                strokewidth="2"
-                d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-            </svg>
-          </Link>
+
+          {auth ? (
+            <Link to="/Mypage">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
+                <path
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="currentColor"
+                  strokelinecap="round"
+                  strokelinejoin="round"
+                  strokewidth="2"
+                  d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </Link>
+          ) : (
+            <Link to="/login">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
+                <path
+                  xmlns="http://www.w3.org/2000/svg"
+                  stroke="currentColor"
+                  strokelinecap="round"
+                  strokelinejoin="round"
+                  strokewidth="2"
+                  d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
+            </Link>
+          )}
         </div>
         <img className={styles.logo} src={logo}></img>
       </div>
