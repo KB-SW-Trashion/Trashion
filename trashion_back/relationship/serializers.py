@@ -13,7 +13,6 @@ class FollowSerializer(serializers.ModelSerializer):
     class Meta:
         model = Follow
         fields = [
-            'pk',
             'follower_id',
             'follower_user',
             'followed_id',
@@ -22,14 +21,12 @@ class FollowSerializer(serializers.ModelSerializer):
         
 class LikeSerializer(serializers.ModelSerializer):
     like_user = serializers.ReadOnlyField(source='like_user_id.email')
-    liked_item_name = serializers.ReadOnlyField(source='like_item.description')
+    liked_item_description = serializers.ReadOnlyField(source='like_item_id.description')
     class Meta:
         model = Like
         fields = [
-            'pk',
             'like_user_id',
             'like_user',
-            'like_item',
-            'liked_item_name',
-            
+            'like_item_id',
+            'liked_item_description',
         ]
