@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     # my app
     'accounts',
     'item_post',
+    'relationship',
     # django-rest-framework
     'rest_framework',
     'rest_framework.authtoken',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver',
     #django-cors
     'corsheaders',
+    'django_filters',
    
 ]
 

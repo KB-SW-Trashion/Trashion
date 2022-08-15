@@ -10,4 +10,5 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('accounts/', include('accounts.urls')),
     path('item_post/', include('item_post.urls')),
+    path('relationship/', include('relationship.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
