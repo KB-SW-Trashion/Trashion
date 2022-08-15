@@ -25,6 +25,11 @@
 
   margin-bottom: 70px;
 }
+.area {
+  width: 320px;
+  margin: 0 auto;
+  margin-top: 70px;
+}
 
 .home img {
   width: 300px;

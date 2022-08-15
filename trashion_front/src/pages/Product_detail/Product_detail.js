@@ -3,22 +3,22 @@ import React from 'react';
 import { Navbar, Product_img, Img_small } from 'components';
 import styles from './Product_detail.module.css';
 
+// const [tabState, setTabState] = useState({
+//   tabProduct: true,
+//   tabStyle: false,
+// });
+
+// const tabHandler = (e) => {
+//   const newTabState = { ...tabState };
+//   const activeTab = e.currentTarget.id;
+//   for (let key in newTabState) {
+//     key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
+//   }
+//   setTabState(newTabState);
+//   console.log(activeTab);
+// };
+
 const Product_detail = () => {
-  // const [tabState, setTabState] = useState({
-  //   tabProduct: true,
-  //   tabStyle: false,
-  // });
-
-  // const tabHandler = (e) => {
-  //   const newTabState = { ...tabState };
-  //   const activeTab = e.currentTarget.id;
-  //   for (let key in newTabState) {
-  //     key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
-  //   }
-  //   setTabState(newTabState);
-  //   console.log(activeTab);
-  // };
-
   return (
     <>
       <Navbar />

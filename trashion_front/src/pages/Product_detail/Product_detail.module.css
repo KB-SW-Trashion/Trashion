@@ -50,6 +50,11 @@
 .seller_info {
   margin-top: 60px;
 }
+.discription_box {
+  margin-left: 150px;
+  margin-top: 40px;
+  display: flex;
+}
 
 .product_condition {
   width: 200px;
@@ -57,6 +62,17 @@
   border-right: 1px solid grey;
 }
 
+.seller_size {
+  width: 200px;
+  text-align: center;
+  height: 220px;
+  margin-left: 40px;
+}
+.seller_size span {
+  display: block;
+  text-align: left;
+  margin-top: 5px;
+}
 .contents_wrap {
   margin-top: 60px;
   text-align: center;

@@ -1,7 +1,6 @@
 .int_area {
   position: relative;
   margin: 0 auto;
-  margin-top: 20px;
 }
 
 .int_area input {
@@ -15,7 +14,7 @@
 }
 
 .int_area input:focus {
-  border-bottom: 1px solid #78c7d2;
+  border-bottom: 1px solid #f8bbd0;
 }
 
 .int_area label {
@@ -30,5 +29,5 @@
 .int_area input:valid + label {
   top: -2px;
   font-size: 13px;
-  color: #78c7d2;
+  color: #f8bbd0;
 }
