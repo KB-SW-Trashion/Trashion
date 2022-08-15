@@ -1,56 +1,119 @@
 import React from 'react';
-import { Navbar, Product_img, Toggle_button } from 'components';
+// import { useState } from 'react';
+import { Navbar, Product_img, Img_small } from 'components';
 import styles from './Product_detail.module.css';
+
+// const [tabState, setTabState] = useState({
+//   tabProduct: true,
+//   tabStyle: false,
+// });
+
+// const tabHandler = (e) => {
+//   const newTabState = { ...tabState };
+//   const activeTab = e.currentTarget.id;
+//   for (let key in newTabState) {
+//     key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
+//   }
+//   setTabState(newTabState);
+//   console.log(activeTab);
+// };
 
 const Product_detail = () => {
   return (
     <>
       <Navbar />
       <div className={styles.detail_wrap}>
-        <h1 className={styles.product_title}>내애애앵장고 배애애애애지</h1>
+        <div className={styles.user_profile}>profile</div>
         <div className={styles.detail_box}>
-          <Product_img />
+          <div className={styles.product_img_box}>
+            <div className={styles.img_big}>
+              <Product_img />
+            </div>
+            <div className={styles.img_small_wrap}>
+              <div className={styles.img_small}>
+                <Img_small />
+              </div>
+              <div className={styles.img_small}>
+                <Img_small />
+              </div>
+              <div className={styles.img_small}>
+                <Img_small />
+              </div>
+              <div className={styles.img_small}>
+                <Img_small />
+              </div>
+            </div>
+          </div>
 
           <div className={styles.discription_box}>
-            <div className={styles.product_condition}>
-              <h1>제품상태</h1>
-              <span>사이즈: XL</span>
-              <span>착용 횟수 : 3번</span>
-              <span>상태 : S</span>
-              <span>구매시기 : 2021/12</span>
+            <div className={styles.product_info}>
+              <p className={styles.info}>물품 정보</p>
+              <h2>[Product_name]</h2>
+              <h3>[Product_price]</h3>
+              <p>착용 기간 : 1 year</p>
+              <p>사이즈 : 105</p>
+              <p>상태 : 아주 굳</p>
             </div>
-            <div className={styles.seller_size}>
-              <h1>판매자 사이즈</h1>
-              <span>키 : 215cm</span>
-              <span>몸무게 : 110kg</span>
-              <span>상의 : XL</span>
-              <span>하의 : XL</span>
+            <div className={styles.seller_info}>
+              <p className={styles.info}>판매자 정보</p>
+              <h2>키 : 204cm</h2>
+              <h3>몸무게 : 20kg</h3>
+              <p>사이즈 : 1020</p>
             </div>
           </div>
         </div>
-        <Toggle_button />
+
+        <hr />
+
         <div className={styles.contents_wrap}>
           <div className={styles.img_wrap}>
             <Product_img />
+            <div className={styles.text_wrap}>
+              <p>
+                얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라 얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
+                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
+                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라
+              </p>
+            </div>
           </div>
-          <p>
-            내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.내애애애애앵재애애애앵고
-            바아앙아ㅏ지입니다.내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고
-            바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고
-            바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다. 내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.
-          </p>
           <div className={styles.img_wrap}>
             <Product_img />
+            <div className={styles.text_wrap}>
+              <p>
+                얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라 얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
+                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
+                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라
+              </p>
+            </div>
           </div>
-          <p>내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.</p>
           <div className={styles.img_wrap}>
             <Product_img />
+            <div className={styles.text_wrap}>
+              <p>
+                얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라 얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
+                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
+                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
+                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
+                얄라리 얄라얄리얄리 얄라성 얄라리 얄라
+              </p>
+            </div>
           </div>
-          <p>내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.</p>
-          <div className={styles.img_wrap}>
-            <Product_img />
-          </div>
-          <p>내애애애애앵재애애애앵고 바아앙아ㅏ지입니다.</p>
         </div>
       </div>
     </>

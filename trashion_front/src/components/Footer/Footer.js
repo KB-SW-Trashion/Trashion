@@ -1,5 +1,5 @@
 import React from 'react';
-import './Footer.css';
+import styles from './Footer.module.css';
 
 const introEx = {
   0: `직원의 출퇴근 시간 기록을 실시간 알림으로 받을 수 있고\n
@@ -8,11 +8,11 @@ const introEx = {
 
 export default function Footer() {
   return (
-    <div className="body">
+    <div className={styles.body}>
       <div>
         <p>&nbsp;</p>
-        <div className="footer_div_left">만든사람 : 정지윤 김동윤 강승원 권지아 천성규 김명찬</div>
-        <div className="footer_div_right">{introEx[0]}</div>
+        <div className={styles.footer_div_left}>만든사람 : 정지윤 김동윤 강승원 권지아 천성규 김명찬</div>
+        <div className={styles.footer_div_right}>{introEx[0]}</div>
         <p>&nbsp;</p>
       </div>
     </div>
