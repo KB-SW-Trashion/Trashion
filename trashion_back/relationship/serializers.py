@@ -6,27 +6,26 @@ from .models import Follow, Like
 User = get_user_model()
 
 class FollowSerializer(serializers.ModelSerializer):
+    follower_user = serializers.ReadOnlyField(source='follower.nickname')
+    followed_user = serializers.ReadOnlyField(source='followed.nickname')
         
-    follower_user = serializers.ReadOnlyField(source='follower_id.email')
-    followed_user = serializers.ReadOnlyField(source='followed_id.email')
-    
     class Meta:
         model = Follow
         fields = [
-            'follower_id',
+            'follower',
             'follower_user',
-            'followed_id',
+            'followed',
             'followed_user',
         ]
         
 class LikeSerializer(serializers.ModelSerializer):
-    like_user = serializers.ReadOnlyField(source='like_user_id.email')
-    liked_item_description = serializers.ReadOnlyField(source='like_item_id.description')
+    like_user = serializers.ReadOnlyField(source='likeuser.nickname')
+    liked_item_description = serializers.ReadOnlyField(source='likeitem.description')
     class Meta:
         model = Like
         fields = [
-            'like_user_id',
+            'likeuser',
             'like_user',
-            'like_item_id',
+            'likeitem',
             'liked_item_description',
         ]

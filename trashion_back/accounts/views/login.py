@@ -1,8 +1,6 @@
-from asyncio import constants
 import requests
 import os
 from django.shortcuts import redirect
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -19,10 +17,7 @@ from allauth.socialaccount.models import SocialAccount
 
 
 User = get_user_model()
-from .models import Profile
-
-from django.shortcuts import render
-from rest_framework import generics
+from ..models import Profile
 
 BASE_URL = 'http://localhost:8000/'
 GOOGLE_CALLBACK_URI = BASE_URL + 'accounts/google/callback/'
