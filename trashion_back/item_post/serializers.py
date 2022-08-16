@@ -17,13 +17,13 @@ class UserSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = '__all__'
+        fields = ['item_id', 'photo']
 
 
 class StylePhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = StylePhoto
-        fields = '__all__'
+        fields = ['item_id', 'user_id', 'photo']
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -49,6 +49,16 @@ class ItemSerializer(serializers.ModelSerializer):
         for style_photo_data in images_data.getlist('style_photos_data'):
             StylePhoto.objects.create(item_id=item, user_id=self.context['request'].user, photo=style_photo_data)
         return item
+
+    def update(self, instance, validated_data):
+        images_data = self.context['request'].FILES
+        Photo.objects.filter(item_id=instance).delete()
+        StylePhoto.objects.filter(item_id=instance).delete()
+        for photo_data in images_data.getlist('photos_data'):
+            Photo.objects.create(item_id=instance, photo=photo_data)
+        for style_photo_data in images_data.getlist('style_photos_data'):
+            StylePhoto.objects.create(item_id=instance, user_id=self.context['request'].user, photo=style_photo_data)
+        return instance
 
 
 class LocationSerializer(serializers.ModelSerializer):
