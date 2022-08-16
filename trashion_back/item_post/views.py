@@ -1,8 +1,9 @@
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
-from rest_framework import status
+from rest_framework import status, exceptions
 from .serializers import *
 from django.contrib.auth import get_user_model
 from .models import Item, Category, Photo, StylePhoto
@@ -21,8 +22,37 @@ class ItemViewSet(ModelViewSet):
     serializer_class = ItemSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['description']    # ?search=
-    ordering_fields = ['-created_at']  # ?ordering=
+    ordering_fields = ['created_at']  # ?ordering=
     ordering = ['-created_at']
+
+    # create
+    def create(self, request, *args, **kwargs):
+        # location 받아오기
+        city = request.data['city']
+        gu = request.data['gu']
+        dong = request.data['dong']
+        if city is not None and gu is not None and dong is not None:
+            location = Location.objects.get(
+                Q(city=city) & Q(gu=gu) & Q(dong=dong)
+            )
+        else:
+            return Response(
+                {"message": "주소정보를 모두 입력해주세요."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        # photo, stylephoto > serializers.py의 create()에서 처리
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        new_item = Item.objects.get(id=serializer.data['id'])
+        headers = self.get_success_headers(serializer.data)
+        # LocationSet 객체만들기
+        LocationSet.objects.create(item_id=new_item, location_id=location)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # 작성자 자동 저장
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user)
 
     # 내가 판매중인 아이템 조회
     @action(detail=False, methods=['GET'])
@@ -41,17 +71,12 @@ class ItemViewSet(ModelViewSet):
     # 지역별 아이템 조회
     @action(detail=False, methods=['GET'])
     def location_item(self, request):
-        locations = Location.objects.all()
         city = request.GET.get('city', None)  # 시는 한개
         gu = request.GET.getlist('gu', None)  # 구는 여러개 선택 가능
         dong = request.GET.getlist('dong', None)  # 동은 여러개 선택 가능
-        print(city, " ", gu, " ", dong)
-        if city:
-            locations = locations.filter(city=city)
-        if gu:
-            locations = locations.filter(gu__in=gu).distinct()
-        if dong:
-            locations = locations.filter(dong__in=dong).distinct()
+        locations = Location.objects.filter(
+            Q(city=city) & Q(gu__in=gu) & Q(dong__in=dong)
+        )
 
         location_ids = []
         for i in locations:
@@ -79,6 +104,16 @@ class StylePhotoViewSet(ModelViewSet):
 class LocationViewSet(ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save()
 
 
 class LocationSetViewSet(ModelViewSet):
