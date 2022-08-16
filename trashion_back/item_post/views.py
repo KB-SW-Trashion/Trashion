@@ -54,6 +54,11 @@ class ItemViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user)
 
+    # update
+    # photo, stylephoto > serializers.py의 update()에서 처리
+    def perform_update(self, serializer):
+        serializer.save(user_id=self.request.user)
+
     # 내가 판매중인 아이템 조회
     @action(detail=False, methods=['GET'])
     def my_item(self, request):
@@ -88,6 +93,23 @@ class ItemViewSet(ModelViewSet):
         for i in locationsets:
             item_ids.append(i.item_id)
         serializer = self.get_serializer(item_ids, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 일반 이미지만 모아보기 : 같은 아이템에 사진 여러장일 경우에는 한장만!
+    # Q... 일반이미지가 있는 아이템을 넘겨줘야할지, 사진만 넘겨줘야할지...
+    @action(detail=False, methods=['GET'])
+    def photo_item_only(self, request):
+        item_ids = Photo.objects.distinct().values_list('item_id', flat=True)
+        items = Item.objects.filter(id__in=item_ids)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 착장 이미지만 모아보기 : 같은 아이템에 사진 여러장일 경우에는 한장만!
+    @action(detail=False, methods=['GET'])
+    def stylephoto_item_only(self, request):
+        item_ids = StylePhoto.objects.distinct().values_list('item_id', flat=True)
+        items = Item.objects.filter(id__in=item_ids)
+        serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
