@@ -28,6 +28,8 @@ class Item(models.Model):
     feature = models.TextField()
     product_defect = models.TextField()
     size = models.CharField(max_length=6)
+    height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     wear_count = models.IntegerField()
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
