@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 class Category(models.Model):
-    NATIONAL_CHOICES = (
+    CLOTHES_CHOICES = (
         ('outer', '아우터'),
         ('dress', '원피스'),
         ('top', '상의'),
@@ -14,7 +14,7 @@ class Category(models.Model):
         ('shoes', '신발'),
         ('accessory', '악세사리'),
     )
-    big_category = models.CharField(max_length=20, choices=NATIONAL_CHOICES)
+    big_category = models.CharField(max_length=20, choices=CLOTHES_CHOICES)
     small_category = models.CharField(max_length=20)
 
     def __str__(self):
