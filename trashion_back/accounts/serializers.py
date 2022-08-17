@@ -41,12 +41,13 @@ class SignUpSerializer(RegisterSerializer):
         }
 
 class UserEditSerializer(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
     realname = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     
     class Meta:
         model = User
-        fields = ['email', 'realname', 'nickname', 'address', 'phone']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone']
         
     # def update(self, instance, validated_data):
     #     instance.nickname = validated_data.get('nickname', instance.nickname)
