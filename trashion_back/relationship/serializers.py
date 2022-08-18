@@ -9,7 +9,6 @@ User = get_user_model()
 class FollowSerializer(serializers.ModelSerializer):
     follower_user = serializers.ReadOnlyField(source='follower.nickname')
     followed_user = serializers.ReadOnlyField(source='followed.nickname')
-        
     class Meta:
         model = Follow
         fields = [

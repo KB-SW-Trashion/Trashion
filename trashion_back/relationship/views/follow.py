@@ -32,7 +32,7 @@ def follow(request): #requset에 팔로우할 대상 email 담아서 넘기기
 def following(request): #내가 팔로우한 유저 목록
     qs = Follow.objects.filter(follower = request.user.id)
     serializer = FollowSerializer(qs, many = True)
-    
+   
     return Response(serializer.data)
 
 @api_view(['GET'])
