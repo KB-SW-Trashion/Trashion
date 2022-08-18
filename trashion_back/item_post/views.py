@@ -14,11 +14,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 
 
-class CategoryViewSet(ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-
 class ActionBasedPermission(AllowAny):
     def has_permission(self, request, view):
         for klass, actions in getattr(view, 'action_permissions', {}).items():
@@ -39,8 +34,9 @@ class ItemViewSet(ModelViewSet):
     # permission
     permission_classes = (ActionBasedPermission,)
     action_permissions = {
-        IsAuthenticated: ['update', 'partial_update', 'destroy', 'create'],
-        AllowAny: ['list', 'retrieve']
+        IsAuthenticated: ['update', 'partial_update', 'destroy', 'create', 'my_item'],
+        AllowAny: ['list', 'retrieve', 'category_item', 'location_item',
+                   'size_item', 'photo_item_only', 'stylephoto_item_only']
     }
     authentication_classes = (JWTCookieAuthentication,)
 
@@ -116,8 +112,8 @@ class ItemViewSet(ModelViewSet):
     # 사이즈별 아이템 조회(입력한 키의 +-3cm, 몸무게의 +-3kg 범주 내의 상품을 조회)
     @action(detail=False, methods=['GET'])
     def size_item(self, request):
-        height = request.GET.get('height', None)
-        weight = request.GET.get('weight', None)
+        height = int(request.GET.get('height', None))
+        weight = int(request.GET.get('weight', None))
         items = Item.objects.filter(
             Q(height__range=[height-3, height+3]) & Q(weight__range=[weight-3, weight+3])
         )
@@ -139,6 +135,11 @@ class ItemViewSet(ModelViewSet):
         items = Item.objects.filter(id__in=item_ids)
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class CategoryViewSet(ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
 
 
 class PhotoViewSet(ModelViewSet):
