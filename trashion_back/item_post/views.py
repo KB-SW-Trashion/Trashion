@@ -10,11 +10,23 @@ from .models import Item, Category, Photo, StylePhoto
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 User = get_user_model()
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+
+class ActionBasedPermission(AllowAny):
+    def has_permission(self, request, view):
+        for klass, actions in getattr(view, 'action_permissions', {}).items():
+            if view.action in actions:
+                return klass().has_permission(request, view)
+            elif view.action is None:
+                return True
+        return False
 
 
 class ItemViewSet(ModelViewSet):
@@ -24,6 +36,13 @@ class ItemViewSet(ModelViewSet):
     search_fields = ['description']    # ?search=
     ordering_fields = ['created_at']  # ?ordering=
     ordering = ['-created_at']
+    # permission
+    permission_classes = (ActionBasedPermission,)
+    action_permissions = {
+        IsAuthenticated: ['update', 'partial_update', 'destroy', 'create'],
+        AllowAny: ['list', 'retrieve']
+    }
+    authentication_classes = (JWTCookieAuthentication,)
 
     # create
     def create(self, request, *args, **kwargs):
@@ -82,7 +101,6 @@ class ItemViewSet(ModelViewSet):
         locations = Location.objects.filter(
             Q(city=city) & Q(gu__in=gu) & Q(dong__in=dong)
         )
-
         location_ids = []
         for i in locations:
             location_ids.append(i.id)
@@ -95,8 +113,18 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(item_ids, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    # 사이즈별 아이템 조회(입력한 키의 +-3cm, 몸무게의 +-3kg 범주 내의 상품을 조회)
+    @action(detail=False, methods=['GET'])
+    def size_item(self, request):
+        height = request.GET.get('height', None)
+        weight = request.GET.get('weight', None)
+        items = Item.objects.filter(
+            Q(height__range=[height-3, height+3]) & Q(weight__range=[weight-3, weight+3])
+        )
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     # 일반 이미지만 모아보기 : 같은 아이템에 사진 여러장일 경우에는 한장만!
-    # Q... 일반이미지가 있는 아이템을 넘겨줘야할지, 사진만 넘겨줘야할지...
     @action(detail=False, methods=['GET'])
     def photo_item_only(self, request):
         item_ids = Photo.objects.distinct().values_list('item_id', flat=True)
