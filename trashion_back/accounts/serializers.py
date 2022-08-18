@@ -37,19 +37,26 @@ class SignUpSerializer(RegisterSerializer):
             'address': self.validated_data.get('address', ''),
             'phone': self.validated_data.get('phone', ''),
         }
+class FollowingListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return f'{value.followed.nickname}'
 
+class FollowerListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return f'{value.follower.nickname}'
+    
 class UserEditSerializer(serializers.ModelSerializer):
-    follower_sets = serializers.StringRelatedField(many=True, read_only = True)
-    following = serializers.IntegerField(source='follower_sets.count', read_only=True)
-    followed_sets = serializers.StringRelatedField(many=True, read_only = True)
-    follower = serializers.IntegerField(source='followed_sets.count', read_only=True)
+    following = FollowingListingField(many=True, read_only=True)
+    following_count = serializers.IntegerField(source='following.count', read_only=True)
+    follower = FollowerListingField(many=True, read_only=True)
+    follower_count = serializers.IntegerField(source='follower.count', read_only=True)
     id = serializers.ReadOnlyField()
     realname = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'follower_sets', 'following', 'followed_sets', 'follower']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'following_count', 'following', 'follower_count', 'follower']
         
         
 # class SignUpSerializer(serializers.ModelSerializer):
