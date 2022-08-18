@@ -1,7 +1,5 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.exceptions import ValidationError as DjangoValidationError
-from allauth.account.adapter import get_adapter
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
@@ -41,19 +39,19 @@ class SignUpSerializer(RegisterSerializer):
         }
 
 class UserEditSerializer(serializers.ModelSerializer):
+    follower_sets = serializers.StringRelatedField(many=True, read_only = True)
+    following = serializers.IntegerField(source='follower_sets.count', read_only=True)
+    followed_sets = serializers.StringRelatedField(many=True, read_only = True)
+    follower = serializers.IntegerField(source='followed_sets.count', read_only=True)
     id = serializers.ReadOnlyField()
     realname = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'follower_sets', 'following', 'followed_sets', 'follower']
         
-    # def update(self, instance, validated_data):
-    #     instance.nickname = validated_data.get('nickname', instance.nickname)
-    #     instance.address = validated_data.get('address', instance.address)
-    #     instance.phone = validated_data.get('phone', instance.phone)
-
+        
 # class SignUpSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = User
