@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { SubmitButton, ID, Password, Forgot, KakaoLoginButton } from 'components';
+import { SubmitButton, Forgot, KakaoLoginButton } from 'components';
 import axios from 'axios';
 import styles from './Login.module.css';
 import auth from 'api/authApi';
-import logo from '../../components/Navbar/Trashion_logo.png';
+import logo from '../../assets/image/logo.png';
 import getKakaoToken from 'api/socialLoginApi';
 import GoogleLogin from 'react-google-login';
 import { gapi } from 'gapi-script';
@@ -165,8 +165,14 @@ function Login() {
             </div>
           </div>
           <Forgot />
-          <KakaoLoginButton kakaoLogin={kakaoLogin} />
-          <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
+          <div className={styles.social_login_wrap}>
+            <KakaoLoginButton kakaoLogin={kakaoLogin} />
+          </div>
+          <div className={styles.social_login_wrap}>
+            <div className={styles.google_login}>
+              <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
+            </div>
+          </div>
           <div className={styles.buttonBox}>
             <SubmitButton name="로그인" />
           </div>

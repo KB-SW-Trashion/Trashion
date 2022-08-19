@@ -73,3 +73,14 @@
   font-size: 13px;
   color: #f8bbd0;
 }
+
+.social_login_wrap {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google_login {
+  width: 300px;
+}
