@@ -37,6 +37,7 @@ class SignUpSerializer(RegisterSerializer):
             'address': self.validated_data.get('address', ''),
             'phone': self.validated_data.get('phone', ''),
         }
+        
 class FollowingListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.followed.nickname}'
@@ -44,19 +45,35 @@ class FollowingListingField(serializers.RelatedField):
 class FollowerListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.follower.nickname}'
-    
-class UserEditSerializer(serializers.ModelSerializer):
+
+class ItemListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return f'{value.likeitem}'
+        
+class StyleLikeListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return f'{value.likeStyle}'        
+        
+class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
     following_count = serializers.IntegerField(source='following.count', read_only=True)
     follower = FollowerListingField(many=True, read_only=True)
     follower_count = serializers.IntegerField(source='follower.count', read_only=True)
+    
+    likeitem_sets = ItemListingField(many=True, read_only=True)
+    like_item_count = serializers.IntegerField(source='likeitem_sets.count')
+    
+    likeStyle_sets = StyleLikeListingField(many=True, read_only=True)
+    likeStyle_count = serializers.IntegerField(source='likeStyle_sets.count')
+    
     id = serializers.ReadOnlyField()
-    realname = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
+    realname = serializers.ReadOnlyField()
+    
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'following_count', 'following', 'follower_count', 'follower']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'likeStyle_count', 'likeStyle_sets']
         
         
 # class SignUpSerializer(serializers.ModelSerializer):

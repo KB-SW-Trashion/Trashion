@@ -4,7 +4,6 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from ..models import Follow
-from ..serializers import *
 
 User = get_user_model()
 
@@ -27,17 +26,3 @@ def follow(request): #requset에 팔로우할 대상 email 담아서 넘기기
         )
         message = 'Following'
     return Response({'message':message}, status.HTTP_204_NO_CONTENT)
-    
-@api_view(['GET'])
-def following(request): #내가 팔로우한 유저 목록
-    qs = Follow.objects.filter(follower = request.user.id)
-    serializer = FollowSerializer(qs, many = True)
-   
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def follower(request): #나를 팔로우한 유저 목록
-    qs = Follow.objects.filter(followed = request.user.id)
-    serializer = FollowSerializer(qs, many = True)
-    
-    return Response(serializer.data)
