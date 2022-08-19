@@ -12,14 +12,14 @@ class Follow(models.Model):
         return f'{self.follower.nickname}:{self.followed.nickname}'
     
 class Like(models.Model):
-    likeuser = models.ForeignKey(User, related_name="likeuser_sets", on_delete=models.CASCADE)
+    likeuser = models.ForeignKey(User, related_name="likeitem_sets", on_delete=models.CASCADE)
     likeitem = models.ForeignKey(Item, related_name="likeitem_sets", on_delete=models.CASCADE)
     
     def __str__(self):
         return self.likeitem.description
     
 class StyleLike(models.Model):
-    user = models.ForeignKey(User, related_name="user_sets", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name="likeStyle_sets", on_delete=models.CASCADE)
     likeStyle = models.ForeignKey(StylePhoto, related_name="likeStyle_sets", on_delete=models.CASCADE)
     
     def __str__(self):

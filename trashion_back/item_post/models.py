@@ -62,3 +62,6 @@ class StylePhoto(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='style_photo_sets')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='style_photo_sets')
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
+    
+    def __str__(self):
+        return self.item_id.description

@@ -5,18 +5,6 @@ from django.contrib.auth import get_user_model
 from .models import *
 
 User = get_user_model()
-
-class FollowSerializer(serializers.ModelSerializer):
-    follower_user = serializers.ReadOnlyField(source='follower.nickname')
-    followed_user = serializers.ReadOnlyField(source='followed.nickname')
-    class Meta:
-        model = Follow
-        fields = [
-            'follower',
-            'follower_user',
-            'followed',
-            'followed_user',
-        ]
         
 class LikeSerializer(serializers.ModelSerializer):
     like_user = serializers.ReadOnlyField(source='likeuser.nickname')
