@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { SubmitButton } from 'components';
 import axios from 'axios';
 import styles from '../Login/Login.module.css';
-import logo from '../../components/Navbar/Trashion_logo.png';
+import logo from '../../assets/image/logo.png';
 
 const Register = () => {
   const [username, setUsername] = useState('');

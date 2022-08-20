@@ -45,7 +45,8 @@ class User(AbstractUser):
     objects = UserManager()
     social_profile = models.URLField(null=True,blank=True)
     realname = models.CharField(max_length=50, blank=True)
-    nickname = models.CharField(max_length=50, blank=True)
+    nickname = models.CharField(max_length=50, null=True, unique=True) 
+    #닉네임 입력을 필수로 받아야함. null 로 받으면 전부 None로 저장돼서 unique 하지 않아서 에러뜸.
     address = models.CharField(max_length=200, blank=True)
     phone = models.CharField(max_length=100, blank=True)
 

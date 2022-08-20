@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Navbar.module.css';
-import logo from './Trashion_logo.png';
-import { Link } from 'react-router-dom';
+import logo from '../../assets/image/logo.png';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Navbar() {
   const [auth, setAuth] = useState('');
@@ -12,22 +12,22 @@ export default function Navbar() {
     }
   }, []);
 
-  // const handleLogout = () => {
-
-  //   fetch('http://127.0.0.1:8000/api/v1/mall/auth/logout/', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Token ${localStorage.getItem('token')}`
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       console.log(data);
-  //       localStorage.clear();
-  //       window.location.replace('http://localhost:3000/login');
-  //     });
-  //  };
+  const handleLogout = () => {
+    fetch('http://127.0.0.1:8000/api/v1/mall/auth/logout/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        localStorage.clear();
+        window.location.replace('http://localhost:3000/login');
+      });
+  };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -55,7 +55,12 @@ export default function Navbar() {
               <circle xmlns="http://www.w3.org/2000/svg" r="1" fill="currentColor" transform="matrix(-1 0 0 1 7 9.5)" />
             </svg>
           </Link>
-          <Link to="/">
+          <div
+            className={styles.icon_wrap}
+            onClick={() => {
+              navigate('/new');
+            }}
+          >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-pencil">
               <path
                 xmlns="http://www.w3.org/2000/svg"
@@ -66,7 +71,7 @@ export default function Navbar() {
                 d="M13.5 7.5l3 3M4 20v-3.5L15.293 5.207a1 1 0 011.414 0l2.086 2.086a1 1 0 010 1.414L7.5 20H4z"
               />
             </svg>
-          </Link>
+          </div>
           <Link to="/">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-heart">
               <path
@@ -107,7 +112,11 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-        <img className={styles.logo} src={logo}></img>
+        <Link to="/">
+          <div className={styles.logo_wrap}>
+            <img className={styles.logo} src={logo} />
+          </div>
+        </Link>
       </div>
     </>
   );

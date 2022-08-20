@@ -4,4 +4,6 @@ export { default as Login } from './Login/Login';
 export { default as Today_style } from './Today_style/Today_style';
 export { default as Register } from './Register/Register';
 export { default as Product_detail } from './Product_detail/Product_detail';
-export { default as ProfileSetting } from './ProfileSetting/ProfileSetting';
+export { default as New } from './New/New';
+export { default as Edit } from './Edit/Edit';
+export { default as TestPage } from './TestPage/TestPage';

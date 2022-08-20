@@ -1,29 +1,63 @@
-import React from 'react';
-// import { useState } from 'react';
-import { Navbar, Product_img, Img_small } from 'components';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { ProductStateContext, ProductDispatchContext } from '../../App';
+import { Navbar, Product_img, Img_small, PostButton, PostHeader, LikeButton } from 'components';
 import styles from './Product_detail.module.css';
-
-// const [tabState, setTabState] = useState({
-//   tabProduct: true,
-//   tabStyle: false,
-// });
-
-// const tabHandler = (e) => {
-//   const newTabState = { ...tabState };
-//   const activeTab = e.currentTarget.id;
-//   for (let key in newTabState) {
-//     key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
-//   }
-//   setTabState(newTabState);
-//   console.log(activeTab);
-// };
+import { timeForToday } from '../../utils/timeforToday';
 
 const Product_detail = () => {
+  const { id } = useParams();
+  const productList = useContext(ProductStateContext);
+  const navigate = useNavigate();
+  const [data, setData] = useState();
+  const { onRemove } = useContext(ProductDispatchContext);
+
+  useEffect(() => {
+    if (productList.length >= 1) {
+      const targetProduct = productList.find((it) => parseInt(it.id) === parseInt(id));
+      if (targetProduct) {
+        setData(targetProduct);
+      } else {
+        alert('존재하지 않는 상품입니다.');
+        navigate('/', { replace: true });
+      }
+    }
+  }, [id, productList]);
+
+  if (!data) {
+    return <div className={styles.Product_detail}>Loading...</div>;
+  }
+
+  const handleRemove = () => {
+    if (window.confirm('정말 삭제하시겠습니까?')) {
+      onRemove(data.id);
+      navigate('/', { replace: true });
+    }
+  };
+
   return (
     <>
       <Navbar />
       <div className={styles.detail_wrap}>
-        <div className={styles.user_profile}>profile</div>
+        <PostHeader
+          leftChild={<PostButton text={'< 뒤로가기'} onClick={() => navigate(-1)} />}
+          rightChild={
+            <div className={styles.button_wrap}>
+              <div className={styles.button_first}>
+                <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />
+              </div>
+              <div>
+                <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${data.id}`)} />
+              </div>
+            </div>
+          }
+        />
+        <div className={styles.profile_wrap}>
+          <div className={styles.profile_picture_wrap}></div>
+          <span className={styles.user_profile}>profile</span>
+          <span className={styles.post_date}>{timeForToday(data.date)} 작성</span>
+        </div>
+
         <div className={styles.detail_box}>
           <div className={styles.product_img_box}>
             <div className={styles.img_big}>
@@ -48,18 +82,19 @@ const Product_detail = () => {
           <div className={styles.discription_box}>
             <div className={styles.product_info}>
               <p className={styles.info}>물품 정보</p>
-              <h2>[Product_name]</h2>
-              <h3>[Product_price]</h3>
-              <p>착용 기간 : 1 year</p>
-              <p>사이즈 : 105</p>
-              <p>상태 : 아주 굳</p>
+              <h2>[{data.title}]</h2>
+              <h3>[{data.price}]</h3>
+              <p>착용 기간 : {data.period}</p>
+              <p>사이즈 : {data.size}</p>
+              <p>상태 : {data.condition}</p>
             </div>
             <div className={styles.seller_info}>
               <p className={styles.info}>판매자 정보</p>
               <h2>키 : 204cm</h2>
-              <h3>몸무게 : 20kg</h3>
+              <h2>몸무게 : 20kg</h2>
               <p>사이즈 : 1020</p>
             </div>
+            <LikeButton />
           </div>
         </div>
 
@@ -69,17 +104,7 @@ const Product_detail = () => {
           <div className={styles.img_wrap}>
             <Product_img />
             <div className={styles.text_wrap}>
-              <p>
-                얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
-                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
-                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라 얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
-                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
-                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
-                얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리
-                얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리
-                얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성 얄라리 얄라얄리얄리 얄라성
-                얄라리 얄라얄리얄리 얄라성 얄라리 얄라
-              </p>
+              <p>{data.content}</p>
             </div>
           </div>
           <div className={styles.img_wrap}>

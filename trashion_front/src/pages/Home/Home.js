@@ -1,6 +1,6 @@
-import React from 'react';
-import { Product, Navbar, Footer, Styles, Category } from 'components';
-import { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { Navbar, Footer, Category, ProductList } from 'components';
+import { ProductStateContext } from '../../App';
 import styles from './Home.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShirt, faUserTie } from '@fortawesome/free-solid-svg-icons';
@@ -18,8 +18,17 @@ export default function Home() {
       key === activeTab ? (newTabState[key] = true) : (newTabState[key] = false);
     }
     setTabState(newTabState);
-    console.log(activeTab);
   };
+
+  const productList = useContext(ProductStateContext);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    if (productList.length >= 1) {
+      setData(productList);
+    }
+  }, [productList]);
+
   return (
     <div>
       <Navbar />
@@ -40,54 +49,7 @@ export default function Home() {
           </div>
 
           <ul className={styles.contents}>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
-            <div className="contents">
-              {tabState.tabProduct ? <Product /> : ''}
-              {tabState.tabStyle ? <Styles /> : ''}
-            </div>
+            <ProductList productList={data} />
           </ul>
         </div>
       </div>

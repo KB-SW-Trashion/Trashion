@@ -5,7 +5,7 @@ User = get_user_model()
 
 
 class Category(models.Model):
-    NATIONAL_CHOICES = (
+    CLOTHES_CHOICES = (
         ('outer', '아우터'),
         ('dress', '원피스'),
         ('top', '상의'),
@@ -14,7 +14,7 @@ class Category(models.Model):
         ('shoes', '신발'),
         ('accessory', '악세사리'),
     )
-    big_category = models.CharField(max_length=20, choices=NATIONAL_CHOICES)
+    big_category = models.CharField(max_length=20, choices=CLOTHES_CHOICES)
     small_category = models.CharField(max_length=20)
 
     def __str__(self):
@@ -28,6 +28,8 @@ class Item(models.Model):
     feature = models.TextField()
     product_defect = models.TextField()
     size = models.CharField(max_length=6)
+    height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     wear_count = models.IntegerField()
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,6 +37,7 @@ class Item(models.Model):
 
     def __str__(self):
         return self.description
+
 
 class Location(models.Model):
     city = models.CharField(max_length=10)
@@ -59,3 +62,6 @@ class StylePhoto(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='style_photo_sets')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='style_photo_sets')
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
+    
+    def __str__(self):
+        return self.item_id.description
