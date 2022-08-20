@@ -11,12 +11,11 @@
   font-size: 18px;
 
   white-space: nowrap;
-  font-family: 'Nanum Pen Script';
 }
 
 .PostButton_default {
-  background-color: #ececec;
-  color: black;
+  background-color: #f8bbd0;
+  color: white;
 }
 
 .PostButton_positive {
