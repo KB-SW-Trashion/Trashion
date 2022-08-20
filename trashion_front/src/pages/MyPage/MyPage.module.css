@@ -8,16 +8,61 @@
   padding-top: 3rem;
   padding-bottom: 3rem;
   display: flex;
+  width: 100%;
+  height: 400px;
 }
 
 .MyPage_bodyleft {
   text-align: center;
   align-content: center;
+  align-items: center;
   width: 50%;
+  height: 400px;
+}
+
+.Mypage_profileImgbox {
+  width: 400px;
+  height: 400px;
+  border-radius: 100%;
+  overflow: hidden;
+  float: right;
+  margin-right: 30px;
+}
+
+.Mypage_profileImg {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
 }
 
 .MyPage_bodyright {
-  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  height: 400px;
+}
+
+.Mypage_profilecontentsbox {
+  height: 300px;
+  padding-left: 2rem;
+}
+
+.Mypage_profilecontents {
+  white-space: pre-wrap;
+}
+.Mypage_profilecontentsboxinner {
+  display: flex;
+}
+
+.Mypage_profilecontentsboxinnerright {
+  margin-right: 2rem;
+}
+
+.Mypage_buttonbox {
+  display: flex;
+  margin-top: 2rem;
+  bottom: 0;
+  height: 100px;
 }
 
 .MyPage_list {
@@ -69,10 +114,4 @@
   font-family: serif;
   font-style: italic;
   color: currentColor;
-}
-
-.Mypage_buttonbox {
-  display: flex;
-  margin-top: 2rem;
-  bottom: 0;
 }
