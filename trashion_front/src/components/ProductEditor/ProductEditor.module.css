@@ -1,0 +1,19 @@
+.main {
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.input_wrap {
+  margin-top: 100px;
+  margin-left: 100px;
+  margin-bottom: 100px;
+  width: 1000px;
+}
+
+.input_box {
+  padding: 10px;
+}
+
+.radio_box {
+  padding: 10px;
+}

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { SubmitButton, ID, Password, Forgot, KakaoLoginButton } from 'components';
+import { SubmitButton, Forgot, KakaoLoginButton } from 'components';
 import axios from 'axios';
 import styles from './Login.module.css';
 import auth from 'api/authApi';
-import logo from '../../components/Navbar/Trashion_logo.png';
+import logo from '../../assets/image/logo.png';
 import getKakaoToken from 'api/socialLoginApi';
 import GoogleLogin from 'react-google-login';
 import { gapi } from 'gapi-script';
@@ -14,6 +14,13 @@ function Login() {
   const [pwd, setPwd] = useState('');
   const [errors, setErrors] = useState(false);
   const { replace } = useNavigate();
+
+  const IsID = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^a-z0-g]/;
+
+    setUsername(curValue.replace(notNum, ''));
+  };
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -136,16 +143,7 @@ function Login() {
         <form onSubmit={onSubmit}>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                required
-                value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-              />
+              <input type="text" name="username" id="username" required value={username} onChange={IsID} maxLength={12} minLength={6} />
               <label htmlFor="username">아이디</label>
             </div>
           </div>
@@ -157,6 +155,8 @@ function Login() {
                 id="pwd"
                 required
                 value={pwd}
+                maxLength={16}
+                minLength={8}
                 onChange={(e) => {
                   setPwd(e.target.value);
                 }}
@@ -165,8 +165,14 @@ function Login() {
             </div>
           </div>
           <Forgot />
-          <KakaoLoginButton kakaoLogin={kakaoLogin} />
-          <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
+          <div className={styles.social_login_wrap}>
+            <KakaoLoginButton kakaoLogin={kakaoLogin} />
+          </div>
+          <div className={styles.social_login_wrap}>
+            <div className={styles.google_login}>
+              <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
+            </div>
+          </div>
           <div className={styles.buttonBox}>
             <SubmitButton name="로그인" />
           </div>

@@ -73,3 +73,21 @@
   font-size: 13px;
   color: #f8bbd0;
 }
+
+.social_login_wrap {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.google_login {
+  width: 300px;
+}
+
+.invalid_input {
+  color: #f36565;
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: 13px;
+}

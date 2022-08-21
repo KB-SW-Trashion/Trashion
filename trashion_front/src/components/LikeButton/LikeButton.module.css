@@ -1,0 +1,31 @@
+.heart_btn {
+  width: auto;
+  height: 50px;
+  border: 2px solid #f8bbd0;
+  border-radius: 5px;
+  display: flex;
+}
+
+.img_wrap {
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.heart_img {
+  width: 30px;
+}
+
+.like_wrap {
+  float: right;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  line-height: 25px;
+  margin-left: 10px;
+}
+
+.like_wrap span {
+  text-align: center;
+  font-weight: 500;
+  font-size: 30px;
+}
