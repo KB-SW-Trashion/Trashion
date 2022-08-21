@@ -38,3 +38,7 @@
 .buttonBox {
   margin-top: 50px;
 }
+
+.invalid_input {
+  font-size: 10px;
+}

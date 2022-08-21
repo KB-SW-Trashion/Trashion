@@ -59,6 +59,20 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const [period, setPeriod] = useState(''); //input
   const [post_type, setPostType] = useState(''); //radio
 
+  const IsPrice = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^0-9]/g;
+
+    setPrice(curValue.replace(notNum, ''));
+  };
+
+  const IsPeriod = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^0-9]/g;
+
+    setPeriod(curValue.replace(notNum, ''));
+  };
+
   const { onCreate, onEdit, onRemove } = useContext(ProductDispatchContext);
 
   const navigate = useNavigate();
@@ -162,14 +176,44 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
               </FormControl>
             </div>
             <div className={styles.input_box}>
-              <CssTextField ref={titleRef} value={title} onChange={(e) => setTitle(e.target.value)} focusColor="#f8bbd0" required id="outlined-required" label="제목" variant="outlined" />
+              <CssTextField
+                ref={titleRef}
+                value={title}
+                inputProps={{ maxLength: 20 }}
+                onChange={(e) => setTitle(e.target.value)}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="제목"
+                variant="outlined"
+              />
             </div>
 
             <div className={styles.input_box}>
-              <CssTextField ref={priceRef} value={price} onChange={(e) => setPrice(e.target.value)} focusColor="#f8bbd0" required id="outlined-required" label="가격" variant="outlined" />
+              <CssTextField
+                ref={priceRef}
+                value={price + '원'}
+                onChange={IsPrice}
+                inputProps={{ maxLength: 10 }}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="가격"
+                variant="outlined"
+              />
             </div>
             <div className={styles.input_box}>
-              <CssTextField ref={periodRef} value={period} onChange={(e) => setPeriod(e.target.value)} focusColor="#f8bbd0" required id="outlined-required" label="착용기간" variant="outlined" />
+              <CssTextField
+                ref={periodRef}
+                value={period + '개월'}
+                inputProps={{ maxLength: 5 }}
+                onChange={IsPeriod}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="착용기간"
+                variant="outlined"
+              />
             </div>
             <div className={styles.radio_box}>
               <FormControl>
@@ -190,11 +234,13 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
                   상품 사이즈
                 </FormLabel>
                 <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" value={size} onChange={(e) => setSize(e.target.value)}>
-                  <FormControlLabel value="free" control={<Radio sx={radioSX} />} label="FREE" />
-                  <FormControlLabel value="small" control={<Radio sx={radioSX} />} label="S" />
-                  <FormControlLabel value="medium" control={<Radio sx={radioSX} />} label="M" />
-                  <FormControlLabel value="large" control={<Radio sx={radioSX} />} label="L" />
-                  <FormControlLabel value="xlarge" control={<Radio sx={radioSX} />} label="XL" />
+                  <FormControlLabel value="FREE" control={<Radio sx={radioSX} />} label="FREE" />
+                  <FormControlLabel value="SS" control={<Radio sx={radioSX} />} label="SS" />
+                  <FormControlLabel value="S" control={<Radio sx={radioSX} />} label="S" />
+                  <FormControlLabel value="M" control={<Radio sx={radioSX} />} label="M" />
+                  <FormControlLabel value="L" control={<Radio sx={radioSX} />} label="L" />
+                  <FormControlLabel value="XL" control={<Radio sx={radioSX} />} label="XL" />
+                  <FormControlLabel value="XXL" control={<Radio sx={radioSX} />} label="XXL" />
                 </RadioGroup>
               </FormControl>
             </div>
