@@ -15,6 +15,13 @@ function Login() {
   const [errors, setErrors] = useState(false);
   const { replace } = useNavigate();
 
+  const IsID = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^a-z0-g]/;
+
+    setUsername(curValue.replace(notNum, ''));
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     const user = {
@@ -136,16 +143,7 @@ function Login() {
         <form onSubmit={onSubmit}>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
-              <input
-                type="text"
-                name="username"
-                id="username"
-                required
-                value={username}
-                onChange={(e) => {
-                  setUsername(e.target.value);
-                }}
-              />
+              <input type="text" name="username" id="username" required value={username} onChange={IsID} maxLength={12} minLength={6} />
               <label htmlFor="username">아이디</label>
             </div>
           </div>
@@ -157,6 +155,8 @@ function Login() {
                 id="pwd"
                 required
                 value={pwd}
+                maxLength={16}
+                minLength={8}
                 onChange={(e) => {
                   setPwd(e.target.value);
                 }}

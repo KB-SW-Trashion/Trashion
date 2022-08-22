@@ -84,3 +84,10 @@
 .google_login {
   width: 300px;
 }
+
+.invalid_input {
+  color: #f36565;
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: 13px;
+}

@@ -14,5 +14,5 @@ urlpatterns = [
     path('naver/login/finish/', login.NaverLogin.as_view(),
          name='naver_login_todjango'),
     
-    path('detail/<int:pk>', user_edit.UserDetailAPIView.as_view(), name='user_detail')
+    path('detail/<str:nickname>', user_edit.UserDetailAPIView.as_view(), name='user_detail')
 ]

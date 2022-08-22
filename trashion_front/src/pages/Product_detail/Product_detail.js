@@ -82,8 +82,9 @@ const Product_detail = () => {
           <div className={styles.discription_box}>
             <div className={styles.product_info}>
               <p className={styles.info}>물품 정보</p>
-              <h2>[{data.title}]</h2>
-              <h3>[{data.price}]</h3>
+              <h3 className={styles.category}>카테고리 : {data.category}</h3>
+              <h3>[{data.title}]</h3>
+              <h3>가격 : {data.price}</h3>
               <p>착용 기간 : {data.period}</p>
               <p>사이즈 : {data.size}</p>
               <p>상태 : {data.condition}</p>

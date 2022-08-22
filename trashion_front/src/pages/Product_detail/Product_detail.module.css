@@ -45,7 +45,6 @@
 
 .post_date {
   display: inline-block;
-  float: right;
   color: grey;
 }
 
@@ -79,20 +78,13 @@
   margin-left: 150px;
 }
 
-.product_condition {
-  width: 200px;
-  height: 220px;
-  border-right: 1px solid grey;
-}
-
-.contents_wrap {
-  margin-top: 60px;
-  text-align: center;
-}
 .discription_wrap {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.category {
 }
 
 .img_wrap {
