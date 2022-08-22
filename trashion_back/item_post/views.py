@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
-from rest_framework import status, exceptions
+from rest_framework import status, exceptions, permissions
 from .serializers import *
 from django.contrib.auth import get_user_model
 from .models import Item, Category, Photo, StylePhoto
@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 
 
-class ActionBasedPermission(AllowAny):
+class ActionBasedPermission(permissions.BasePermission):
     def has_permission(self, request, view):
         for klass, actions in getattr(view, 'action_permissions', {}).items():
             if view.action in actions:
@@ -22,6 +22,11 @@ class ActionBasedPermission(AllowAny):
             elif view.action is None:
                 return True
         return False
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.user_id == request.user
 
 
 class ItemViewSet(ModelViewSet):
