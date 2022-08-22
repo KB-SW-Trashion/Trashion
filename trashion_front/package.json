@@ -18,14 +18,14 @@
     "humbleicons": "^1.8.0",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-animated-heart": "^0.0.5",
+    "react-animated-heart": "^0.0.7",
     "react-dom": "^18.2.0",
     "react-google-login": "^5.2.2",
     "react-heart": "^1.0.6",
     "react-redux": "^8.0.2",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "^0.9.5",
+    "react-scripts": "^5.0.1",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4"
   },
@@ -56,8 +56,7 @@
   "devDependencies": {
     "eslint-plugin-prettier": "^4.2.1",
     "file-loader": "^6.2.0",
-    "prettier": "^2.7.1"
+    "prettier": "^2.7.1",
+    "shelljs": "^0.8.4"
   }
-
 }
-
