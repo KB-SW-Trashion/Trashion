@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from item_post.models import Item, StylePhoto
-
+from item_post.models import Item
 User = get_user_model()
 
 class Follow(models.Model):
@@ -17,10 +16,3 @@ class Like(models.Model):
     
     def __str__(self):
         return self.likeitem.description
-    
-class StyleLike(models.Model):
-    user = models.ForeignKey(User, related_name="likeStyle_sets", on_delete=models.CASCADE)
-    likeStyle = models.ForeignKey(StylePhoto, related_name="likeStyle_sets", on_delete=models.CASCADE)
-    
-    def __str__(self):
-        return self.likeStyle.item_id.description
