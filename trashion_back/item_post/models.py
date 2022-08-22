@@ -18,7 +18,7 @@ class Category(models.Model):
     small_category = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.get_big_category_display()
+        return self.big_category + self.small_category
 
 
 class Item(models.Model):
