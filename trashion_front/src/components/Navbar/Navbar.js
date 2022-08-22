@@ -12,21 +12,21 @@ export default function Navbar() {
     }
   }, []);
 
-  const handleLogout = () => {
-    fetch('http://127.0.0.1:8000/api/v1/mall/auth/logout/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${localStorage.getItem('token')}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        localStorage.clear();
-        window.location.replace('http://localhost:3000/login');
-      });
-  };
+  // const handleLogout = () => {
+  //   fetch('http://127.0.0.1:8000/api/v1/mall/auth/logout/', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Token ${localStorage.getItem('token')}`,
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data);
+  //       localStorage.clear();
+  //       window.location.replace('http://localhost:3000/login');
+  //     });
+  // };
   const navigate = useNavigate();
 
   return (
