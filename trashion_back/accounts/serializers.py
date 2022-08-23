@@ -48,11 +48,7 @@ class FollowerListingField(serializers.RelatedField):
 
 class ItemListingField(serializers.RelatedField):
     def to_representation(self, value):
-        return f'{value.likeitem}'
-        
-class StyleLikeListingField(serializers.RelatedField):
-    def to_representation(self, value):
-        return f'{value.likeStyle}'        
+        return f'{value.likeitem}'     
         
 class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
@@ -62,9 +58,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     likeitem_sets = ItemListingField(many=True, read_only=True)
     like_item_count = serializers.IntegerField(source='likeitem_sets.count')
-    
-    likeStyle_sets = StyleLikeListingField(many=True, read_only=True)
-    likeStyle_count = serializers.IntegerField(source='likeStyle_sets.count')
+
     
     id = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
@@ -73,7 +67,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'likeStyle_count', 'likeStyle_sets']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets']
         
         
 # class SignUpSerializer(serializers.ModelSerializer):
