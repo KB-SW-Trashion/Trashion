@@ -16,3 +16,10 @@ class Like(models.Model):
     
     def __str__(self):
         return self.likeitem.description
+
+class Block(models.Model):
+    blocking_user = models.ForeignKey(User, related_name='blocked_user', on_delete=models.CASCADE)
+    blocked_user = models.ForeignKey(User, related_name='blocking_user', on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f'{self.blocking_user} : {self.blocked_user}'

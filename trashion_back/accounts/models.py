@@ -53,7 +53,7 @@ class User(AbstractUser):
     def __str__(self):
         return self.email
 
-
+#회원가입하면서 기본으로 프로필 만들어줘야할듯
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     username = models.EmailField(max_length=254, unique=True, null=True)

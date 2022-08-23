@@ -12,7 +12,6 @@ def follow(request): #requset에 팔로우할 대상 email 담아서 넘기기
     follower_user = request.user
 
     email = request.data['email']
-    print(request.data)
     followed_user = User.objects.get(email=email)
     
     is_follow = Follow.objects.filter(follower = follower_user.id, followed = followed_user.id)
