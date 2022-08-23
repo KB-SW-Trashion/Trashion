@@ -1,3 +1,3 @@
 from .base import *
 
-ALLOWED_HOSTS = ['52.78.69.186']
+ALLOWED_HOSTS = [os.environ.get('IP')]
