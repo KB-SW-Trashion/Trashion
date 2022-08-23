@@ -10,6 +10,6 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailSerializer
     
     def get_object(self):
-        if self.kwargs.get('nickname'):
-            return get_object_or_404(self.get_queryset(), nickname=self.kwargs.get('nickname'))
+        if self.kwargs.get('email'):
+            return get_object_or_404(self.get_queryset(), email=self.kwargs.get('email'))
     
