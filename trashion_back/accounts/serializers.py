@@ -1,8 +1,10 @@
+from os import set_inheritable
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
 
+from .models import Profile
 User = get_user_model()
 
 
@@ -50,6 +52,15 @@ class ItemListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.likeitem}'     
         
+class BlockUserListingField(serializers.RelatedField):
+    def to_representation(self, value):
+        return f'{value.blocked_user.nickname}'        
+        
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['height', 'weight']        
+        
 class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
     following_count = serializers.IntegerField(source='following.count', read_only=True)
@@ -57,8 +68,12 @@ class UserDetailSerializer(serializers.ModelSerializer):
     follower_count = serializers.IntegerField(source='follower.count', read_only=True)
     
     likeitem_sets = ItemListingField(many=True, read_only=True)
-    like_item_count = serializers.IntegerField(source='likeitem_sets.count')
+    like_item_count = serializers.IntegerField(source='likeitem_sets.count', read_only=True)
 
+    blocked_user = BlockUserListingField(many=True, read_only=True)
+    blocked_user_count = serializers.IntegerField(source='blocked.count', read_only=True)
+    
+    profile = ProfileSerializer()
     
     id = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
@@ -67,7 +82,16 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone','following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user_count', 'blocked_user', 'profile']
+    
+    def update(self, instance, validated_data):
+        profile_data = validated_data.pop('profile')
+        profile = instance.profile
+        for k, v in profile_data.items():
+            setattr(profile, k, v)
+        profile.save()
+        return instance
+
         
         
 # class SignUpSerializer(serializers.ModelSerializer):
