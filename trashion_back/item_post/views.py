@@ -37,13 +37,13 @@ class ItemViewSet(ModelViewSet):
     ordering_fields = ['created_at']  # ?ordering=
     ordering = ['-created_at']
     # permission
-    permission_classes = (ActionBasedPermission,)
-    action_permissions = {
-        IsAuthenticated: ['update', 'partial_update', 'destroy', 'create', 'my_item'],
-        AllowAny: ['list', 'retrieve', 'category_item', 'location_item',
-                   'size_item', 'photo_item_only', 'stylephoto_item_only']
-    }
-    authentication_classes = (JWTCookieAuthentication,)
+    # permission_classes = (ActionBasedPermission,)
+    # action_permissions = {
+    #     IsAuthenticated: ['update', 'partial_update', 'destroy', 'create', 'my_item'],
+    #     AllowAny: ['list', 'retrieve', 'category_item', 'location_item',
+    #                'size_item', 'photo_item_only', 'stylephoto_item_only']
+    # }
+    # authentication_classes = (JWTCookieAuthentication,)
 
     # create
     def create(self, request, *args, **kwargs):
