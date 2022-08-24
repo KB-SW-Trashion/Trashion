@@ -15,19 +15,12 @@ from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 
 from relationship.models import Block
 
-class ActionBasedPermission(permissions.BasePermission):
+class IsOwner(permissions.BasePermission):
     def has_permission(self, request, view):
-        for klass, actions in getattr(view, 'action_permissions', {}).items():
-            if view.action in actions:
-                return klass().has_permission(request, view)
-            elif view.action is None:
-                return True
-        return False
+        return bool(request.user and request.user.is_authenticated)
 
-    def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS:
-            return True
-        return obj.user_id == request.user
+    def has_object_permissions(self, request, view, obj):
+      return obj.user_id == request.user
 
 
 class ItemViewSet(ModelViewSet):
@@ -37,14 +30,18 @@ class ItemViewSet(ModelViewSet):
     search_fields = ['description']    # ?search=
     ordering_fields = ['created_at']  # ?ordering=
     ordering = ['-created_at']
+    authentication_classes = (JWTCookieAuthentication,)
+    permission_classes = (IsOwner,)
+
     # permission
-    # permission_classes = (ActionBasedPermission,)
-    # action_permissions = {
-    #     IsAuthenticated: ['update', 'partial_update', 'destroy', 'create', 'my_item'],
-    #     AllowAny: ['list', 'retrieve', 'category_item', 'location_item',
-    #                'size_item', 'photo_item_only', 'stylephoto_item_only']
-    # }
-    # authentication_classes = (JWTCookieAuthentication,)
+    def get_permissions(self):
+        if self.action in ['create']:
+            self.permission_classes = [IsAuthenticated, ]
+        elif self.action in ['update', 'partial_update', 'destroy', 'my_item']:
+            self.permission_classes = [IsOwner, ]
+        else:
+            self.permission_classes = [AllowAny, ]
+        return super().get_permissions()
 
     # create
     def create(self, request, *args, **kwargs):
@@ -77,6 +74,34 @@ class ItemViewSet(ModelViewSet):
 
     # update
     # photo, stylephoto > serializers.py의 update()에서 처리
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        # 기존 locationset 삭제
+        LocationSet.objects.filter(item_id=instance).delete()
+        # location 받아오기
+        city = request.data['city']
+        gu = request.data['gu']
+        dong = request.data['dong']
+        if city is not None and gu is not None and dong is not None:
+            location = Location.objects.get(
+                Q(city=city) & Q(gu=gu) & Q(dong=dong)
+            )
+        else:
+            return Response(
+                {"message": "주소정보를 모두 입력해주세요."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        LocationSet.objects.create(item_id=instance, location_id=location)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
     def perform_update(self, serializer):
         serializer.save(user_id=self.request.user)
 
