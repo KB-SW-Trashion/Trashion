@@ -2,9 +2,9 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { SubmitButton } from 'components';
-import axios from 'axios';
 import styles from '../Login/Login.module.css';
 import logo from '../../assets/image/logo.png';
+import auth from 'api/authApi';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -68,8 +68,8 @@ const Register = () => {
       email: email,
     };
 
-    axios
-      .post('/dj-rest-auth/registration/', user)
+    auth
+      .register(user)
       .then((res) => {
         if (res.data.key) {
           localStorage.clear();

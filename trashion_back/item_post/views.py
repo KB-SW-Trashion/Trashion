@@ -105,7 +105,21 @@ class ItemViewSet(ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(user_id=self.request.user)
 
-    # 내가 판매중인 아이템 조회
+    # 현재 판매중인 아이템 조회 (판매완료 x)
+    @action(detail=False, methods=['GET'])
+    def not_sold_item(self, request):
+        items = Item.objects.filter(sold_out=False)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 판매된 아이템 (판매완료)
+    @action(detail=False, methods=['GET'])
+    def sold_item(self, request):
+        items = Item.objects.filter(sold_out=True)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 내 아이템 조회
     @action(detail=False, methods=['GET'])
     def my_item(self, request):
         items = Item.objects.filter(user_id=request.GET.get('user_id'))
@@ -230,6 +244,14 @@ class ItemViewSet(ModelViewSet):
         items = Item.objects.filter(id__in=item_ids).exclude(user_id__in=blocked_user_list)
         items = items.exclude(user_id__in=user_blocked_list)
         
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 검색 기능 (description 기준)
+    @action(detail=False, methods=['GET'])
+    def search_item(self, request):
+        q = request.GET.get('q', None)
+        items = Item.objects.filter(Q(description__icontains=q))
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

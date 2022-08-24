@@ -35,7 +35,7 @@ function Login() {
     };
 
     auth
-      .log(user)
+      .login(user)
       .then((res) => {
         if (res.data.key) {
           localStorage.clear();
