@@ -50,7 +50,7 @@ def authenticate_google(request):
         if accept_status != 200:
             return Response({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
-        User.objects.filter(email=email).update(realname=name,
+        User.objects.filter(email=email).update(nickname=name,
                                           email=email,
                                           social_profile = profile_image
                                           )
@@ -66,7 +66,7 @@ def authenticate_google(request):
             return Response({'err_msg': 'failed to signup'}, status=accept_status)
         accept_json = accept.json()
         # accept_json.pop('user', None)
-        User.objects.filter(email=email).update(realname=name,
+        User.objects.filter(email=email).update(nickname=name,
                                           email=email,
                                           social_profile=profile_image
                                           )
@@ -93,7 +93,7 @@ def authenticate_kakao(request):
     profile_json = profile_request.json()
     kakao_account = profile_json.get('kakao_account')
 
-    print(kakao_account)
+    print("카카오에선 뭘줄까",kakao_account)
     email = kakao_account.get('email')
     profile = kakao_account.get("profile")
     nickname = profile.get("nickname")
@@ -122,7 +122,7 @@ def authenticate_kakao(request):
         accept_json = accept.json()
         # accept_json.pop('user', None)
         print("accept_json이뭐여",accept_json)
-        User.objects.filter(email=email).update(realname=nickname,
+        User.objects.filter(email=email).update(nickname=nickname,
                                           email=email,
                                           social_profile=profile_image
                                           )
@@ -139,7 +139,7 @@ def authenticate_kakao(request):
         #카카오에서 전화번호, 주소 받으려면 사업자 등록 해야됨.
         accept_json = accept.json()
         # accept_json.pop('user', None)
-        User.objects.filter(email=email).update(realname=nickname,                                 
+        User.objects.filter(email=email).update(nickname=nickname,                                 
                                          social_profile=profile_image                             
                                          )
         return Response(accept_json)
