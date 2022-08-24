@@ -7,4 +7,7 @@ export default {
   googleAuthenticate(data) {
     return axios.post('accounts/google/authenticate/', data);
   },
+  login(data) {
+    axios.post('/dj-rest-auth/login/', data);
+  },
 };
