@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SubmitButton, Forgot, KakaoLoginButton } from 'components';
-import axios from 'axios';
 import styles from './Login.module.css';
 import auth from 'api/authApi';
 import logo from '../../assets/image/logo.png';
@@ -32,8 +31,8 @@ function Login() {
       password1: password,
     };
 
-    axios
-      .post('/dj-rest-auth/login/', user)
+    auth
+      .log(user)
       .then((res) => {
         if (res.data.key) {
           localStorage.clear();
