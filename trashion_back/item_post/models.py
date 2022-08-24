@@ -34,6 +34,7 @@ class Item(models.Model):
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    sold_out = models.BooleanField(default=False)
 
     def __str__(self):
         return self.description
