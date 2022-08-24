@@ -233,6 +233,14 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    # 검색 기능 (description 기준)
+    @action(detail=False, methods=['GET'])
+    def search_item(self, request):
+        q = request.GET.get('q', None)
+        items = Item.objects.filter(Q(description__icontains=q))
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
