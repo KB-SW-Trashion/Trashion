@@ -7,13 +7,16 @@ import logo from '../../assets/image/logo.png';
 import getKakaoToken from 'api/socialLoginApi';
 import GoogleLogin from 'react-google-login';
 import { gapi } from 'gapi-script';
+import { setCookie, deleteCookie } from 'cookies-next';
+import { useRecoilState } from 'recoil';
+import { authState } from 'store';
 
 function Login() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [errors, setErrors] = useState(false);
   const [emailError, setEmailError] = useState(false);
-
+  const [, setUser] = useRecoilState(authState);
   const { replace } = useNavigate();
 
   const onChangeEmail = (e) => {
@@ -61,6 +64,33 @@ function Login() {
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
+
+  const saveUserInfo = async (access, refresh) => {
+    setCookie('access_token', access);
+    setCookie('refresh_token', refresh);
+    await auth
+      .getUser()
+      .then((res) => {
+        setUser({
+          isLoggedIn: true,
+          name: res.data.nick_name,
+          email: res.data.email,
+          social_img: res.data.social_img,
+          user_id: res.data.id,
+          access_token: access,
+          refresh_token: refresh,
+        });
+        alert('로그인 완료!');
+        navigate('/');
+        console.log('auth', res.data);
+      })
+      .catch((e) => {
+        deleteCookie('access_token');
+        deleteCookie('refresh_token');
+        console.log(e);
+        // alert('로그인이 실패했습니다 다시 시도해주세요!');
+      });
+  };
   const kakaoSocialLogin = async (code) => {
     await getKakaoToken(REST_API_KEY, REDIRECT_URI, code)
       .then((res) => res.json())
@@ -69,7 +99,10 @@ function Login() {
         if (data.access_token) {
           auth
             .kakaoAuthenticate({ access_token: data.access_token, code: code })
-            .then((res) => console.log('카카오로그인 성공', res))
+            .then((res) => {
+              console.log('카카오로그인 성공', res.data);
+              saveUserInfo(res.data.access_token, res.data.refresh_token);
+            })
             .catch((err) => console.log('실패', err));
         } else {
           alert('인증되지 않은 회원입니다.');
@@ -101,7 +134,10 @@ function Login() {
   const googleSocialLogin = async (data) => {
     await auth
       .googleAuthenticate(data)
-      .then((res) => console.log('데이터', res))
+      .then((res) => {
+        saveUserInfo(res.data.access_token, res.data.refresh_token);
+        console.log('데이터', res);
+      })
       .catch((err) => console.log(err));
   };
 
