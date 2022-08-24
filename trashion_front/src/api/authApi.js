@@ -10,4 +10,7 @@ export default {
   login(data) {
     axios.post('/dj-rest-auth/login/', data);
   },
+  register(data) {
+    axios.post('/dj-rest-auth/registration/', data);
+  },
 };
