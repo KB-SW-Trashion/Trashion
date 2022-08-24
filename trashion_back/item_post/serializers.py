@@ -47,7 +47,8 @@ class ItemSerializer(serializers.ModelSerializer):
         for photo_data in images_data.getlist('photos_data'):
             Photo.objects.create(item_id=item, photo=photo_data)
         for style_photo_data in images_data.getlist('style_photos_data'):
-            StylePhoto.objects.create(item_id=item, user_id=self.context['request'].user, photo=style_photo_data)
+            StylePhoto.objects.create(item_id=item, user_id=self.context['request'].user,
+                                      photo=style_photo_data)
         return item
 
     def update(self, instance, validated_data):
@@ -57,7 +58,9 @@ class ItemSerializer(serializers.ModelSerializer):
         for photo_data in images_data.getlist('photos_data'):
             Photo.objects.create(item_id=instance, photo=photo_data)
         for style_photo_data in images_data.getlist('style_photos_data'):
-            StylePhoto.objects.create(item_id=instance, user_id=self.context['request'].user, photo=style_photo_data)
+            StylePhoto.objects.create(item_id=instance, user_id=self.context['request'].user,
+                                      photo=style_photo_data)
+        instance = super().update(instance, validated_data)
         return instance
 
 
