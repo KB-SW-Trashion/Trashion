@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { SubmitButton, Forgot, KakaoLoginButton } from 'components';
-import axios from 'axios';
 import styles from './Login.module.css';
 import auth from 'api/authApi';
 import logo from '../../assets/image/logo.png';
@@ -10,35 +9,38 @@ import GoogleLogin from 'react-google-login';
 import { gapi } from 'gapi-script';
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [pwd, setPwd] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
   const [errors, setErrors] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+
   const { replace } = useNavigate();
 
-  const IsID = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^a-z0-g]/;
-
-    setUsername(curValue.replace(notNum, ''));
+  const onChangeEmail = (e) => {
+    // eslint-disable-next-line
+    const emailRegex = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    if (!e.target.value || emailRegex.test(e.target.value)) setEmailError(false);
+    else setEmailError(true);
+    setEmail(e.target.value);
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
     const user = {
-      username: username,
-      password1: pwd,
+      email: email,
+      password1: password,
     };
 
-    axios
-      .post('/dj-rest-auth/login/', user)
+    auth
+      .login(user)
       .then((res) => {
         if (res.data.key) {
           localStorage.clear();
           localStorage.setItem('token', res.data.key);
           replace('/');
         } else {
-          setUsername('');
-          setPwd('');
+          setEmail('');
+          setPassword('');
           localStorage.clear();
           setErrors(true);
           console.log(errors);
@@ -47,7 +49,7 @@ function Login() {
       .catch((err) => {
         console.clear();
         console.log(err);
-        alert('아이디 혹은 비밀번호가 일치하지 않습니다.');
+        alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
       });
   };
   const location = useLocation();
@@ -143,25 +145,26 @@ function Login() {
         <form onSubmit={onSubmit}>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
-              <input type="text" name="username" id="username" required value={username} onChange={IsID} maxLength={12} minLength={6} />
-              <label htmlFor="username">아이디</label>
+              <input type="text" name="email" id="email" required value={email} onChange={onChangeEmail} />
+              <label htmlFor="email">이메일</label>
+              {emailError && <div className={styles.invalid_input}>이메일 형식에 맞게 입력 해 주세요.</div>}
             </div>
           </div>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
               <input
                 type="password"
-                name="pwd"
-                id="pwd"
+                name="password"
+                id="password"
                 required
-                value={pwd}
+                value={password}
                 maxLength={16}
                 minLength={8}
                 onChange={(e) => {
-                  setPwd(e.target.value);
+                  setPassword(e.target.value);
                 }}
               />
-              <label htmlFor="pwd">비밀번호</label>
+              <label htmlFor="password">비밀번호</label>
             </div>
           </div>
           <Forgot />
