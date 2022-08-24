@@ -21,14 +21,14 @@ const Register = () => {
   const { replace } = useNavigate();
 
   const onChangeUsername = (e) => {
-    const usernameRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/;
+    const usernameRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
     if (!e.target.value || usernameRegex.test(e.target.value)) setUsernameError(false);
     else setUsernameError(true);
     setUsername(e.target.value);
   };
 
   const onChangePassword = (e) => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/;
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
     if (!e.target.value || passwordRegex.test(e.target.value)) setPasswordError(false);
     else setPasswordError(true);
 
@@ -106,16 +106,21 @@ const Register = () => {
         <form onSubmit={onSubmit}>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
-              <input type="text" name="username" id="username" required value={username} onChange={onChangeUsername} maxLength={12} minLength={6} />
-              <label htmlFor="username">
-                아이디 <span>(대문자 혹은 소문자, 숫자 포함 6~12자)</span>
-              </label>
-              {usernameError && <div className={styles.invalid_input}>아이디 형식에 맞게 입력 해 주세요.</div>}
+              <input type="text" name="email" id="email" required value={email} onChange={onChangeEmail} />
+              <label htmlFor="email">이메일</label>
+              {emailError && <div className={styles.invalid_input}>이메일 형식에 맞게 입력 해 주세요.</div>}
             </div>
           </div>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
-              <input type="password" name="pwd" id="pwd" required value={password} maxLength={16} minLength={8} onChange={onChangePassword} />
+              <input type="text" name="username" id="username" required value={username} onChange={onChangeUsername} />
+              <label htmlFor="username">닉네임</label>
+              {usernameError && <div className={styles.invalid_input}>닉네임 형식에 맞게 입력 해 주세요.</div>}
+            </div>
+          </div>
+          <div className={styles.wrap_input}>
+            <div className={styles.int_area}>
+              <input type="password" name="pwd" id="pwd" required value={password} onChange={onChangePassword} />
               <label htmlFor="pwd">
                 비밀번호 <span>(대·소문자, 숫자, 특수문자 포함 8~16자)</span>
               </label>
@@ -124,18 +129,12 @@ const Register = () => {
           </div>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
-              <input type="password" name="pwdCheck" id="pwdCheck" required value={confirmPassword} maxLength={16} minLength={8} onChange={onChangeConfirmPassword} />
+              <input type="password" name="pwdCheck" id="pwdCheck" required value={confirmPassword} onChange={onChangeConfirmPassword} />
               <label htmlFor="pwdCheck">비밀번호 확인</label>
               {confirmPasswordError && <div className={styles.invalid_input}>비밀번호와 일치하지 않습니다.</div>}
             </div>
           </div>
-          <div className={styles.wrap_input}>
-            <div className={styles.int_area}>
-              <input type="text" name="email" id="email" required value={email} onChange={onChangeEmail} />
-              <label htmlFor="email">이메일</label>
-              {emailError && <div className={styles.invalid_input}>이메일 형식에 맞게 입력 해 주세요.</div>}
-            </div>
-          </div>
+
           {/* <div className={styles.wrap_input}>
             <div className={styles.int_area}>
               <input
