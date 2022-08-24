@@ -12,4 +12,3 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     def get_object(self):
         if self.kwargs.get('email'):
             return get_object_or_404(self.get_queryset(), email=self.kwargs.get('email'))
-    
