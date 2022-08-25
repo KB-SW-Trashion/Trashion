@@ -55,6 +55,7 @@ def authenticate_google(request):
                                           social_profile = profile_image
                                           )
         # accept_json.pop('user', None)
+        print(User.objects.filter(email=email))
         return Response(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
