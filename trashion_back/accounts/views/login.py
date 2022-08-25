@@ -51,11 +51,11 @@ def authenticate_google(request):
             return Response({'err_msg': 'failed to signin'}, status=accept_status)
         accept_json = accept.json()
         User.objects.filter(email=email).update(nickname=name,
-                                          email=email,
-                                          social_profile = profile_image
-                                          )
+            email=email,
+            social_profile = profile_image
+        )
+        Profile.objects.create(user=user, username=email)
         # accept_json.pop('user', None)
-        print(User.objects.filter(email=email))
         return Response(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
@@ -68,9 +68,10 @@ def authenticate_google(request):
         accept_json = accept.json()
         # accept_json.pop('user', None)
         User.objects.filter(email=email).update(nickname=name,
-                                          email=email,
-                                          social_profile=profile_image
-                                          )
+            email=email,
+            social_profile=profile_image
+        )
+        Profile.objects.create(user=user, username=email)
         return Response(accept_json)
 
 class GoogleLogin(SocialLoginView):
@@ -143,6 +144,7 @@ def authenticate_kakao(request):
         User.objects.filter(email=email).update(nickname=nickname,                                 
                                          social_profile=profile_image                             
                                          )
+        Profile.objects.create(user=user, username=email)
         return Response(accept_json)
 
 class KakaoLogin(SocialLoginView):
