@@ -54,8 +54,8 @@ def authenticate_google(request):
             email=email,
             social_profile = profile_image
         )
-        Profile.objects.create(user=user, username=email)
         # accept_json.pop('user', None)
+        Profile.objects.update_or_create(user=user, username=email)
         return Response(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
@@ -71,7 +71,6 @@ def authenticate_google(request):
             email=email,
             social_profile=profile_image
         )
-        Profile.objects.create(user=user, username=email)
         return Response(accept_json)
 
 class GoogleLogin(SocialLoginView):
@@ -128,6 +127,7 @@ def authenticate_kakao(request):
                                           email=email,
                                           social_profile=profile_image
                                           )
+        Profile.objects.update_or_create(user=user, username=email)
         return Response(accept_json)
     except User.DoesNotExist:
         # 기존에 가입된 유저가 없으면 새로 가입
@@ -144,7 +144,6 @@ def authenticate_kakao(request):
         User.objects.filter(email=email).update(nickname=nickname,                                 
                                          social_profile=profile_image                             
                                          )
-        Profile.objects.create(user=user, username=email)
         return Response(accept_json)
 
 class KakaoLogin(SocialLoginView):
