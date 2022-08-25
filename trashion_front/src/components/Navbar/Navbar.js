@@ -1,32 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styles from './Navbar.module.css';
-import logo from '../../assets/image/logo.png';
+import logo from 'assets/image/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
-
+import { useRecoilValue } from 'recoil';
+import authState from './../../store/authState';
 export default function Navbar() {
-  const [auth, setAuth] = useState('');
-
-  useEffect(() => {
-    if (localStorage.getItem('token') !== null) {
-      setAuth(true);
-    }
-  }, []);
-
-  // const handleLogout = () => {
-  //   fetch('http://127.0.0.1:8000/api/v1/mall/auth/logout/', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Token ${localStorage.getItem('token')}`,
-  //     },
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       localStorage.clear();
-  //       window.location.replace('http://localhost:3000/login');
-  //     });
-  // };
+  const user = useRecoilValue(authState);
   const navigate = useNavigate();
 
   return (
@@ -84,7 +63,7 @@ export default function Navbar() {
             </svg>
           </Link>
 
-          {auth ? (
+          {user.isLoggedIn ? (
             <Link to="/Mypage">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
                 <path

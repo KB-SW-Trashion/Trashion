@@ -2,6 +2,10 @@ import React, { useReducer, useRef, useEffect } from 'react';
 import Authorized from 'routes/Authorized';
 import Unauthorized from 'routes/Unauthorized';
 import './App.css';
+import { useRecoilState } from 'recoil';
+import { authState } from 'store';
+import authApi from 'api/authApi';
+import { getCookie } from 'cookies-next';
 
 //date, content, title, price, size, condition, category, period
 
@@ -40,7 +44,26 @@ export const ProductStateContext = React.createContext();
 export const ProductDispatchContext = React.createContext();
 
 function App() {
+  const [, setUser] = useRecoilState(authState);
   const [data, dispatch] = useReducer(reducer, []);
+
+  const getUserInfo = async () => {
+    await authApi.getUser().then((res) => {
+      setUser({
+        isLoggedIn: true,
+        name: res.data.nick_name,
+        email: res.data.email,
+        social_img: res.data.social_img,
+        user_id: res.data.id,
+        access_token: getCookie('access_token'),
+        refresh_token: getCookie('refresh_token'),
+      });
+    });
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   useEffect(() => {
     const localData = localStorage.getItem('product');

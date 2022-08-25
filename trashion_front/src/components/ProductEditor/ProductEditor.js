@@ -89,7 +89,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
       setPostType(originData.post_type);
     }
   }, [isEdit, originData]);
-
+  console.log('??', { isEdit, originData, isNew }, titleRef, date, onCreate);
   return (
     <div className={styles.ProductEditor}>
       <Navbar />
