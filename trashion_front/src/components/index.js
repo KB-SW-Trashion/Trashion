@@ -20,3 +20,4 @@ export { default as PostHeader } from './PostHeader/PostHeader';
 export { default as ProductList } from './ProductList/ProductList';
 export { default as ImageUploader } from './ImageUploader/ImageUploader';
 export { default as LikeButton } from './LikeButton/LikeButton';
+export { default as Progessbar } from './ProgessBar/Progessbar';

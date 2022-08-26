@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { SubmitButton, Forgot, KakaoLoginButton } from 'components';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { SubmitButton, Forgot, KakaoLoginButton, Progessbar } from 'components';
 import styles from './Login.module.css';
 import auth from 'api/authApi';
 import logo from '../../assets/image/logo.png';
@@ -14,10 +14,9 @@ import { authState } from 'store';
 function Login() {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [errors, setErrors] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [, setUser] = useRecoilState(authState);
-  const { replace } = useNavigate();
 
   const onChangeEmail = (e) => {
     // eslint-disable-next-line
@@ -31,22 +30,17 @@ function Login() {
     e.preventDefault();
     const user = {
       email: email,
-      password1: password,
+      password: password,
     };
 
     auth
       .login(user)
       .then((res) => {
-        if (res.data.key) {
-          localStorage.clear();
-          localStorage.setItem('token', res.data.key);
-          replace('/');
+        if (res.data.access_token) {
+          saveUserInfo(res.data.access_token, res.data.refresh_token);
         } else {
-          setEmail('');
-          setPassword('');
-          localStorage.clear();
-          setErrors(true);
-          console.log(errors);
+          alert('인증되지 않은 회원입니다.');
+          navigate('/login');
         }
       })
       .catch((err) => {
@@ -61,11 +55,13 @@ function Login() {
   const REDIRECT_URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
   const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   const clientID = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   const kakaoLogin = () => {
     window.location.href = KAKAO_AUTH_URL;
   };
 
   const saveUserInfo = async (access, refresh) => {
+    setIsLoading(true);
     setCookie('access_token', access);
     setCookie('refresh_token', refresh);
     await auth
@@ -80,7 +76,8 @@ function Login() {
           access_token: access,
           refresh_token: refresh,
         });
-        alert('로그인 완료!');
+
+        setIsLoading(false);
         navigate('/');
         console.log('auth', res.data);
       })
@@ -92,6 +89,7 @@ function Login() {
       });
   };
   const kakaoSocialLogin = async (code) => {
+    setIsLoading(true);
     await getKakaoToken(REST_API_KEY, REDIRECT_URI, code)
       .then((res) => res.json())
       .then((data) => {
@@ -132,6 +130,7 @@ function Login() {
   }, []);
 
   const googleSocialLogin = async (data) => {
+    setIsLoading(true);
     await auth
       .googleAuthenticate(data)
       .then((res) => {
@@ -172,12 +171,11 @@ function Login() {
     <div className={styles.wrap}>
       <div className={styles.area}>
         <div className={styles.link_wrap}>
-          <Link to="/">
-            <div className={styles.home}>
-              <img src={logo} />
-            </div>
-          </Link>
+          <div className={styles.home} onClick={() => navigate('/')}>
+            <img src={logo} />
+          </div>
         </div>
+        <div className={styles.loadingBox}>{isLoading && <Progessbar />}</div>
         <form onSubmit={onSubmit}>
           <div className={styles.wrap_input}>
             <div className={styles.int_area}>
@@ -213,7 +211,7 @@ function Login() {
             </div>
           </div>
           <div className={styles.buttonBox}>
-            <SubmitButton name="로그인" />
+            <SubmitButton name="로그인" onSubmit={onSubmit} />
           </div>
         </form>
       </div>

@@ -22,8 +22,8 @@
 .home {
   width: 300px;
   margin: 0 auto;
-
   margin-bottom: 70px;
+  cursor: pointer;
 }
 
 .home img {
@@ -90,4 +90,10 @@
   margin-top: 5px;
   margin-left: 10px;
   font-size: 13px;
+}
+
+.loadingBox {
+  margin: 0 auto;
+  margin-bottom: 20px;
+  width: 400px;
 }

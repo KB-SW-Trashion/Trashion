@@ -1,10 +1,11 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { SubmitButton } from 'components';
+import { SubmitButton, Progessbar } from 'components';
+import axios from 'axios';
 import styles from '../Login/Login.module.css';
 import logo from '../../assets/image/logo.png';
-import auth from 'api/authApi';
+// import auth from 'api/authApi';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -16,9 +17,10 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [confirmPasswordError, setConfirmPasswordError] = useState(false);
   const [emailError, setEmailError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [errors, setErrors] = useState(false);
-  const { replace } = useNavigate();
+  // const [errors, setErrors] = useState(false);
+  const navigate = useNavigate();
 
   const onChangeUsername = (e) => {
     const usernameRegex = /^(?=.*[a-z0-9가-힣])[a-z0-9가-힣]{2,16}$/;
@@ -49,59 +51,46 @@ const Register = () => {
     setEmail(e.target.value);
   };
 
-  const validation = () => {
-    if (!password) setPasswordError(true);
-    if (!confirmPassword) setConfirmPasswordError(true);
-    if (!email) setEmailError(true);
-
-    if (password && confirmPassword && email) return true;
-    else return false;
-  };
-
   const onSubmit = (e) => {
-    if (validation()) return;
     e.preventDefault();
+    setIsLoading(true);
+
     const user = {
-      username: username,
+      nickname: username,
       password1: password,
       password2: confirmPassword,
       email: email,
+      address: '1',
+      phone: '1',
+      realname: '1',
     };
-
-    auth
-      .register(user)
+    axios
+      .post('/dj-rest-auth/registration/', user)
       .then((res) => {
-        if (res.data.key) {
-          localStorage.clear();
-          localStorage.setItem('token', res.data.key);
-          replace('/');
-        } else {
-          setUsername('');
-          setEmail('');
-          setPassword('');
-          setConfirmPassword('');
-          localStorage.clear();
-          setErrors(true);
-          console.log(errors);
-          console.log(res);
+        if (res.data.access_token) {
+          setIsLoading(false);
+          navigate('/');
+          alert('회원가입 성공!');
         }
       })
       .catch((err) => {
-        console.clear();
-        console.log(err);
-        alert('아이디 혹은 비밀번호가 일치하지 않습니다.');
+        setEmail('');
+        setUsername('');
+        setPassword('');
+        setConfirmPassword('');
+        console.log('error:', err);
       });
+    setIsLoading(false);
   };
 
   return (
     <div className={styles.wrap}>
       <div className={styles.area}>
         <div className={styles.link_wrap}>
-          <Link to="/">
-            <div className={styles.home}>
-              <img src={logo} />
-            </div>
-          </Link>
+          <div className={styles.home} onClick={() => navigate('/')}>
+            <img src={logo} />
+          </div>
+          <div className={styles.loadingBox}>{isLoading && <Progessbar />}</div>
         </div>
         <form onSubmit={onSubmit}>
           <div className={styles.wrap_input}>
@@ -135,27 +124,9 @@ const Register = () => {
             </div>
           </div>
 
-          {/* <div className={styles.wrap_input}>
-            <div className={styles.int_area}>
-              <input
-                type="text"
-                name="nickname"
-                id="nickname"
-                autoComplete="off"
-                required
-                value={nickname}
-                onChange={(e) => {
-                  setNickname(e.target.value);
-                }}
-              />
-              <label htmlFor="nickname">닉네임</label>
-            </div>
-          </div> */}
-
           <div className={styles.buttonBox}>
             <SubmitButton name="회원가입" />
           </div>
-          {errors === true && <h2>Cannot signup with provided credentials</h2>}
         </form>
       </div>
     </div>
