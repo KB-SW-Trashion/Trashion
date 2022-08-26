@@ -9,39 +9,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import TextField from '@mui/material/TextField';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import ListSubheader from '@mui/material/ListSubheader';
 import Select from '@mui/material/Select';
-import { pink } from '@mui/material/colors';
-import { styled } from '@mui/material';
-
-const radioSX = { '&.Mui-checked': { color: pink[200] } };
-const labelSX = { '&.Mui-focused': { color: pink[200] }, color: 'black' };
-// const inputSX = { '&.Mui-focused': { color: pink[200] } };
-const CssTextField = styled(TextField, {
-  shouldForwardProp: (props) => props !== 'focusColor',
-})((p) => ({
-  // input label when focused
-  '& label.Mui-focused': {
-    color: p.focusColor,
-  },
-  // focused color for input with variant='standard'
-  '& .MuiInput-underline:after': {
-    borderBottomColor: p.focusColor,
-  },
-  // focused color for input with variant='filled'
-  '& .MuiFilledInput-underline:after': {
-    borderBottomColor: p.focusColor,
-  },
-  // focused color for input with variant='outlined'
-  '& .MuiOutlinedInput-root': {
-    '&.Mui-focused fieldset': {
-      borderColor: p.focusColor,
-    },
-  },
-}));
+import { radioSX, labelSX, CssTextField } from './CssInput';
 
 const ProductEditor = ({ isEdit, originData, isNew }) => {
   const titleRef = useRef();
