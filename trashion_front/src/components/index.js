@@ -21,3 +21,4 @@ export { default as ProductList } from './ProductList/ProductList';
 export { default as ImageUploader } from './ImageUploader/ImageUploader';
 export { default as LikeButton } from './LikeButton/LikeButton';
 export { default as Progessbar } from './ProgessBar/Progessbar';
+export { default as SelectBox } from './Category/SelectBox';

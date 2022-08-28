@@ -1,0 +1,47 @@
+[
+  {
+    "big_category_id": "0",
+    "big_category_name": "상의",
+    "small_category": [
+      { "small_category_id": "0", "small_category_name": "반팔 티셔츠", "big_category_id": "1" },
+      { "small_category_id": "1", "small_category_name": "긴팔 티셔츠", "big_category_id": "1" },
+      { "small_category_id": "2", "small_category_name": "후드 티셔츠", "big_category_id": "1" },
+      { "small_category_id": "3", "small_category_name": "셔츠 / 블라우스", "big_category_id": "1" },
+      { "small_category_id": "4", "small_category_name": "기타", "big_category_id": "1" }
+    ]
+  },
+
+  {
+    "big_category_id": "1",
+    "big_category_name": "하의",
+    "small_category": [
+      { "small_category_id": "0", "small_category_name": "청바지", "big_category_id": "2" },
+      { "small_category_id": "1", "small_category_name": "반바지", "big_category_id": "2" },
+      { "small_category_id": "2", "small_category_name": "슬랙스", "big_category_id": "2" },
+      { "small_category_id": "3", "small_category_name": "트레이닝팬츠", "big_category_id": "2" },
+      { "small_category_id": "4", "small_category_name": "기타", "big_category_id": "2" }
+    ]
+  },
+  {
+    "big_category_id": "2",
+    "big_category_name": "아우터",
+    "small_category": [
+      { "small_category_id": "0", "small_category_name": "후드집업", "big_category_id": "3" },
+      { "small_category_id": "1", "small_category_name": "코트", "big_category_id": "3" },
+      { "small_category_id": "2", "small_category_name": "가디건", "big_category_id": "3" },
+      { "small_category_id": "3", "small_category_name": "패딩", "big_category_id": "3" },
+      { "small_category_id": "4", "small_category_name": "기타", "big_category_id": "3" }
+    ]
+  },
+  {
+    "big_category_id": "3",
+    "big_category_name": "신발",
+    "small_category": [
+      { "small_category_id": "0", "small_category_name": "운동화", "big_category_id": "4" },
+      { "small_category_id": "1", "small_category_name": "슬리퍼", "big_category_id": "4" },
+      { "small_category_id": "2", "small_category_name": "구두", "big_category_id": "4" },
+      { "small_category_id": "3", "small_category_name": "부츠", "big_category_id": "4" },
+      { "small_category_id": "4", "small_category_name": "기타", "big_category_id": "4" }
+    ]
+  }
+]
