@@ -1,5 +1,5 @@
 import { ProductDispatchContext } from '../../App';
-import { PostButton, PostHeader, ImageUploader } from 'components';
+import { PostButton, PostHeader, ImageUploader, SelectBox } from 'components';
 import Navbar from 'components/Navbar/Navbar';
 import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router';
@@ -10,10 +10,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import ListSubheader from '@mui/material/ListSubheader';
-import Select from '@mui/material/Select';
 import { radioSX, labelSX, CssTextField } from './CssInput';
 import productState from 'store/productState';
 
@@ -38,7 +34,6 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const IsPrice = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
-    console.log(product);
     setProduct({ ...product, price: curValue.replace(notNum, '') });
   };
 
@@ -64,7 +59,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
 
     if (window.confirm(isEdit ? '글을 수정하시겠습니까?' : '새로운 글을 작성하시겠습니까?')) {
       if (!isEdit) {
-        onCreate(product.date, product.title, product.content, product.price, product.size, product.condition, product.category, product.period, product.post_type);
+        onCreate(product.date, product.title, product.content, product.price, product.size, product.condition, product.big_category, product.small_category, product.period, product.post_type);
         navigate('/', { replace: true });
       } else {
         onEdit(
@@ -75,7 +70,8 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
           originData.price,
           originData.size,
           originData.condition,
-          originData.category,
+          originData.big_category,
+          originData.small_category,
           originData.period,
           originData.post_type,
         );
@@ -132,35 +128,8 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
         />
         <div className={styles.input_wrap}>
           <section>
-            <FormControl sx={{ m: 1, minWidth: 200 }}>
-              <InputLabel htmlFor="grouped-select">카테고리</InputLabel>
-              <Select defaultValue="" id="grouped-select" label="Grouping" value={product.category} onChange={(e) => setProduct({ ...product, category: e.target.value })}>
-                <ListSubheader>상의</ListSubheader>
-                <MenuItem value={'반팔 티셔츠'}>반팔 티셔츠</MenuItem>
-                <MenuItem value={'긴팔 티셔츠'}>긴팔 티셔츠</MenuItem>
-                <MenuItem value={'후드 티셔츠'}>후드 티셔츠</MenuItem>
-                <MenuItem value={'셔츠 / 블라우스'}>셔츠 / 블라우스</MenuItem>
-                <MenuItem value={'기타'}>기타</MenuItem>
-                <ListSubheader>하의</ListSubheader>
-                <MenuItem value={'청바지'}>청바지</MenuItem>
-                <MenuItem value={'반바지'}>반바지</MenuItem>
-                <MenuItem value={'슬랙스'}>슬랙스</MenuItem>
-                <MenuItem value={'트레이닝팬츠'}>트레이닝팬츠</MenuItem>
-                <MenuItem value={'기타'}>기타</MenuItem>
-                <ListSubheader>아우터</ListSubheader>
-                <MenuItem value={'후드집업'}>후드집업</MenuItem>
-                <MenuItem value={'코트'}>코트</MenuItem>
-                <MenuItem value={'가디건'}>가디건</MenuItem>
-                <MenuItem value={'패딩'}>패딩</MenuItem>
-                <MenuItem value={'기타'}>기타</MenuItem>
-                <ListSubheader>신발</ListSubheader>
-                <MenuItem value={'운동화'}>운동화</MenuItem>
-                <MenuItem value={'슬리퍼'}>슬리퍼</MenuItem>
-                <MenuItem value={'구두'}>구두</MenuItem>
-                <MenuItem value={'부츠'}>부츠</MenuItem>
-                <MenuItem value={'기타'}>기타</MenuItem>
-              </Select>
-            </FormControl>
+            <SelectBox />
+
             <div className={styles.radio_box}>
               <FormControl>
                 <FormLabel id="demo-row-radio-buttons-group-label" sx={labelSX}>
