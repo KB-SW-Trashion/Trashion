@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil';
 import { authState } from 'store';
 import authApi from 'api/authApi';
 import { getCookie } from 'cookies-next';
+// import productState from 'store/productState';
 
 //date, content, title, price, size, condition, category, period
 
@@ -46,6 +47,7 @@ export const ProductDispatchContext = React.createContext();
 function App() {
   const [, setUser] = useRecoilState(authState);
   const [data, dispatch] = useReducer(reducer, []);
+  // const [product, setProduct] = useRecoilState(productState);
 
   const getUserInfo = async () => {
     await authApi.getUser().then((res) => {
@@ -98,6 +100,28 @@ function App() {
     });
     dataId.current += 1;
   };
+
+  // const onCreate = () => {
+  //   setProduct((oldProduct) => {
+  //     const id = oldProduct.length ? oldProduct[oldProduct.length - 1].id + 1 : 0;
+  //     return [
+  //       ...oldProduct,
+  //       {
+  //         id,
+  //         date: new Date().getTime(),
+  //         title: product.title,
+  //         content: product.content,
+  //         price: product.price,
+  //         size: product.size,
+  //         condition: product.condition,
+  //         category: product.category,
+  //         period: product.period,
+  //         post_type: product.post_type,
+  //       },
+  //     ];
+  //   });
+  //   // setProduct({ ...product, id: product.id + 1 });
+  // };
 
   //REMOVE
   const onRemove = (targetId) => {
