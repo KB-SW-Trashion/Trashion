@@ -82,7 +82,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone','following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user_count', 'blocked_user', 'profile']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user_count', 'blocked_user', 'profile']
     
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile')
