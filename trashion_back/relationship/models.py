@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+
 from item_post.models import Item
 User = get_user_model()
 
