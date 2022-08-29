@@ -1,8 +1,7 @@
-from os import set_inheritable
-from rest_framework import serializers
-from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Profile
 User = get_user_model()
