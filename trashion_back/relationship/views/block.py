@@ -18,11 +18,11 @@ def block(request): #requset에 팔로우할 대상 email 담아서 넘기기
 
     if is_block:
         is_block[0].delete()
-        message = 'UnBlocking'
+        message = 'UnBlock'
     else:
         Block.objects.create(
             user = user,
             blocked_user = blocked_user
         )
-        message = 'Blocking'
+        message = 'Block'
     return Response({'message':message}, status.HTTP_204_NO_CONTENT)
