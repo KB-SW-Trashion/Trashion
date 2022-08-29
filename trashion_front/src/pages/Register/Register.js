@@ -60,9 +60,6 @@ const Register = () => {
       password1: password,
       password2: confirmPassword,
       email: email,
-      address: '1',
-      phone: '1',
-      realname: '1',
     };
     axios
       .post('/dj-rest-auth/registration/', user)

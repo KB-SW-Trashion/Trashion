@@ -17,7 +17,6 @@ export default function MyPage() {
 
   const getUser = async () => {
     await user.getUserInfo(email).then((res) => {
-      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         social_profile: res.data.social_profile,
@@ -25,6 +24,9 @@ export default function MyPage() {
         follower_amount: res.data.follower_count,
         height: res.data.profile.height,
         weight: res.data.profile.weight,
+        top_size: res.data.profile.top_size,
+        bottom_size: res.data.profile.bottom_size,
+        introduce: res.data.profile.introduce,
       });
     });
   };
@@ -46,18 +48,18 @@ export default function MyPage() {
         <div className={styles.MyPage_bodyright}>
           <div className={styles.Mypage_profilecontentsbox}>
             <h2>{userInfo.nickname} </h2>
-            <h3> [자기소개] </h3>
+            <h3> {userInfo.introduce} </h3>
             <div className={styles.Mypage_profilecontentsboxinner}>
               <div className={styles.Mypage_profilecontentsboxinnerright}>
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
-                <p> 상의사이즈 : [seller_size_top]</p>
+                <p> 상의사이즈 : {userInfo.bottom_size}</p>
                 <p> 거래완료수 : [total_trade]</p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
-                <p> 하의사이즈 : [seller_size_bottom]</p>
+                <p> 하의사이즈 : {userInfo.top_size}</p>
                 <p> 누적 좋아요 수 : [total_like]</p>
               </div>
             </div>
