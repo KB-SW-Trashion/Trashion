@@ -25,18 +25,11 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
 class SignUpSerializer(RegisterSerializer):
     username = None
     nickname = serializers.CharField()
-    realname = serializers.CharField()
-    address = serializers.CharField()
-    phone = serializers.CharField()
-
     def get_cleaned_data(self):
         return {
             'password1': self.validated_data.get('password1', ''),
-            'realname': self.validated_data.get('realname', ''),
             'email': self.validated_data.get('email', ''),
             'nickname': self.validated_data.get('nickname', ''),
-            'address': self.validated_data.get('address', ''),
-            'phone': self.validated_data.get('phone', ''),
         }
         
 class FollowingListingField(serializers.RelatedField):
