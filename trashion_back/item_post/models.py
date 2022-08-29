@@ -30,7 +30,7 @@ class Item(models.Model):
     size = models.CharField(max_length=6)
     height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
-    wear_count = models.IntegerField()
+    condition = models.CharField(max_length=20)
     price = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
