@@ -1,19 +1,20 @@
-from django.db.models import Q
-from django.shortcuts import render
-from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import action
-from rest_framework import status, exceptions, permissions
-from .serializers import *
 from django.contrib.auth import get_user_model
-from .models import Item, Category, Photo, StylePhoto
-from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter, OrderingFilter
-User = get_user_model()
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from django.db.models import Q
+
 from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 
+from rest_framework import status, permissions
+from rest_framework.decorators import action
+from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
+
+from .models import Item, Category, Photo, StylePhoto
+from .serializers import *
 from relationship.models import Block
+
+User = get_user_model()
 
 class IsOwner(permissions.BasePermission):
     def has_permission(self, request, view):

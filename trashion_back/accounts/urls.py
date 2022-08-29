@@ -1,5 +1,4 @@
 from django.urls import path
-from accounts import views
 from .views import login, user_edit
 urlpatterns = [
   

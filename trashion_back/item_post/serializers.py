@@ -1,8 +1,6 @@
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.exceptions import ValidationError as DjangoValidationError, ObjectDoesNotExist
-from allauth.account.adapter import get_adapter
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
 from .models import *
 
 User = get_user_model()
