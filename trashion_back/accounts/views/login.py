@@ -121,7 +121,7 @@ def authenticate_kakao(request):
             f"{BASE_URL}accounts/kakao/login/allauth/", data=data)
         accept_status = accept.status_code
         if accept_status != 200:
-            return JsonResponse({'err_msg': 'failed to signup'}, status=accept_status)
+            return Response({'err_msg': 'failed to signup'}, status=accept_status)
         # user의 pk, email, first name, last name과 Access Token, Refresh token 가져옴
         #카카오에서 전화번호, 주소 받으려면 사업자 등록 해야됨.
         accept_json = accept.json()
