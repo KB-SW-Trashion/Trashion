@@ -38,6 +38,7 @@ function Login() {
       .then((res) => {
         if (res.data.access_token) {
           saveUserInfo(res.data.access_token, res.data.refresh_token);
+          navigate('/');
         } else {
           alert('인증되지 않은 회원입니다.');
           navigate('/login');
@@ -78,12 +79,13 @@ function Login() {
         });
 
         setIsLoading(false);
-        navigate('/');
         console.log('auth', res.data);
       })
       .catch((e) => {
         deleteCookie('access_token');
         deleteCookie('refresh_token');
+        navigate('/login');
+
         console.log(e);
         // alert('로그인이 실패했습니다 다시 시도해주세요!');
       });
@@ -101,9 +103,13 @@ function Login() {
               console.log('카카오로그인 성공', res.data);
               saveUserInfo(res.data.access_token, res.data.refresh_token);
             })
-            .catch((err) => console.log('실패', err));
+            .catch((err) => {
+              console.log('실패', err);
+              navigate('/');
+            });
         } else {
           alert('인증되지 않은 회원입니다.');
+          setIsLoading(false);
           navigate('/login');
         }
       });
@@ -202,6 +208,9 @@ function Login() {
             </div>
           </div>
           <Forgot />
+          <div className={styles.buttonBox}>
+            <SubmitButton name="로그인" onSubmit={onSubmit} />
+          </div>
           <div className={styles.social_login_wrap}>
             <KakaoLoginButton kakaoLogin={kakaoLogin} />
           </div>
@@ -209,9 +218,6 @@ function Login() {
             <div className={styles.google_login}>
               <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
             </div>
-          </div>
-          <div className={styles.buttonBox}>
-            <SubmitButton name="로그인" onSubmit={onSubmit} />
           </div>
         </form>
       </div>
