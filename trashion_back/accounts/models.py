@@ -55,10 +55,12 @@ class User(AbstractUser):
 
 #회원가입하면서 기본으로 프로필 만들어줘야할듯
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     profile_image = models.URLField(null=True,blank=True) #프로필 사진
     height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
+    top_size = models.CharField(max_length=5, blank=True)
+    bottom_size = models.CharField(max_length=5, blank=True)
     
     def __str__(self):
         return self.user.email

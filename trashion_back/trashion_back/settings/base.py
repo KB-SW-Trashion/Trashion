@@ -51,7 +51,7 @@ INSTALLED_APPS = [
    
 ]
 
-SITE_ID = 3
+SITE_ID = 2
 
 # 실수로 1번 사이트 지워버려서 2로 했음
 #django.contrib.sites.models.Site.DoesNotExist: Site matching query does not exist. 
@@ -64,6 +64,7 @@ REST_AUTH_REGISTER_SERIALIZERS = {
 }
 
 ACCOUNT_ADAPTER = 'accounts.adapters.CustomAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'accounts.adapters.CustomSocialLoginAdapter'
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
