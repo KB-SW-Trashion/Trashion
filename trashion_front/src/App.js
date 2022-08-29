@@ -82,7 +82,7 @@ function App() {
 
   // CREATE
 
-  const onCreate = (date, title, content, price, size, condition, category, period, post_type) => {
+  const onCreate = (date, title, content, price, size, condition, category, period) => {
     dispatch({
       type: 'CREATE',
       data: {
@@ -95,7 +95,6 @@ function App() {
         condition,
         category,
         period,
-        post_type,
       },
     });
     dataId.current += 1;
@@ -129,7 +128,7 @@ function App() {
   };
 
   //EDIT
-  const onEdit = (targetId, date, title, content, price, size, condition, category, period, post_type) => {
+  const onEdit = (targetId, date, title, content, price, size, condition, category, period) => {
     dispatch({
       type: 'EDIT',
       data: {
@@ -142,7 +141,6 @@ function App() {
         condition,
         category,
         period,
-        post_type,
       },
     });
   };

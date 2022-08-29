@@ -5,7 +5,6 @@ const productState = atom({
   key: 'productState',
   default: {
     id: 0,
-    date: new Date(),
     title: '',
     content: '',
     price: '',
@@ -14,7 +13,8 @@ const productState = atom({
     big_category: '',
     small_category: '',
     period: '',
-    post_type: '',
+    height: '',
+    weight: '',
   },
 });
 
