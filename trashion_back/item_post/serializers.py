@@ -30,9 +30,16 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class UserIdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id']
+
+
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
+    # user_id = serializers.IntegerField(required=False)
 
     class Meta:
         model = Item

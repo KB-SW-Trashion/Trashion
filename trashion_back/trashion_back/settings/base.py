@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     #django-cors
     'corsheaders',
     'django_filters',
+    # drf_yasg
+    'drf_yasg',
    
 ]
 
