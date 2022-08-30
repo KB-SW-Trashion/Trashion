@@ -20,7 +20,7 @@ export default function MyPage() {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await authApi.getUser().then((res) => {
+    await authApi.getUser().then(() => {
       setUser({
         isLoggedIn: false,
         access_token: setCookie(-1),
