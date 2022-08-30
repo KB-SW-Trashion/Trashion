@@ -4,7 +4,6 @@ import { atom } from 'recoil';
 const productState = atom({
   key: 'productState',
   default: {
-    id: 0,
     title: '',
     content: '',
     price: '',
@@ -12,6 +11,8 @@ const productState = atom({
     condition: '',
     big_category: '',
     small_category: '',
+    photos_data: [],
+    style_photos_data: [],
     period: '',
     height: '',
     weight: '',
