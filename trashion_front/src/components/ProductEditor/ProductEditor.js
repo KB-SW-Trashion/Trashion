@@ -3,7 +3,7 @@ import { PostButton, PostHeader, ImageUploader, SelectBox } from 'components';
 import Navbar from 'components/Navbar/Navbar';
 import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -12,6 +12,8 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { radioSX, labelSX, CssTextField } from './CssInput';
 import productState from 'store/productState';
+import axios from 'axios';
+import tokenConfig from 'api/tokenConfig';
 
 const ProductEditor = ({ isEdit, originData, isNew }) => {
   const titleRef = useRef();
@@ -20,11 +22,46 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const periodRef = useRef();
 
   const [product, setProduct] = useRecoilState(productState);
+  const resetProduct = useResetRecoilState(productState);
+
+  const onCreate = () => {
+    const data = {
+      description: '123',
+      feature: '123',
+      product_defect: '123',
+      size: '123',
+      wear_count: 123,
+      price: 123,
+      user_id: '123',
+      category_id: '123',
+      photos_data: '123',
+      style_photos_data: '123',
+      hegiht: 123,
+      weight: 123,
+      key: '123',
+    };
+    axios
+      .post('/item_post/item/', data, tokenConfig())
+      .then((res) => {
+        if (res.data) {
+          console.log(res);
+          resetProduct();
+          navigate('/');
+        }
+      })
+      .catch((err) => {
+        console.log('error:', err);
+        console.log('data:', data);
+        resetProduct();
+      });
+    navigate('/Mypage');
+  };
 
   const IsPrice = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProduct({ ...product, price: curValue.replace(notNum, '') });
+    console.log(product);
   };
 
   const IsPeriod = (e) => {
@@ -47,7 +84,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
     setProduct({ ...product, weight: curValue.replace(notNum, '') });
   };
 
-  const { onCreate, onEdit, onRemove } = useContext(ProductDispatchContext);
+  const { onEdit, onRemove } = useContext(ProductDispatchContext);
 
   const navigate = useNavigate();
 
@@ -62,7 +99,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
 
     if (window.confirm(isEdit ? '글을 수정하시겠습니까?' : '새로운 글을 작성하시겠습니까?')) {
       if (!isEdit) {
-        onCreate(product.date, product.title, product.content, product.price, product.size, product.condition, product.big_category, product.small_category, product.period);
+        onCreate(product);
         navigate('/', { replace: true });
       } else {
         onEdit(
