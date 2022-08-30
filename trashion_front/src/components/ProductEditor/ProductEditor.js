@@ -24,37 +24,22 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const [product, setProduct] = useRecoilState(productState);
   const resetProduct = useResetRecoilState(productState);
 
-  const onCreate = () => {
-    const data = {
-      description: '123',
-      feature: '123',
-      product_defect: '123',
-      size: '123',
-      wear_count: 123,
-      price: 123,
-      user_id: '123',
-      category_id: '123',
-      photos_data: '123',
-      style_photos_data: '123',
-      hegiht: 123,
-      weight: 123,
-      key: '123',
-    };
+  const onCreate = (product) => {
+    const formData = new FormData();
+    Object.keys(product).forEach((key) => formData.append(key, product[key]));
     axios
-      .post('/item_post/item/', data, tokenConfig())
+      .post('/item_post/item/', formData, tokenConfig('form_data'))
       .then((res) => {
         if (res.data) {
           console.log(res);
           resetProduct();
-          navigate('/');
         }
       })
       .catch((err) => {
         console.log('error:', err);
-        console.log('data:', data);
+        console.log('data:', formData);
         resetProduct();
       });
-    navigate('/Mypage');
   };
 
   const IsPrice = (e) => {
@@ -100,7 +85,6 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
     if (window.confirm(isEdit ? '글을 수정하시겠습니까?' : '새로운 글을 작성하시겠습니까?')) {
       if (!isEdit) {
         onCreate(product);
-        navigate('/', { replace: true });
       } else {
         onEdit(
           originData.id,
@@ -114,7 +98,6 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
           originData.small_category,
           originData.period,
         );
-        navigate('/', { replace: true });
       }
     }
   };
@@ -122,7 +105,6 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       onRemove(originData.id);
-      navigate('/', { replace: true });
     }
   };
 

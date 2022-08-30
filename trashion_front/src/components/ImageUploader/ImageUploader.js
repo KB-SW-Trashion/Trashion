@@ -15,8 +15,6 @@ const ImageUploader = () => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showProductImages];
     // base64 저장
-    let imageBases = [];
-    let imagefile;
 
     for (let i = 0; i < imageLists.length; i++) {
       if (imageLists[i].type !== 'image/jpeg' && imageLists[i].type !== 'image/jpg' && imageLists[i].type !== 'image/png') {
@@ -25,25 +23,19 @@ const ImageUploader = () => {
       }
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
-
-      // 이미지 base64형식으로 전환 후 product에 저장
-      let reader = new FileReader();
-      imagefile = imageLists[i];
-      reader.onload = () => {
-        imageBases[i] = reader.result;
-        setProduct({ ...product, photos_data: product.photos_data.concat(imageBases) });
-      };
-      reader.readAsDataURL(imagefile);
     }
 
-    // 이미지 미리보기
     setShowProductImages(imageUrlLists);
+
+    setProduct({ ...product, photos_data: imageLists });
   };
 
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteProductImage = (id) => {
     setShowProductImages(showProductImages.filter((_, index) => index !== id));
-    setProduct({ ...product, photos_data: product.photos_data.filter((_, index) => index !== id) });
+    let fileArray = Array.from(product.photos_data);
+    fileArray.splice(id, 1);
+    setProduct({ ...product, photos_data: fileArray });
   };
 
   //style Image
@@ -51,9 +43,6 @@ const ImageUploader = () => {
   const handleAddStyleImages = (event) => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showStyleImages];
-    // base64 저장
-    let imageBases = [];
-    let imagefile;
 
     for (let i = 0; i < imageLists.length; i++) {
       if (imageLists[i].type !== 'image/jpeg' && imageLists[i].type !== 'image/jpg' && imageLists[i].type !== 'image/png') {
@@ -62,23 +51,18 @@ const ImageUploader = () => {
       }
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
       imageUrlLists.push(currentImageUrl);
-
-      let reader = new FileReader();
-
-      imagefile = imageLists[i];
-      reader.onload = () => {
-        imageBases[i] = reader.result;
-        setProduct({ ...product, style_photos_data: product.style_photos_data.concat(imageBases) });
-      };
-      reader.readAsDataURL(imagefile);
     }
 
     setShowStyleImages(imageUrlLists);
+
+    setProduct({ ...product, style_photos_data: imageLists });
   };
 
   const handleDeleteStyleImage = (id) => {
     setShowStyleImages(showStyleImages.filter((_, index) => index !== id));
-    setProduct({ ...product, style_photos_data: product.style_photos_data.filter((_, index) => index !== id) });
+    let fileArray = Array.from(product.style_photos_data);
+    fileArray.splice(id, 1);
+    setProduct({ ...product, style_photos_data: fileArray });
   };
 
   return (

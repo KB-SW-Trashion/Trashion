@@ -1,9 +1,14 @@
 import { atom } from 'recoil';
 
 // date, title, content, price, size, condition, category, period
+
 const productState = atom({
   key: 'productState',
   default: {
+    user_id: 1,
+    // city: '2',
+    // gu: '312',
+    // dong: '3123',
     title: '',
     content: '',
     price: '',
@@ -17,6 +22,7 @@ const productState = atom({
     height: '',
     weight: '',
   },
+  dangerouslyAllowMutability: true,
 });
 
 export default productState;
