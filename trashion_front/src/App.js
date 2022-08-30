@@ -6,9 +6,6 @@ import { useRecoilState } from 'recoil';
 import { authState } from 'store';
 import authApi from 'api/authApi';
 import { getCookie } from 'cookies-next';
-// import productState from 'store/productState';
-
-//date, content, title, price, size, condition, category, period
 
 const reducer = (state, action) => {
   let newState = [];
@@ -47,7 +44,6 @@ export const ProductDispatchContext = React.createContext();
 function App() {
   const [, setUser] = useRecoilState(authState);
   const [data, dispatch] = useReducer(reducer, []);
-  // const [product, setProduct] = useRecoilState(productState);
 
   const getUserInfo = async () => {
     await authApi.getUser().then((res) => {
@@ -81,24 +77,6 @@ function App() {
   const dataId = useRef(0);
 
   // CREATE
-
-  const onCreate = (date, title, content, price, size, condition, category, period) => {
-    dispatch({
-      type: 'CREATE',
-      data: {
-        id: dataId.current,
-        date: new Date(date).getTime(),
-        title,
-        content,
-        price,
-        size,
-        condition,
-        category,
-        period,
-      },
-    });
-    dataId.current += 1;
-  };
 
   // const onCreate = () => {
   //   setProduct((oldProduct) => {
@@ -150,7 +128,6 @@ function App() {
       <ProductStateContext.Provider value={data}>
         <ProductDispatchContext.Provider
           value={{
-            onCreate,
             onEdit,
             onRemove,
           }}
