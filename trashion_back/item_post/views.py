@@ -50,9 +50,15 @@ class ItemViewSet(ModelViewSet):
         gu = request.data['gu']
         dong = request.data['dong']
         if city is not None and gu is not None and dong is not None:
-            location = Location.objects.get(
-                Q(city=city) & Q(gu=gu) & Q(dong=dong)
-            )
+            try:
+                location = Location.objects.get(
+                    Q(city=city) & Q(gu=gu) & Q(dong=dong)
+                )
+            except:
+                Location.objects.create(city=city, gu=gu, dong=dong)
+                location = Location.objects.get(
+                    Q(city=city) & Q(gu=gu) & Q(dong=dong)
+                )
         else:
             return Response(
                 {"message": "주소정보를 모두 입력해주세요."},
@@ -85,9 +91,15 @@ class ItemViewSet(ModelViewSet):
         gu = request.data['gu']
         dong = request.data['dong']
         if city is not None and gu is not None and dong is not None:
-            location = Location.objects.get(
-                Q(city=city) & Q(gu=gu) & Q(dong=dong)
-            )
+            try:
+                location = Location.objects.get(
+                    Q(city=city) & Q(gu=gu) & Q(dong=dong)
+                )
+            except:
+                Location.objects.create(city=city, gu=gu, dong=dong)
+                location = Location.objects.get(
+                    Q(city=city) & Q(gu=gu) & Q(dong=dong)
+                )
         else:
             return Response(
                 {"message": "주소정보를 모두 입력해주세요."},
