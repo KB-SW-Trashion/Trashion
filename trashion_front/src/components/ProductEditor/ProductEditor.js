@@ -1,5 +1,5 @@
 import { ProductDispatchContext } from '../../App';
-import { PostButton, PostHeader, ImageUploader, SelectBox } from 'components';
+import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory } from 'components';
 import Navbar from 'components/Navbar/Navbar';
 import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router';
@@ -125,6 +125,8 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
         />
         <div className={styles.input_wrap}>
           <section>
+            <LocationCategory />
+
             <SelectBox />
 
             <div className={styles.input_box}>

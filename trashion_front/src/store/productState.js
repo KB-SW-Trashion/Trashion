@@ -6,9 +6,9 @@ const productState = atom({
   key: 'productState',
   default: {
     user_id: 1,
-    // city: '2',
-    // gu: '312',
-    // dong: '3123',
+    city: '',
+    gu: '',
+    dong: '',
     title: '',
     content: '',
     price: '',
