@@ -39,7 +39,7 @@ class UserIdSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
-    user_id = serializers.ModelField(model_field=User()._meta.get_field('id'), required=False)
+    # user_id = serializers.ModelField(model_field=User()._meta.get_field('id'), required=False)
 
     class Meta:
         model = Item

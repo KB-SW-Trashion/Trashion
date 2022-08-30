@@ -47,18 +47,18 @@ class ItemViewSet(ModelViewSet):
     # create
     def create(self, request, *args, **kwargs):
         # location 받아오기
-        city = request.data['city']
-        gu = request.data['gu']
-        dong = request.data['dong']
-        if city is not None and gu is not None and dong is not None:
-            location = Location.objects.get(
-                Q(city=city) & Q(gu=gu) & Q(dong=dong)
-            )
-        else:
-            return Response(
-                {"message": "주소정보를 모두 입력해주세요."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        # city = request.data['city']
+        # gu = request.data['gu']
+        # dong = request.data['dong']
+        # if city is not None and gu is not None and dong is not None:
+        #     location = Location.objects.get(
+        #         Q(city=city) & Q(gu=gu) & Q(dong=dong)
+        #     )
+        # else:
+        #     return Response(
+        #         {"message": "주소정보를 모두 입력해주세요."},
+        #         status=status.HTTP_400_BAD_REQUEST
+        #     )
 
         # photo, stylephoto > serializers.py의 create()에서 처리
         serializer = self.get_serializer(data=request.data)
