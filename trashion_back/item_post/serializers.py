@@ -30,16 +30,9 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserIdSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['id']
-
-
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
-    # user_id = serializers.ModelField(model_field=User()._meta.get_field('id'), required=False)
 
     class Meta:
         model = Item
@@ -54,6 +47,7 @@ class ItemSerializer(serializers.ModelSerializer):
         for style_photo_data in images_data.getlist('style_photos_data'):
             StylePhoto.objects.create(item_id=item, user_id=self.context['request'].user,
                                       photo=style_photo_data)
+        print(User()._meta.get_field('id'))
         return item
 
     def update(self, instance, validated_data):
