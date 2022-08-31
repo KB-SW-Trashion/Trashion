@@ -46,17 +46,16 @@ class User(AbstractUser):
     social_profile = models.URLField(null=True,blank=True)
     realname = models.CharField(max_length=50, blank=True)
     nickname = models.CharField(max_length=50, null=True, unique=True) 
-    #닉네임 입력을 필수로 받아야함. null 로 받으면 전부 None로 저장돼서 unique 하지 않아서 에러뜸.
     address = models.CharField(max_length=200, blank=True)
     phone = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.email
 
-#회원가입하면서 기본으로 프로필 만들어줘야할듯
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
-    profile_image = models.URLField(null=True,blank=True) #프로필 사진
+    introduce = models.TextField(max_length=140)
+    profile_image = models.URLField(null=True,blank=True)
     height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     top_size = models.CharField(max_length=5, blank=True)

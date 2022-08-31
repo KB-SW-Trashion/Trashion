@@ -30,9 +30,9 @@ const SelectBox = () => {
 
   return (
     <div>
-      <FormControl sx={{ m: 1, minWidth: 200 }}>
+      <FormControl sx={{ m: 1, minWidth: 223 }}>
         <InputLabel id="demo-simple-select-helper-label">카테고리</InputLabel>
-        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" value={categorydata.big_category_name} label="Age" onChange={(e) => handleBig_category(e)}>
+        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" value={categorydata.big_category_name} onChange={(e) => handleBig_category(e)}>
           {categorydata.map((getBigCategory, index) => (
             <MenuItem value={getBigCategory.big_category_id} key={index}>
               {getBigCategory.big_category_name}
@@ -40,9 +40,9 @@ const SelectBox = () => {
           ))}
         </Select>
       </FormControl>
-      <FormControl sx={{ m: 1, minWidth: 200 }}>
+      <FormControl sx={{ m: 1, minWidth: 223 }}>
         <InputLabel id="demo-simple-select-helper-label">소분류</InputLabel>
-        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" value={categorydata.small_category_name} label="Age" onChange={(e) => handleSmall_category(e)}>
+        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" value={categorydata.small_category_name} onChange={(e) => handleSmall_category(e)}>
           {smallCategory.map((getSmallCategory, index) => (
             <MenuItem value={getSmallCategory.small_category_id} key={index}>
               {getSmallCategory.small_category_name}

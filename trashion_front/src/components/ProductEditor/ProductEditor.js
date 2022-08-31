@@ -1,9 +1,9 @@
 import { ProductDispatchContext } from '../../App';
-import { PostButton, PostHeader, ImageUploader, SelectBox } from 'components';
+import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory } from 'components';
 import Navbar from 'components/Navbar/Navbar';
 import React, { useRef, useContext } from 'react';
 import { useNavigate } from 'react-router';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -12,29 +12,41 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { radioSX, labelSX, CssTextField } from './CssInput';
 import productState from 'store/productState';
+import axios from 'axios';
+import tokenConfig from 'api/tokenConfig';
 
 const ProductEditor = ({ isEdit, originData, isNew }) => {
   const titleRef = useRef();
   const contentRef = useRef();
   const priceRef = useRef();
   const periodRef = useRef();
-  // date, title, content, price, size, condition, category, period
-  // const [date, setDate] = useState(new Date());
-  // const [content, setContent] = useState(''); //input
-  // const [title, setTitle] = useState(''); //input
-  // const [price, setPrice] = useState(''); //input
-  // const [size, setSize] = useState(''); //select
-  // const [condition, setCondition] = useState(''); //input
-  // const [category, setCategory] = useState(''); //select
-  // const [period, setPeriod] = useState(''); //input
-  // const [post_type, setPostType] = useState(''); //radio
 
   const [product, setProduct] = useRecoilState(productState);
+  const resetProduct = useResetRecoilState(productState);
+
+  const onCreate = (product) => {
+    const formData = new FormData();
+    Object.keys(product).forEach((key) => formData.append(key, product[key]));
+    axios
+      .post('/item_post/item/', formData, tokenConfig('form_data'))
+      .then((res) => {
+        if (res.data) {
+          console.log(res);
+          resetProduct();
+        }
+      })
+      .catch((err) => {
+        console.log('error:', err);
+        console.log('data:', formData);
+        resetProduct();
+      });
+  };
 
   const IsPrice = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProduct({ ...product, price: curValue.replace(notNum, '') });
+    console.log(product);
   };
 
   const IsPeriod = (e) => {
@@ -44,7 +56,20 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
     setProduct({ ...product, period: curValue.replace(notNum, '') });
   };
 
-  const { onCreate, onEdit, onRemove } = useContext(ProductDispatchContext);
+  const IsHeight = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^0-9]/g;
+
+    setProduct({ ...product, height: curValue.replace(notNum, '') });
+  };
+  const IsWeight = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^0-9]/g;
+
+    setProduct({ ...product, weight: curValue.replace(notNum, '') });
+  };
+
+  const { onEdit, onRemove } = useContext(ProductDispatchContext);
 
   const navigate = useNavigate();
 
@@ -59,8 +84,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
 
     if (window.confirm(isEdit ? '글을 수정하시겠습니까?' : '새로운 글을 작성하시겠습니까?')) {
       if (!isEdit) {
-        onCreate(product.date, product.title, product.content, product.price, product.size, product.condition, product.big_category, product.small_category, product.period, product.post_type);
-        navigate('/', { replace: true });
+        onCreate(product);
       } else {
         onEdit(
           originData.id,
@@ -73,9 +97,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
           originData.big_category,
           originData.small_category,
           originData.period,
-          originData.post_type,
         );
-        navigate('/', { replace: true });
       }
     }
   };
@@ -83,34 +105,9 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
       onRemove(originData.id);
-      navigate('/', { replace: true });
     }
   };
 
-  // useEffect(() => {
-  //   if (isEdit) {
-  //     setProduct({
-  //       date: new Date(parseInt(originData.date)),
-  //       title: originData.title,
-  //       content: originData.content,
-  //       price: originData.price,
-  //       size: originData.size,
-  //       condition: originData.condition,
-  //       category: originData.category,
-  //       period: originData.period,
-  //       post_type: originData.post_type,
-  //     });
-  //     // setDate(new Date(parseInt(originData.date)));
-  //     // setTitle(originData.title);
-  //     // setContent(originData.content);
-  //     // setPrice(originData.price);
-  //     // setSize(originData.size);
-  //     // setCondition(originData.condition);
-  //     // setCategory(originData.category);
-  //     // setPeriod(originData.period);
-  //     // setPostType(originData.post_type);
-  //   }
-  // }, [isEdit, originData]);
   return (
     <div className={styles.ProductEditor}>
       <Navbar />
@@ -128,25 +125,10 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
         />
         <div className={styles.input_wrap}>
           <section>
+            <LocationCategory />
+
             <SelectBox />
 
-            <div className={styles.radio_box}>
-              <FormControl>
-                <FormLabel id="demo-row-radio-buttons-group-label" sx={labelSX}>
-                  게시물 타입
-                </FormLabel>
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-row-radio-buttons-group-label"
-                  name="row-radio-buttons-group"
-                  value={product.post_type}
-                  onChange={(e) => setProduct({ ...product, post_type: e.target.value })}
-                >
-                  <FormControlLabel value="product" control={<Radio sx={radioSX} />} label="옷" />
-                  <FormControlLabel value="style" control={<Radio sx={radioSX} />} label="스타일" />
-                </RadioGroup>
-              </FormControl>
-            </div>
             <div className={styles.input_box}>
               <CssTextField
                 ref={titleRef}
@@ -186,6 +168,12 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
                 label="착용기간"
                 variant="outlined"
               />
+            </div>
+            <div className={styles.input_box}>
+              <CssTextField value={product.height + 'cm'} inputProps={{ maxLength: 5 }} onChange={IsHeight} focusColor="#f8bbd0" required id="outlined-required" label="키" variant="outlined" />
+            </div>
+            <div className={styles.input_box}>
+              <CssTextField value={product.weight + 'kg'} inputProps={{ maxLength: 5 }} onChange={IsWeight} focusColor="#f8bbd0" required id="outlined-required" label="몸무게" variant="outlined" />
             </div>
             <div className={styles.radio_box}>
               <FormControl>

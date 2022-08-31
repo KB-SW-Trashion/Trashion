@@ -25,18 +25,11 @@ class CustomTokenRefreshSerializer(serializers.Serializer):
 class SignUpSerializer(RegisterSerializer):
     username = None
     nickname = serializers.CharField()
-    realname = serializers.CharField()
-    address = serializers.CharField()
-    phone = serializers.CharField()
-
     def get_cleaned_data(self):
         return {
             'password1': self.validated_data.get('password1', ''),
-            'realname': self.validated_data.get('realname', ''),
             'email': self.validated_data.get('email', ''),
             'nickname': self.validated_data.get('nickname', ''),
-            'address': self.validated_data.get('address', ''),
-            'phone': self.validated_data.get('phone', ''),
         }
         
 class FollowingListingField(serializers.RelatedField):
@@ -58,7 +51,7 @@ class BlockUserListingField(serializers.RelatedField):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['height', 'weight']        
+        fields = ['introduce', 'height', 'weight', 'top_size', 'bottom_size']        
         
 class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
@@ -70,7 +63,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
     like_item_count = serializers.IntegerField(source='likeitem_sets.count', read_only=True)
 
     blocked_user = BlockUserListingField(many=True, read_only=True)
-    blocked_user_count = serializers.IntegerField(source='blocked.count', read_only=True)
     
     profile = ProfileSerializer()
     
@@ -81,7 +73,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user_count', 'blocked_user', 'profile']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile']
     
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile')
@@ -90,35 +82,3 @@ class UserDetailSerializer(serializers.ModelSerializer):
             setattr(profile, k, v)
         profile.save()
         return instance
-
-        
-        
-# class SignUpSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = User
-#         fields = ['email', 'password','' 'realname', 'nickname', 'address', 'phone']
-
-#     def get_cleaned_data(self):
-#         return {
-#             'realname': self.validated_data.get('realname', ''),
-#             'password': self.validated_data.get('password', ''),
-#             'email': self.validated_data.get('email', ''),
-#             'nickname': self.validated_data.get('nickname', ''),
-#             'address': self.validated_data.get('address', ''),
-#             'phone': self.validated_data.get('phone', ''),
-#         }
-
-#     def save(self, request):
-#         adapter = get_adapter()
-#         user = adapter.new_user(request)
-#         self.cleaned_data = self.get_cleaned_data()
-#         user = adapter.save_user(request, user, self, commit=False)
-#         if "password" in self.cleaned_data:
-#             try:
-#                 adapter.clean_password(self.cleaned_data['password'], user=user)
-#             except DjangoValidationError as exc:
-#                 raise serializers.ValidationError(
-#                     detail=serializers.as_serializer_error(exc)
-#                 )
-#         user.save()
-#         return user

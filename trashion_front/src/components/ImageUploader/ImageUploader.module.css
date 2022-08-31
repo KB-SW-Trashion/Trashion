@@ -1,0 +1,53 @@
+.wrapUploader span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.addPicture {
+  border: 1px solid #f8bbd0;
+  border-radius: 10px;
+  width: 750px;
+  margin-top: 30px;
+  display: flex;
+  margin: 0 auto;
+  overflow-x: scroll;
+}
+
+input {
+  margin: 0 auto;
+}
+
+.addButton {
+  cursor: pointer;
+  background-color: #f8bbd0;
+  color: white;
+  margin: 0 auto;
+  width: 150px;
+  height: 45px;
+  margin-top: 20px;
+  margin-bottom: 50px;
+  text-align: center;
+  border-radius: 20px;
+}
+.addButton label {
+  cursor: pointer;
+  line-height: 45px;
+}
+.imageContainer {
+  margin: 10px auto;
+}
+.buttonWrap {
+  width: 110px;
+  margin: 10px auto;
+}
+
+.imageContainer img {
+  border-radius: 10px;
+  width: 250px;
+  height: 250px;
+  padding: 10px;
+}

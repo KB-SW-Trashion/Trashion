@@ -8,6 +8,9 @@ const userInfoState = atom({
     follower_amount: 0,
     height: 0,
     weight: 0,
+    top_size: '',
+    bottom_size: '',
+    introduce: '',
   },
 });
 

@@ -1,5 +1,4 @@
 from django.urls import path
-from accounts import views
 from .views import login, user_edit
 urlpatterns = [
   
@@ -9,10 +8,9 @@ urlpatterns = [
     path('kakao/authenticate/', login.authenticate_kakao),
     path('kakao/login/allauth/', login.KakaoLogin.as_view()),
 
-    path('naver/login/', login.naver_login, name='naver_login'),
-    path('naver/callback/', login.naver_callback, name='naver_callback'),
-    path('naver/login/finish/', login.NaverLogin.as_view(),
-         name='naver_login_todjango'),
+    # path('naver/login/', login.naver_login, name='naver_login'),
+    # path('naver/callback/', login.naver_callback, name='naver_callback'),
+    # path('naver/login/finish/', login.NaverLogin.as_view(), name='naver_login_todjango'),
     
     path('detail/<str:email>', user_edit.UserDetailAPIView.as_view(), name='user_detail')
 ]

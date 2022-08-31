@@ -1,8 +1,6 @@
-from rest_framework_simplejwt.tokens import RefreshToken
-from django.core.exceptions import ValidationError as DjangoValidationError, ObjectDoesNotExist
-from allauth.account.adapter import get_adapter
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
+
 from .models import *
 
 User = get_user_model()
@@ -35,7 +33,6 @@ class CategorySerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
-    # user_id = serializers.ModelField(model_field=User._meta.get_field('id'), required=False)
 
     class Meta:
         model = Item
