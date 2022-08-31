@@ -41,6 +41,7 @@ class ItemSerializer(serializers.ModelSerializer):
     # Photo, StylePhoto
     def create(self, validated_data):
         images_data = self.context['request'].FILES
+        print(images_data)
         item = Item.objects.create(**validated_data)
         for photo_data in images_data.getlist('photos_data'):
             Photo.objects.create(item_id=item, photo=photo_data)

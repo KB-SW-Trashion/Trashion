@@ -9,8 +9,6 @@ import categorydata from './Category.json';
 import productState from 'store/productState';
 
 const SelectBox = () => {
-  //   const [category, setCategory] = useState([]);
-  //   const [big_categoryid, setbig_categoryid] = useState('');
   const [product, setProduct] = useRecoilState(productState);
   const [, setSmallCategoryId] = useState('');
   const [smallCategory, setSmallCategory] = useState([]);

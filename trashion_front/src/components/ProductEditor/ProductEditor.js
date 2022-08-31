@@ -25,21 +25,38 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const resetProduct = useResetRecoilState(productState);
 
   const onCreate = (product) => {
-    const formData = new FormData();
-    Object.keys(product).forEach((key) => formData.append(key, product[key]));
-    axios
-      .post('/item_post/item/', formData, tokenConfig('form_data'))
-      .then((res) => {
-        if (res.data) {
-          console.log(res);
-          resetProduct();
-        }
-      })
-      .catch((err) => {
-        console.log('error:', err);
-        console.log('data:', formData);
-        resetProduct();
+    const category = {
+      big_category: product.big_category,
+      small_category: product.small_category,
+    };
+    axios.post('item_post/category/', category).then((res) => {
+      console.log(res.data);
+      axios.get('item_post/category/').then((res) => {
+        const category_data = res.data;
+        console.log(res.data);
+        const category_filter = category_data.filter((i) => i.small_category === product.small_category);
+        const id = category_filter[0].id;
+        console.log('아이디', id);
+        product.category_id = id;
+        console.log('바꾼 아이디', product.category_id);
+        const formData = new FormData();
+        Object.keys(product).forEach((key) => formData.append(key, product[key]));
+        console.log('최종확인', formData.get('category_id'));
+        axios
+          .post('/item_post/item/', formData, tokenConfig())
+          .then((res) => {
+            if (res.data) {
+              console.log(res);
+              resetProduct();
+            }
+          })
+          .catch((err) => {
+            console.log('error:', err);
+            console.log('data:', formData);
+            resetProduct();
+          });
       });
+    });
   };
 
   const IsPrice = (e) => {

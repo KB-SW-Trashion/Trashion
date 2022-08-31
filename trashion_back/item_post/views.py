@@ -1,3 +1,4 @@
+from cgitb import small
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -65,7 +66,7 @@ class ItemViewSet(ModelViewSet):
                 {"message": "주소정보를 모두 입력해주세요."},
                 status=status.HTTP_400_BAD_REQUEST
             )
-
+            
         # photo, stylephoto > serializers.py의 create()에서 처리
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -273,6 +274,20 @@ class ItemViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    pagination_class = None
+    authentication_classes = (JWTCookieAuthentication,)
+    permission_classes = (AllowAny,)
+
+    
+    def create(self, request, *args, **kwargs):
+        big_category= request.data['big_category']
+        small_category = request.data['small_category']
+        category = Category.objects.filter(small_category = small_category)
+        if len(category) == 0:
+            print('create')
+            Category.objects.create(big_category=big_category, small_category=small_category)
+            
+        return Response(status.HTTP_201_CREATED)
 
 
 class PhotoViewSet(ModelViewSet):
