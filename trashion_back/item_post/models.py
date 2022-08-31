@@ -5,28 +5,18 @@ User = get_user_model()
 
 
 class Category(models.Model):
-    CLOTHES_CHOICES = (
-        ('outer', '아우터'),
-        ('dress', '원피스'),
-        ('top', '상의'),
-        ('pants', '바지'),
-        ('skirt', '스커트'),
-        ('shoes', '신발'),
-        ('accessory', '악세사리'),
-    )
-    big_category = models.CharField(max_length=20, choices=CLOTHES_CHOICES)
+    big_category = models.CharField(max_length=20)
     small_category = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.big_category + self.small_category
+        return self.big_category + "-" + self.small_category
 
 
 class Item(models.Model):
     user_id = models.ForeignKey(User, related_name='item_sets', on_delete=models.CASCADE)
     category_id = models.ForeignKey(Category, related_name='item_sets', on_delete=models.DO_NOTHING)
-    description = models.TextField()
-    feature = models.TextField()
-    product_defect = models.TextField()
+    title = models.TextField()
+    content = models.TextField()
     size = models.CharField(max_length=6)
     height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
     weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
@@ -37,7 +27,7 @@ class Item(models.Model):
     sold_out = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.description
+        return self.title
 
 
 class Location(models.Model):
