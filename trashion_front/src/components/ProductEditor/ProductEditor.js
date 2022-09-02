@@ -14,6 +14,7 @@ import { radioSX, labelSX, CssTextField } from './CssInput';
 import productState from 'store/productState';
 import axios from 'axios';
 import tokenConfig from 'api/tokenConfig';
+import category from 'api/category';
 
 const ProductEditor = ({ isEdit, originData, isNew }) => {
   const titleRef = useRef();
@@ -25,23 +26,30 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const resetProduct = useResetRecoilState(productState);
 
   const onCreate = (product) => {
-    const category = {
+    console.log(product);
+    const category_data = {
       big_category: product.big_category,
       small_category: product.small_category,
     };
-    axios.post('item_post/category/', category).then((res) => {
-      console.log(res.data);
-      axios.get('item_post/category/').then((res) => {
-        const category_data = res.data;
-        console.log(res.data);
-        const category_filter = category_data.filter((i) => i.small_category === product.small_category);
+    category.postCategory(category_data).then(() => {
+      category.getCategoryId().then((res) => {
+        const category = res.data;
+        const category_filter = category.filter((i) => i.small_category === product.small_category);
         const id = category_filter[0].id;
-        console.log('아이디', id);
         product.category_id = id;
-        console.log('바꾼 아이디', product.category_id);
+        console.log(product);
         const formData = new FormData();
+        if (product.photos_data.length >= 1) {
+          for (var i = 0; i < product.photos_data.length; i++) {
+            formData.append('photos_data', product.photos_data[i]);
+          }
+        }
+        if (product.style_photos_data.length >= 1) {
+          for (var j = 0; j < product.style_photos_data.length; j++) {
+            formData.append('style_photos_data', product.style_photos_data[j]);
+          }
+        }
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
-        console.log('최종확인', formData.get('category_id'));
         axios
           .post('/item_post/item/', formData, tokenConfig())
           .then((res) => {
@@ -53,7 +61,7 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
           .catch((err) => {
             console.log('error:', err);
             console.log('data:', formData);
-            resetProduct();
+            // resetProduct();
           });
       });
     });
@@ -63,7 +71,6 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProduct({ ...product, price: curValue.replace(notNum, '') });
-    console.log(product);
   };
 
   const IsPeriod = (e) => {

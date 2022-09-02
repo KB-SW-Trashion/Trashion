@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { PostButton } from 'components';
 import { productState } from 'store';
 import { useRecoilState } from 'recoil';
-// import axios from 'axios';
 import styles from './ImageUploader.module.css';
 
 const ImageUploader = () => {
@@ -26,7 +25,6 @@ const ImageUploader = () => {
     }
 
     setShowProductImages(imageUrlLists);
-
     setProduct({ ...product, photos_data: imageLists });
   };
 

@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Item, Category, Photo, StylePhoto
@@ -28,6 +29,7 @@ class IsOwner(permissions.BasePermission):
 class ItemViewSet(ModelViewSet):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    parser_classes = (MultiPartParser, FormParser)
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['description']    # ?search=
     ordering_fields = ['created_at']  # ?ordering=
@@ -283,8 +285,7 @@ class CategoryViewSet(ModelViewSet):
         big_category= request.data['big_category']
         small_category = request.data['small_category']
         category = Category.objects.filter(small_category = small_category)
-        if len(category) == 0:
-            print('create')
+        if len(category) == 0 and big_category is not None and small_category is not None:
             Category.objects.create(big_category=big_category, small_category=small_category)
             
         return Response(status.HTTP_201_CREATED)

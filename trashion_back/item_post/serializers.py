@@ -13,12 +13,14 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+    # photo = serializers.ImageField()
     class Meta:
         model = Photo
         fields = ['item_id', 'photo']
 
 
 class StylePhotoSerializer(serializers.ModelSerializer):
+    # photo = serializers.ImageField()
     class Meta:
         model = StylePhoto
         fields = ['item_id', 'user_id', 'photo']
@@ -41,14 +43,12 @@ class ItemSerializer(serializers.ModelSerializer):
     # Photo, StylePhoto
     def create(self, validated_data):
         images_data = self.context['request'].FILES
-        print(images_data)
         item = Item.objects.create(**validated_data)
         for photo_data in images_data.getlist('photos_data'):
             Photo.objects.create(item_id=item, photo=photo_data)
         for style_photo_data in images_data.getlist('style_photos_data'):
             StylePhoto.objects.create(item_id=item, user_id=self.context['request'].user,
                                       photo=style_photo_data)
-        print(User()._meta.get_field('id'))
         return item
 
     def update(self, instance, validated_data):
