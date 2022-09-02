@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ProductStateContext } from '../../App';
 import { ProductEditor } from 'components';
 
 const Edit = () => {
@@ -9,7 +8,7 @@ const Edit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const productList = useContext(ProductStateContext);
+  const productList = 1;
 
   useEffect(() => {
     if (productList.length >= 1) {

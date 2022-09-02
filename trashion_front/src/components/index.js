@@ -24,3 +24,4 @@ export { default as Progessbar } from './ProgessBar/Progessbar';
 export { default as SelectBox } from './Category/SelectBox';
 export { default as LocationCategory } from './LocationCategory/LocationCategory';
 export { default as hangjungdong } from './LocationCategory/hangjungdong';
+export { default as Product_detail_img } from './Product_img/Product_detail_img';
