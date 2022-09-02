@@ -29,6 +29,10 @@ const ProductEditor = ({ isEdit, isNew }) => {
 
   const onCreate = (product) => {
     console.log(product);
+    if (product.photos.length < 1) {
+      alert('제품 사진을 한장 이상 올려주세요!');
+      return;
+    }
     const category_data = {
       big_category: product.big_category,
       small_category: product.small_category,
