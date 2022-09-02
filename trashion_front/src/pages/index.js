@@ -7,3 +7,4 @@ export { default as Product_detail } from './Product_detail/Product_detail';
 export { default as New } from './New/New';
 export { default as Edit } from './Edit/Edit';
 export { default as TestPage } from './TestPage/TestPage';
+export { default as New_Profile } from './New_Profile/New_Profile';
