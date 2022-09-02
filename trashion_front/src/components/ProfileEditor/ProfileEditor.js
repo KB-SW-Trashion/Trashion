@@ -19,14 +19,13 @@ export default function ProductEditor() {
   const [profile, setProfile] = useState({});
 
   useEffect(() => {
-    setUserInfo(userInfo);
+    setUserInfo({ nickname: userInfo.nickname, profile: {} });
     setProfile(userInfo);
   }, []);
 
   const isNickname = (e) => {
     const curValue = e.currentTarget.value;
     setUserInfo({ ...editUserInfo, nickname: curValue });
-    setUserInfo({ ...editUserInfo, profile: profile });
   };
 
   const isIntroduce = (e) => {
