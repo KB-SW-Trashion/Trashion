@@ -85,7 +85,7 @@ export default function MyPage() {
                 비밀번호 수정
               </Fab>
             </Link>
-            <Link to="/">
+            <Link to="/New_Profile">
               <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
                 내 정보 수정
               </Fab>

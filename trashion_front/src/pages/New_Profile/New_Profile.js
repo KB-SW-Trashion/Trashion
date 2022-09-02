@@ -1,11 +1,11 @@
 import React from 'react';
 import { ProfileEditor, Navbar } from 'components';
 import styles from '../MyPage/MyPage.module.css';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { userInfoState } from 'store';
 
 export default function New_Profile() {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const userInfo = useRecoilValue(userInfoState);
 
   return (
     <div>

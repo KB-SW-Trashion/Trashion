@@ -102,6 +102,7 @@ function Login() {
             .then((res) => {
               console.log('카카오로그인 성공', res.data);
               saveUserInfo(res.data.access_token, res.data.refresh_token);
+              navigate('/');
             })
             .catch((err) => {
               console.log('실패', err);
