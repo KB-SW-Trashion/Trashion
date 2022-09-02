@@ -42,6 +42,7 @@ export default function MyPage() {
         top_size: res.data.profile.top_size,
         bottom_size: res.data.profile.bottom_size,
         introduce: res.data.profile.introduce,
+        like_item_count: res.data.profile.like_item_count,
       });
     });
   };
@@ -75,7 +76,7 @@ export default function MyPage() {
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.top_size}</p>
-                <p> 누적 좋아요 수 : [total_like]</p>
+                <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
               </div>
             </div>
           </div>
