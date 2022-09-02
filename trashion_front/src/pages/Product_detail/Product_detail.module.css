@@ -49,6 +49,7 @@
 }
 
 .img_small_wrap {
+  width: 428px;
   display: flex;
   justify-content: center;
   align-items: center;

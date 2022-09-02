@@ -55,4 +55,4 @@ class StylePhoto(models.Model):
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
     
     def __str__(self):
-        return self.item_id.description
+        return self.item_id.title

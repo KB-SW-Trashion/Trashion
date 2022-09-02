@@ -1,7 +1,5 @@
-import { ProductDispatchContext } from '../../App';
-import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory } from 'components';
-import Navbar from 'components/Navbar/Navbar';
-import React, { useRef, useContext } from 'react';
+import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory, Navbar } from 'components';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
@@ -16,7 +14,7 @@ import axios from 'axios';
 import tokenConfig from 'api/tokenConfig';
 import category from 'api/category';
 
-const ProductEditor = ({ isEdit, originData, isNew }) => {
+const ProductEditor = ({ isEdit, isNew }) => {
   const titleRef = useRef();
   const contentRef = useRef();
   const priceRef = useRef();
@@ -24,6 +22,10 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
 
   const [product, setProduct] = useRecoilState(productState);
   const resetProduct = useResetRecoilState(productState);
+
+  useEffect(() => {
+    resetProduct();
+  }, []);
 
   const onCreate = (product) => {
     console.log(product);
@@ -39,14 +41,14 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
         product.category_id = id;
         console.log(product);
         const formData = new FormData();
-        if (product.photos_data.length >= 1) {
-          for (var i = 0; i < product.photos_data.length; i++) {
-            formData.append('photos_data', product.photos_data[i]);
+        if (product.photos.length >= 1) {
+          for (var i = 0; i < product.photos.length; i++) {
+            formData.append('photos_data', product.photos[i]);
           }
         }
-        if (product.style_photos_data.length >= 1) {
-          for (var j = 0; j < product.style_photos_data.length; j++) {
-            formData.append('style_photos_data', product.style_photos_data[j]);
+        if (product.style_photos.length >= 1) {
+          for (var j = 0; j < product.style_photos.length; j++) {
+            formData.append('style_photos_data', product.style_photos[j]);
           }
         }
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
@@ -55,13 +57,16 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
           .then((res) => {
             if (res.data) {
               console.log(res);
+              setProduct({ ...product, id: res.data.id });
               resetProduct();
+              navigate('/');
             }
           })
           .catch((err) => {
             console.log('error:', err);
             console.log('data:', formData);
-            // resetProduct();
+            resetProduct();
+            alert('글을 작성 할 수 없습니다.');
           });
       });
     });
@@ -93,8 +98,6 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
     setProduct({ ...product, weight: curValue.replace(notNum, '') });
   };
 
-  const { onEdit, onRemove } = useContext(ProductDispatchContext);
-
   const navigate = useNavigate();
 
   const handleSubmit = () => {
@@ -110,25 +113,14 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
       if (!isEdit) {
         onCreate(product);
       } else {
-        onEdit(
-          originData.id,
-          originData.date,
-          originData.title,
-          originData.content,
-          originData.price,
-          originData.size,
-          originData.condition,
-          originData.big_category,
-          originData.small_category,
-          originData.period,
-        );
+        console.log(isEdit);
       }
     }
   };
 
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      onRemove(originData.id);
+      console.log(1);
     }
   };
 

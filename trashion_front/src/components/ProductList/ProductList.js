@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Product } from 'components';
 import styles from './ProductList.module.css';
 
-const ProductList = ({ productList }) => {
-  // const getProcessedProductList = () => {
-  //   // const copyList = JSON.parse(JSON.stringify(productList));
-  //   return productList;
-  // };
+const ProductList = () => {
+  const [productList, setProductList] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const { data: response } = await axios.get('/item_post/item');
+        setProductList(response.results);
+      } catch (err) {
+        console.log('err: ', err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <>
-      <ul className={styles.contents}>
-        {productList.map((it) => (
-          <Product key={it.id} {...it} />
-        ))}
-      </ul>
+      <ul className={styles.contents}>{productList && productList.map((it) => <Product key={it.id} {...it} />)}</ul>
     </>
   );
 };

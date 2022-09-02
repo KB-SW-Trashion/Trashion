@@ -14,7 +14,4 @@ export default {
   getUser() {
     return axios.get('dj-rest-auth/user/', tokenConfig());
   },
-  // register(data) {
-  //   axios.post('/dj-rest-auth/registration/', data);
-  // },
 };

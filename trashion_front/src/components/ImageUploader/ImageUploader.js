@@ -13,7 +13,12 @@ const ImageUploader = () => {
   const handleAddProductImages = (event) => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showProductImages];
-    // base64 저장
+
+    if (imageLists.length > 4 || showProductImages.length > 3) {
+      alert('이미지는 4개 이하로 업로드 해 주세요!');
+      return;
+    }
+    console.log(showProductImages.length);
 
     for (let i = 0; i < imageLists.length; i++) {
       if (imageLists[i].type !== 'image/jpeg' && imageLists[i].type !== 'image/jpg' && imageLists[i].type !== 'image/png') {
@@ -25,15 +30,16 @@ const ImageUploader = () => {
     }
 
     setShowProductImages(imageUrlLists);
-    setProduct({ ...product, photos_data: imageLists });
+    setProduct({ ...product, photos: imageLists });
   };
 
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteProductImage = (id) => {
     setShowProductImages(showProductImages.filter((_, index) => index !== id));
-    let fileArray = Array.from(product.photos_data);
+    let fileArray = Array.from(product.photos);
     fileArray.splice(id, 1);
-    setProduct({ ...product, photos_data: fileArray });
+    setProduct({ ...product, photos: fileArray });
+    console.log(showProductImages.length);
   };
 
   //style Image
@@ -41,10 +47,14 @@ const ImageUploader = () => {
   const handleAddStyleImages = (event) => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showStyleImages];
+    if (imageLists.length > 4 || showStyleImages.length > 3) {
+      alert('이미지는 4개 이하로 업로드 해 주세요!');
+      return;
+    }
 
     for (let i = 0; i < imageLists.length; i++) {
       if (imageLists[i].type !== 'image/jpeg' && imageLists[i].type !== 'image/jpg' && imageLists[i].type !== 'image/png') {
-        alert('이미지 파일만 업로드 해주세요!');
+        alert('이미지 파일만 업로드 해 주세요!');
         return;
       }
       const currentImageUrl = URL.createObjectURL(imageLists[i]);
@@ -53,14 +63,14 @@ const ImageUploader = () => {
 
     setShowStyleImages(imageUrlLists);
 
-    setProduct({ ...product, style_photos_data: imageLists });
+    setProduct({ ...product, style_photos: imageLists });
   };
 
   const handleDeleteStyleImage = (id) => {
     setShowStyleImages(showStyleImages.filter((_, index) => index !== id));
-    let fileArray = Array.from(product.style_photos_data);
+    let fileArray = Array.from(product.style_photos);
     fileArray.splice(id, 1);
-    setProduct({ ...product, style_photos_data: fileArray });
+    setProduct({ ...product, style_photos: fileArray });
   };
 
   return (
