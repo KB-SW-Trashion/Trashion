@@ -27,20 +27,17 @@ export default function ProductEditor() {
       weight: userInfo.weight,
     });
     setUserInfo({ nickname: userInfo.nickname, profile: profile });
-    console.log(editUserInfo);
   }, []);
 
   const isNickname = (e) => {
     const curValue = e.currentTarget.value;
     setUserInfo({ ...editUserInfo, nickname: curValue });
-    console.log(editUserInfo);
   };
 
   const isIntroduce = (e) => {
     const curValue = e.currentTarget.value;
     setProfile({ ...profile, introduce: curValue });
     setUserInfo({ ...editUserInfo, profile: profile });
-    console.log(editUserInfo);
   };
 
   const IsHeight = (e) => {
@@ -48,7 +45,6 @@ export default function ProductEditor() {
     const notNum = /[^0-9]/g;
     setProfile({ ...profile, height: curValue.replace(notNum, '') });
     setUserInfo({ ...editUserInfo, profile: profile });
-    console.log(editUserInfo);
   };
 
   const IsWeight = (e) => {
@@ -56,7 +52,6 @@ export default function ProductEditor() {
     const notNum = /[^0-9]/g;
     setProfile({ ...profile, weight: curValue.replace(notNum, '') });
     setUserInfo({ ...editUserInfo, profile: profile });
-    console.log(editUserInfo);
   };
 
   const resetNickname = () => {
@@ -120,6 +115,7 @@ export default function ProductEditor() {
         <CssTextField
           onClick={resetBottom}
           value={profile.bottom_size}
+          inputProps={{ maxLength: 2 }}
           required
           id="standard-required"
           label="ex. 26, 36, 28"
@@ -131,11 +127,11 @@ export default function ProductEditor() {
       <p>
         키
         <br />
-        <CssTextField onClick={resetHeight} value={profile.height} inputProps={{ maxLength: 5 }} onChange={IsHeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
+        <CssTextField onClick={resetHeight} value={profile.height} inputProps={{ maxLength: 3 }} onChange={IsHeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
       </p>
       <p>
         몸무게 <br />
-        <CssTextField onClick={resetWeight} value={profile.weight} inputProps={{ maxLength: 5 }} onChange={IsWeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
+        <CssTextField onClick={resetWeight} value={profile.weight} inputProps={{ maxLength: 3 }} onChange={IsWeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
       </p>
       <br />
       <br />

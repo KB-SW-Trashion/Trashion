@@ -56,8 +56,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     introduce = models.TextField(max_length=140, null=True)
     profile_image = models.URLField(null=True, blank=True)
-    height = models.DecimalField(max_digits=4, decimal_places=1, default=0, null=True)
-    weight = models.DecimalField(max_digits=4, decimal_places=1, default=0, null=True)
+    height = models.CharField(max_length=3)
+    weight = models.CharField(max_length=3)
     top_size = models.CharField(max_length=5)
     bottom_size = models.CharField(max_length=5)
     
