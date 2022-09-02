@@ -1,6 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Navbar, Footer, Category, ProductList } from 'components';
-import { ProductStateContext } from '../../App';
 import styles from './Home.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShirt, faUserTie } from '@fortawesome/free-solid-svg-icons';
@@ -19,15 +18,6 @@ export default function Home() {
     }
     setTabState(newTabState);
   };
-
-  const productList = useContext(ProductStateContext);
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    if (productList.length >= 1) {
-      setData(productList);
-    }
-  }, [productList]);
 
   return (
     <div>
@@ -49,7 +39,7 @@ export default function Home() {
           </div>
 
           <ul className={styles.contents}>
-            <ProductList productList={data} />
+            <ProductList />
           </ul>
         </div>
       </div>
