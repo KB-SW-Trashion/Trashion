@@ -19,19 +19,28 @@ export default function ProductEditor() {
   const [profile, setProfile] = useState({});
 
   useEffect(() => {
-    setUserInfo({ nickname: userInfo.nickname, profile: {} });
-    setProfile(userInfo);
+    setProfile({
+      introduce: userInfo.introduce,
+      top_size: userInfo.top_size,
+      bottom_size: userInfo.bottom_size,
+      height: userInfo.height,
+      weight: userInfo.weight,
+    });
+    setUserInfo({ nickname: userInfo.nickname, profile: profile });
+    console.log(editUserInfo);
   }, []);
 
   const isNickname = (e) => {
     const curValue = e.currentTarget.value;
     setUserInfo({ ...editUserInfo, nickname: curValue });
+    console.log(editUserInfo);
   };
 
   const isIntroduce = (e) => {
     const curValue = e.currentTarget.value;
     setProfile({ ...profile, introduce: curValue });
     setUserInfo({ ...editUserInfo, profile: profile });
+    console.log(editUserInfo);
   };
 
   const IsHeight = (e) => {
@@ -39,14 +48,15 @@ export default function ProductEditor() {
     const notNum = /[^0-9]/g;
     setProfile({ ...profile, height: curValue.replace(notNum, '') });
     setUserInfo({ ...editUserInfo, profile: profile });
+    console.log(editUserInfo);
   };
 
   const IsWeight = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
-
     setProfile({ ...profile, weight: curValue.replace(notNum, '') });
     setUserInfo({ ...editUserInfo, profile: profile });
+    console.log(editUserInfo);
   };
 
   const resetNickname = () => {
