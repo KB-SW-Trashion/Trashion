@@ -64,7 +64,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
 
     blocked_user = BlockUserListingField(many=True, read_only=True)
     
-    profile = ProfileSerializer()
+    profile = ProfileSerializer(partial=True)
     
     id = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
@@ -81,4 +81,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
         for k, v in profile_data.items():
             setattr(profile, k, v)
         profile.save()
+        
+        instance.nickname = validated_data.get('nickname', instance.nickname)
+        instance.save()
         return instance
