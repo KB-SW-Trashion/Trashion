@@ -6,7 +6,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { radioSX, CssTextField } from '../ProductEditor/CssInput';
 import { useRecoilValue } from 'recoil';
-import { userInfoState } from 'store';
+import userInfoState from 'store/userInfoState';
 import userEdit from 'api/userInfo';
 import authState from 'store/authState';
 import { Link } from 'react-router-dom';
@@ -15,7 +15,8 @@ export default function ProductEditor() {
   const userInfo = useRecoilValue(userInfoState);
   const userAuth = useRecoilValue(authState);
   const email = userAuth.email;
-  const [editUserInfo, setUserInfo] = useState({});
+
+  const [editUserInfo, setUserInfo] = useState({ nickname: userInfo.nickname });
   const [profile, setProfile] = useState({});
 
   useEffect(() => {
@@ -30,7 +31,7 @@ export default function ProductEditor() {
   }, []);
 
   useEffect(() => {
-    setUserInfo({ nickname: userInfo.nickname, profile: profile });
+    setUserInfo({ nickname: editUserInfo.nickname, profile: profile });
   }, [profile]);
 
   const isNickname = (e) => {
@@ -41,14 +42,12 @@ export default function ProductEditor() {
   const isIntroduce = (e) => {
     const curValue = e.currentTarget.value;
     setProfile({ ...profile, introduce: curValue });
-    setUserInfo({ ...editUserInfo, profile: profile });
   };
 
   const isNum = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProfile({ ...profile, [e.target.name]: curValue.replace(notNum, '') });
-    setUserInfo({ ...editUserInfo, profile: profile });
   };
 
   const resetNickname = () => {
@@ -62,9 +61,6 @@ export default function ProductEditor() {
   const handleSubmit = () => {
     setProfile({ ...profile, profile: profile });
     setUserInfo({ ...editUserInfo, profile: profile });
-    console.log(profile);
-    console.log(editUserInfo);
-
     onCreate(editUserInfo);
   };
 
