@@ -32,6 +32,7 @@ export default function MyPage() {
 
   const getUser = async () => {
     await user.getUserInfo(email).then((res) => {
+      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         social_profile: res.data.social_profile,
@@ -44,6 +45,7 @@ export default function MyPage() {
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
       });
+      console.log(userInfo);
     });
   };
 
