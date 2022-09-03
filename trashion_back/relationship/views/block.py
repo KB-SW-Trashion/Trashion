@@ -9,7 +9,8 @@ User = get_user_model()
 
 @api_view(['POST'])
 def block(request): #requset에 팔로우할 대상 email 담아서 넘기기
-    user = request.user
+    user_id = request.data['user']
+    user = User.objects.get(pk=user_id)
 
     email = request.data['email']
     blocked_user = User.objects.get(email=email)
