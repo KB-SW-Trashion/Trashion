@@ -43,7 +43,6 @@ const ProductEditor = ({ isEdit, isNew }) => {
         const category_filter = category.filter((i) => i.small_category === product.small_category);
         const id = category_filter[0].id;
         product.category_id = id;
-        console.log(product);
         const formData = new FormData();
         if (product.photos.length >= 1) {
           for (var i = 0; i < product.photos.length; i++) {
@@ -76,30 +75,10 @@ const ProductEditor = ({ isEdit, isNew }) => {
     });
   };
 
-  const IsPrice = (e) => {
+  const isNum = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
-    setProduct({ ...product, price: curValue.replace(notNum, '') });
-  };
-
-  const IsPeriod = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-
-    setProduct({ ...product, period: curValue.replace(notNum, '') });
-  };
-
-  const IsHeight = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-
-    setProduct({ ...product, height: curValue.replace(notNum, '') });
-  };
-  const IsWeight = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-
-    setProduct({ ...product, weight: curValue.replace(notNum, '') });
+    setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
   };
 
   const navigate = useNavigate();
@@ -165,9 +144,10 @@ const ProductEditor = ({ isEdit, isNew }) => {
 
             <div className={styles.input_box}>
               <CssTextField
+                name="price"
                 ref={priceRef}
                 value={product.price + '원'}
-                onChange={IsPrice}
+                onChange={isNum}
                 inputProps={{ maxLength: 10 }}
                 focusColor="#f8bbd0"
                 required
@@ -178,10 +158,11 @@ const ProductEditor = ({ isEdit, isNew }) => {
             </div>
             <div className={styles.input_box}>
               <CssTextField
+                name="period"
                 ref={periodRef}
                 value={product.period + '개월'}
                 inputProps={{ maxLength: 5 }}
-                onChange={IsPeriod}
+                onChange={isNum}
                 focusColor="#f8bbd0"
                 required
                 id="outlined-required"
@@ -190,10 +171,30 @@ const ProductEditor = ({ isEdit, isNew }) => {
               />
             </div>
             <div className={styles.input_box}>
-              <CssTextField value={product.height + 'cm'} inputProps={{ maxLength: 5 }} onChange={IsHeight} focusColor="#f8bbd0" required id="outlined-required" label="키" variant="outlined" />
+              <CssTextField
+                name="height"
+                value={product.height + 'cm'}
+                inputProps={{ maxLength: 5 }}
+                onChange={isNum}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="키"
+                variant="outlined"
+              />
             </div>
             <div className={styles.input_box}>
-              <CssTextField value={product.weight + 'kg'} inputProps={{ maxLength: 5 }} onChange={IsWeight} focusColor="#f8bbd0" required id="outlined-required" label="몸무게" variant="outlined" />
+              <CssTextField
+                name="weight"
+                value={product.weight + 'kg'}
+                inputProps={{ maxLength: 5 }}
+                onChange={isNum}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="몸무게"
+                variant="outlined"
+              />
             </div>
             <div className={styles.radio_box}>
               <FormControl>

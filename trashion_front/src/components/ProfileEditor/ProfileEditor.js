@@ -29,6 +29,10 @@ export default function ProductEditor() {
     setUserInfo({ nickname: userInfo.nickname, profile: profile });
   }, []);
 
+  useEffect(() => {
+    setUserInfo({ nickname: userInfo.nickname, profile: profile });
+  }, [profile]);
+
   const isNickname = (e) => {
     const curValue = e.currentTarget.value;
     setUserInfo({ ...editUserInfo, nickname: curValue });
@@ -40,17 +44,10 @@ export default function ProductEditor() {
     setUserInfo({ ...editUserInfo, profile: profile });
   };
 
-  const IsHeight = (e) => {
+  const isNum = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
-    setProfile({ ...profile, height: curValue.replace(notNum, '') });
-    setUserInfo({ ...editUserInfo, profile: profile });
-  };
-
-  const IsWeight = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-    setProfile({ ...profile, weight: curValue.replace(notNum, '') });
+    setProfile({ ...profile, [e.target.name]: curValue.replace(notNum, '') });
     setUserInfo({ ...editUserInfo, profile: profile });
   };
 
@@ -58,24 +55,16 @@ export default function ProductEditor() {
     setUserInfo({ ...editUserInfo, nickname: '' });
   };
 
-  const resetIntro = () => {
-    setProfile({ ...profile, introduce: '' });
-  };
-
-  const resetBottom = () => {
-    setProfile({ ...profile, bottom_size: '' });
-  };
-
-  const resetHeight = () => {
-    setProfile({ ...profile, height: '' });
-  };
-
-  const resetWeight = () => {
-    setProfile({ ...profile, weight: '' });
+  const resetProfile = (e) => {
+    setProfile({ ...profile, [e.target.name]: '' });
   };
 
   const handleSubmit = () => {
+    setProfile({ ...profile, profile: profile });
     setUserInfo({ ...editUserInfo, profile: profile });
+    console.log(profile);
+    console.log(editUserInfo);
+
     onCreate(editUserInfo);
   };
 
@@ -93,7 +82,7 @@ export default function ProductEditor() {
       <p>
         자기소개
         <br />
-        <CssTextField onClick={resetIntro} required id="standard-required" value={profile.introduce} variant="standard" focusColor="#f8bbd0" onChange={isIntroduce} />
+        <CssTextField name="introduce" onClick={resetProfile} required id="standard-required" value={profile.introduce} variant="standard" focusColor="#f8bbd0" onChange={isIntroduce} />
       </p>
       <p>
         상의 사이즈
@@ -113,7 +102,8 @@ export default function ProductEditor() {
         하의 사이즈
         <br />
         <CssTextField
-          onClick={resetBottom}
+          name="bottom_size"
+          onClick={resetProfile}
           value={profile.bottom_size}
           inputProps={{ maxLength: 2 }}
           required
@@ -127,11 +117,31 @@ export default function ProductEditor() {
       <p>
         키
         <br />
-        <CssTextField onClick={resetHeight} value={profile.height} inputProps={{ maxLength: 3 }} onChange={IsHeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
+        <CssTextField
+          name="height"
+          onClick={resetProfile}
+          value={profile.height}
+          inputProps={{ maxLength: 3 }}
+          onChange={isNum}
+          focusColor="#f8bbd0"
+          required
+          id="standard-require"
+          variant="standard"
+        />
       </p>
       <p>
         몸무게 <br />
-        <CssTextField onClick={resetWeight} value={profile.weight} inputProps={{ maxLength: 3 }} onChange={IsWeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
+        <CssTextField
+          name="weight"
+          onClick={resetProfile}
+          value={profile.weight}
+          inputProps={{ maxLength: 3 }}
+          onChange={isNum}
+          focusColor="#f8bbd0"
+          required
+          id="standard-require"
+          variant="standard"
+        />
       </p>
       <br />
       <br />
