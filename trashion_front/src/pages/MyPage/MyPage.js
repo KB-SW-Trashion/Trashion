@@ -32,6 +32,7 @@ export default function MyPage() {
 
   const getUser = async () => {
     await user.getUserInfo(email).then((res) => {
+      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         social_profile: res.data.social_profile,
@@ -42,8 +43,9 @@ export default function MyPage() {
         top_size: res.data.profile.top_size,
         bottom_size: res.data.profile.bottom_size,
         introduce: res.data.profile.introduce,
-        like_item_count: res.data.profile.like_item_count,
+        like_item_count: res.data.like_item_count,
       });
+      console.log(userInfo);
     });
   };
 

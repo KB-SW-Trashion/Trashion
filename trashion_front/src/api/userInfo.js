@@ -6,6 +6,6 @@ export default {
   },
 
   editUserInfo(user_id, data) {
-    return axios.put('/accounts/detail/' + user_id, data);
+    return axios.patch('/accounts/detail/' + user_id, data);
   },
 };
