@@ -115,6 +115,7 @@ export default function ProductEditor() {
         <CssTextField
           onClick={resetBottom}
           value={profile.bottom_size}
+          inputProps={{ maxLength: 2 }}
           required
           id="standard-required"
           label="ex. 26, 36, 28"
@@ -126,11 +127,11 @@ export default function ProductEditor() {
       <p>
         키
         <br />
-        <CssTextField onClick={resetHeight} value={profile.height} inputProps={{ maxLength: 5 }} onChange={IsHeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
+        <CssTextField onClick={resetHeight} value={profile.height} inputProps={{ maxLength: 3 }} onChange={IsHeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
       </p>
       <p>
         몸무게 <br />
-        <CssTextField onClick={resetWeight} value={profile.weight} inputProps={{ maxLength: 5 }} onChange={IsWeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
+        <CssTextField onClick={resetWeight} value={profile.weight} inputProps={{ maxLength: 3 }} onChange={IsWeight} focusColor="#f8bbd0" required id="standard-require" variant="standard" />
       </p>
       <br />
       <br />
