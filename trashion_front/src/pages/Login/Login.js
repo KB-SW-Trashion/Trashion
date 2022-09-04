@@ -10,6 +10,7 @@ import { gapi } from 'gapi-script';
 import { setCookie, deleteCookie } from 'cookies-next';
 import { useRecoilState } from 'recoil';
 import { authState } from 'store';
+import googlelogo from 'assets/image/googlelogo.png';
 
 function Login() {
   const [password, setPassword] = useState('');
@@ -212,11 +213,21 @@ function Login() {
             <SubmitButton name="로그인" onSubmit={onSubmit} />
           </div>
           <div className={styles.social_login_wrap}>
-            <KakaoLoginButton kakaoLogin={kakaoLogin} />
+            <KakaoLoginButton kakaoLogin={kakaoLogin}></KakaoLoginButton>
           </div>
           <div className={styles.social_login_wrap}>
             <div className={styles.google_login}>
-              <GoogleLogin clientId={clientID} buttonText={'구글 로그인'} onSuccess={onSuccess} responseType={'id_token'} onFailure={onFailure} />
+              <GoogleLogin
+                clientId={clientID}
+                onSuccess={onSuccess}
+                responseType={'id_token'}
+                onFailure={onFailure}
+                render={(renderProps) => (
+                  <button onClick={renderProps.onClick} className={styles.GoogleLoginbutton}>
+                    <img src={googlelogo} width="25px" className={styles.googlelogo}></img> <font className={styles.googlefont}>구글로 로그인</font>
+                  </button>
+                )}
+              ></GoogleLogin>
             </div>
           </div>
         </form>
