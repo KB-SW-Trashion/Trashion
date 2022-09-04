@@ -1,4 +1,7 @@
 import { atom } from 'recoil';
+import { recoilPersist } from 'recoil-persist';
+
+const { persistAtom } = recoilPersist();
 
 const userInfoState = atom({
   key: 'userInfoState',
@@ -11,7 +14,9 @@ const userInfoState = atom({
     top_size: '',
     bottom_size: '',
     introduce: '',
+    like_item_count: 0,
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export default userInfoState;

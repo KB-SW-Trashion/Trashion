@@ -10,7 +10,8 @@ User = get_user_model()
 
 @api_view(['POST'])
 def like(request): #request에 좋아요 할 대상 id 담아서 넘기기
-    like_user = request.user
+    user_id = request.data['user']
+    like_user = User.objects.get(pk=user_id)
     
     item_id = request.data['item_id']
     item = Item.objects.get(pk=item_id)

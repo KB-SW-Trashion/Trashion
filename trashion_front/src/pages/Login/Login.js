@@ -103,10 +103,12 @@ function Login() {
             .then((res) => {
               console.log('카카오로그인 성공', res.data);
               saveUserInfo(res.data.access_token, res.data.refresh_token);
+              navigate('/');
             })
             .catch((err) => {
+              setIsLoading(false);
               console.log('실패', err);
-              navigate('/');
+              navigate('/login');
             });
         } else {
           alert('인증되지 않은 회원입니다.');
@@ -144,7 +146,10 @@ function Login() {
         saveUserInfo(res.data.access_token, res.data.refresh_token);
         console.log('데이터', res);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setIsLoading(false);
+        console.log(err);
+      });
   };
 
   const onSuccess = (response) => {

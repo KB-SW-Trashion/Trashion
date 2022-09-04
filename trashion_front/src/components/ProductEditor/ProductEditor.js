@@ -1,7 +1,5 @@
-import { ProductDispatchContext } from '../../App';
-import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory } from 'components';
-import Navbar from 'components/Navbar/Navbar';
-import React, { useRef, useContext } from 'react';
+import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory, Navbar } from 'components';
+import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
@@ -16,7 +14,7 @@ import axios from 'axios';
 import tokenConfig from 'api/tokenConfig';
 import category from 'api/category';
 
-const ProductEditor = ({ isEdit, originData, isNew }) => {
+const ProductEditor = ({ isEdit, isNew }) => {
   const titleRef = useRef();
   const contentRef = useRef();
   const priceRef = useRef();
@@ -25,8 +23,16 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
   const [product, setProduct] = useRecoilState(productState);
   const resetProduct = useResetRecoilState(productState);
 
+  useEffect(() => {
+    resetProduct();
+  }, []);
+
   const onCreate = (product) => {
     console.log(product);
+    if (product.photos.length < 1) {
+      alert('제품 사진을 한장 이상 올려주세요!');
+      return;
+    }
     const category_data = {
       big_category: product.big_category,
       small_category: product.small_category,
@@ -37,16 +43,15 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
         const category_filter = category.filter((i) => i.small_category === product.small_category);
         const id = category_filter[0].id;
         product.category_id = id;
-        console.log(product);
         const formData = new FormData();
-        if (product.photos_data.length >= 1) {
-          for (var i = 0; i < product.photos_data.length; i++) {
-            formData.append('photos_data', product.photos_data[i]);
+        if (product.photos.length >= 1) {
+          for (var i = 0; i < product.photos.length; i++) {
+            formData.append('photos_data', product.photos[i]);
           }
         }
-        if (product.style_photos_data.length >= 1) {
-          for (var j = 0; j < product.style_photos_data.length; j++) {
-            formData.append('style_photos_data', product.style_photos_data[j]);
+        if (product.style_photos.length >= 1) {
+          for (var j = 0; j < product.style_photos.length; j++) {
+            formData.append('style_photos_data', product.style_photos[j]);
           }
         }
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
@@ -55,45 +60,26 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
           .then((res) => {
             if (res.data) {
               console.log(res);
+              setProduct({ ...product, id: res.data.id });
               resetProduct();
+              navigate('/');
             }
           })
           .catch((err) => {
             console.log('error:', err);
             console.log('data:', formData);
-            // resetProduct();
+            resetProduct();
+            alert('글을 작성 할 수 없습니다.');
           });
       });
     });
   };
 
-  const IsPrice = (e) => {
+  const isNum = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
-    setProduct({ ...product, price: curValue.replace(notNum, '') });
+    setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
   };
-
-  const IsPeriod = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-
-    setProduct({ ...product, period: curValue.replace(notNum, '') });
-  };
-
-  const IsHeight = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-
-    setProduct({ ...product, height: curValue.replace(notNum, '') });
-  };
-  const IsWeight = (e) => {
-    const curValue = e.currentTarget.value;
-    const notNum = /[^0-9]/g;
-
-    setProduct({ ...product, weight: curValue.replace(notNum, '') });
-  };
-
-  const { onEdit, onRemove } = useContext(ProductDispatchContext);
 
   const navigate = useNavigate();
 
@@ -110,25 +96,14 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
       if (!isEdit) {
         onCreate(product);
       } else {
-        onEdit(
-          originData.id,
-          originData.date,
-          originData.title,
-          originData.content,
-          originData.price,
-          originData.size,
-          originData.condition,
-          originData.big_category,
-          originData.small_category,
-          originData.period,
-        );
+        console.log(isEdit);
       }
     }
   };
 
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      onRemove(originData.id);
+      console.log(1);
     }
   };
 
@@ -169,9 +144,10 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
 
             <div className={styles.input_box}>
               <CssTextField
+                name="price"
                 ref={priceRef}
                 value={product.price + '원'}
-                onChange={IsPrice}
+                onChange={isNum}
                 inputProps={{ maxLength: 10 }}
                 focusColor="#f8bbd0"
                 required
@@ -182,10 +158,11 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
             </div>
             <div className={styles.input_box}>
               <CssTextField
+                name="period"
                 ref={periodRef}
                 value={product.period + '개월'}
                 inputProps={{ maxLength: 5 }}
-                onChange={IsPeriod}
+                onChange={isNum}
                 focusColor="#f8bbd0"
                 required
                 id="outlined-required"
@@ -194,10 +171,30 @@ const ProductEditor = ({ isEdit, originData, isNew }) => {
               />
             </div>
             <div className={styles.input_box}>
-              <CssTextField value={product.height + 'cm'} inputProps={{ maxLength: 5 }} onChange={IsHeight} focusColor="#f8bbd0" required id="outlined-required" label="키" variant="outlined" />
+              <CssTextField
+                name="height"
+                value={product.height + 'cm'}
+                inputProps={{ maxLength: 5 }}
+                onChange={isNum}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="키"
+                variant="outlined"
+              />
             </div>
             <div className={styles.input_box}>
-              <CssTextField value={product.weight + 'kg'} inputProps={{ maxLength: 5 }} onChange={IsWeight} focusColor="#f8bbd0" required id="outlined-required" label="몸무게" variant="outlined" />
+              <CssTextField
+                name="weight"
+                value={product.weight + 'kg'}
+                inputProps={{ maxLength: 5 }}
+                onChange={isNum}
+                focusColor="#f8bbd0"
+                required
+                id="outlined-required"
+                label="몸무게"
+                variant="outlined"
+              />
             </div>
             <div className={styles.radio_box}>
               <FormControl>

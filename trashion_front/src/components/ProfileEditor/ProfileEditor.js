@@ -1,30 +1,90 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState, useEffect } from 'react';
 import Fab from '@mui/material/Fab';
-import TextField from '@mui/material/TextField';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { radioSX, labelSX, CssTextField } from '../ProductEditor/CssInput';
+import { radioSX, CssTextField } from '../ProductEditor/CssInput';
+import { useRecoilValue } from 'recoil';
+import userInfoState from 'store/userInfoState';
+import userEdit from 'api/userInfo';
+import authState from 'store/authState';
+import { Link } from 'react-router-dom';
 
 export default function ProductEditor() {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const userInfo = useRecoilValue(userInfoState);
+  const userAuth = useRecoilValue(authState);
+  const email = userAuth.email;
+
+  const [editUserInfo, setUserInfo] = useState({ nickname: userInfo.nickname });
+  const [profile, setProfile] = useState({});
+
+  useEffect(() => {
+    setProfile({
+      introduce: userInfo.introduce,
+      top_size: userInfo.top_size,
+      bottom_size: userInfo.bottom_size,
+      height: userInfo.height,
+      weight: userInfo.weight,
+    });
+    setUserInfo({ nickname: userInfo.nickname, profile: profile });
+  }, []);
+
+  useEffect(() => {
+    setUserInfo({ nickname: editUserInfo.nickname, profile: profile });
+  }, [profile]);
+
+  const isNickname = (e) => {
+    const curValue = e.currentTarget.value;
+    setUserInfo({ ...editUserInfo, nickname: curValue });
+  };
+
+  const isIntroduce = (e) => {
+    const curValue = e.currentTarget.value;
+    setProfile({ ...profile, introduce: curValue });
+  };
+
+  const isNum = (e) => {
+    const curValue = e.currentTarget.value;
+    const notNum = /[^0-9]/g;
+    setProfile({ ...profile, [e.target.name]: curValue.replace(notNum, '') });
+  };
+
+  const resetNickname = () => {
+    setUserInfo({ ...editUserInfo, nickname: '' });
+  };
+
+  const resetProfile = (e) => {
+    setProfile({ ...profile, [e.target.name]: '' });
+  };
+
+  const handleSubmit = () => {
+    setProfile({ ...profile, profile: profile });
+    setUserInfo({ ...editUserInfo, profile: profile });
+    onCreate(editUserInfo);
+  };
+
+  const onCreate = (data) => {
+    userEdit.editUserInfo(email, data).then((res) => console.log(res));
+  };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <div>
       <div>
         닉네임
         <br />
-        <CssTextField required id="standard-required" label="Required" variant="standard" focusColor="#f8bbd0" {...register('nickName')} />
+        <CssTextField onClick={resetNickname} required id="standard-required" value={editUserInfo.nickname} variant="standard" focusColor="#f8bbd0" onChange={isNickname} />
       </div>
-
+      <p>
+        자기소개
+        <br />
+        <CssTextField name="introduce" onClick={resetProfile} required id="standard-required" value={profile.introduce} variant="standard" focusColor="#f8bbd0" onChange={isIntroduce} />
+      </p>
       <p>
         상의 사이즈
         <br />
         <FormControl>
-          <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group">
+          <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(e) => setProfile({ ...profile, top_size: e.target.value })}>
             <FormControlLabel value="XS" control={<Radio sx={radioSX} />} label="XS" />
             <FormControlLabel value="S" control={<Radio sx={radioSX} />} label="S" />
             <FormControlLabel value="M" control={<Radio sx={radioSX} />} label="M" />
@@ -37,22 +97,55 @@ export default function ProductEditor() {
       <p>
         하의 사이즈
         <br />
-        <CssTextField required id="standard-required" label="ex. 26, 36, 28" variant="standard" focusColor="#f8bbd0" {...register('bottom_size')} />
+        <CssTextField
+          name="bottom_size"
+          onClick={resetProfile}
+          value={profile.bottom_size}
+          inputProps={{ maxLength: 2 }}
+          required
+          id="standard-required"
+          label="ex. 26, 36, 28"
+          variant="standard"
+          focusColor="#f8bbd0"
+          onChange={(e) => setProfile({ ...profile, bottom_size: e.target.value })}
+        />
       </p>
       <p>
         키
         <br />
-        <CssTextField required id="standard-required" label="cm" variant="standard" focusColor="#f8bbd0" {...register('height')} />
+        <CssTextField
+          name="height"
+          onClick={resetProfile}
+          value={profile.height}
+          inputProps={{ maxLength: 3 }}
+          onChange={isNum}
+          focusColor="#f8bbd0"
+          required
+          id="standard-require"
+          variant="standard"
+        />
       </p>
       <p>
         몸무게 <br />
-        <CssTextField required id="standard-required" label="kg" variant="standard" focusColor="#f8bbd0" {...register('weight')} />
+        <CssTextField
+          name="weight"
+          onClick={resetProfile}
+          value={profile.weight}
+          inputProps={{ maxLength: 3 }}
+          onChange={isNum}
+          focusColor="#f8bbd0"
+          required
+          id="standard-require"
+          variant="standard"
+        />
       </p>
       <br />
       <br />
-      <Fab type="submit" variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
-        프로필 수정
-      </Fab>
-    </form>
+      <Link to="/MyPage">
+        <Fab onClick={handleSubmit} variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
+          프로필 수정
+        </Fab>
+      </Link>
+    </div>
   );
 }

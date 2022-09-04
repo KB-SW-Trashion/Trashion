@@ -54,12 +54,12 @@ class User(AbstractUser):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
-    introduce = models.TextField(max_length=140)
-    profile_image = models.URLField(null=True,blank=True)
-    height = models.DecimalField(max_digits=4, decimal_places=1, default=0)
-    weight = models.DecimalField(max_digits=4, decimal_places=1, default=0)
-    top_size = models.CharField(max_length=5, blank=True)
-    bottom_size = models.CharField(max_length=5, blank=True)
+    introduce = models.TextField(max_length=140, null=True)
+    profile_image = models.URLField(null=True, blank=True)
+    height = models.CharField(max_length=3)
+    weight = models.CharField(max_length=3)
+    top_size = models.CharField(max_length=5)
+    bottom_size = models.CharField(max_length=5)
     
     def __str__(self):
         return self.user.email

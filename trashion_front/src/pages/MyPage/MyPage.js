@@ -32,6 +32,7 @@ export default function MyPage() {
 
   const getUser = async () => {
     await user.getUserInfo(email).then((res) => {
+      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         social_profile: res.data.social_profile,
@@ -42,7 +43,9 @@ export default function MyPage() {
         top_size: res.data.profile.top_size,
         bottom_size: res.data.profile.bottom_size,
         introduce: res.data.profile.introduce,
+        like_item_count: res.data.like_item_count,
       });
+      console.log(userInfo);
     });
   };
 
@@ -75,7 +78,7 @@ export default function MyPage() {
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.top_size}</p>
-                <p> 누적 좋아요 수 : [total_like]</p>
+                <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
               </div>
             </div>
           </div>
@@ -85,7 +88,7 @@ export default function MyPage() {
                 비밀번호 수정
               </Fab>
             </Link>
-            <Link to="/">
+            <Link to="/New_Profile">
               <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
                 내 정보 수정
               </Fab>
