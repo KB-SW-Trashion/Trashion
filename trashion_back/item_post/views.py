@@ -122,6 +122,16 @@ class ItemViewSet(ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(user_id=self.request.user)
 
+    # 아이템 판매완료처리
+    # url: item_post/{pk}/set_sold/
+    @action(detail=True, methods=['PATCH'])
+    def set_sold(self, request, pk):
+        item = self.get_object()
+        item.sold_out = True
+        item.save()
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
     # 현재 판매중인 아이템 조회 (판매완료 x)
     @action(detail=False, methods=['GET'])
     def not_sold_item(self, request):
