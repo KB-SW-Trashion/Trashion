@@ -5,7 +5,6 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Profile
-from item_post.models import Item
 from item_post.serializers import ItemSerializer
 User = get_user_model()
 
