@@ -40,7 +40,7 @@
 }
 
 .user_profile {
-  margin-right: 80px;
+  margin-right: 30px;
 }
 
 .post_date {
@@ -86,6 +86,12 @@
 }
 
 .category {
+}
+
+.location {
+  margin-right: 30px;
+  display: inline-block;
+  color: grey;
 }
 
 .img_wrap {

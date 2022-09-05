@@ -23,7 +23,6 @@ const productState = atom({
     small_category: '',
     photos: [],
     style_photos: [],
-    period: '',
     height: '',
     weight: '',
   },
