@@ -1,5 +1,5 @@
 import React from 'react';
-import { hangjungdong } from 'components';
+import hangjungdong from 'utils/hangjungdong';
 import { useRecoilState } from 'recoil';
 import productState from 'store/productState';
 import InputLabel from '@mui/material/InputLabel';

@@ -53,7 +53,7 @@ INSTALLED_APPS = [
    
 ]
 
-SITE_ID = 3
+SITE_ID = 2
 
 # 실수로 1번 사이트 지워버려서 2로 했음
 #django.contrib.sites.models.Site.DoesNotExist: Site matching query does not exist. 
@@ -196,7 +196,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, MEDIA_URL)
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MAX_UPLOAD_SIZE = 5242880
 DATA_UPLOAD_MAX_MEMORY_SIZE = None

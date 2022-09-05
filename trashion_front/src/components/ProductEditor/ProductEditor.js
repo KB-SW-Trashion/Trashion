@@ -1,6 +1,6 @@
 import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory, Navbar } from 'components';
 import React, { useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
 import Radio from '@mui/material/Radio';
@@ -13,19 +13,22 @@ import productState from 'store/productState';
 import axios from 'axios';
 import tokenConfig from 'api/tokenConfig';
 import category from 'api/category';
+import crudApi from 'api/crudApi';
 
 const ProductEditor = ({ isEdit, isNew }) => {
   const titleRef = useRef();
   const contentRef = useRef();
   const priceRef = useRef();
-  const periodRef = useRef();
+  const navigate = useNavigate();
 
+  const editId = useParams().id;
   const [product, setProduct] = useRecoilState(productState);
   const resetProduct = useResetRecoilState(productState);
 
+  // 새 글 작성시 productstate 초기화
   useEffect(() => {
-    resetProduct();
-  }, []);
+    isNew && resetProduct();
+  });
 
   const onCreate = (product) => {
     console.log(product);
@@ -55,22 +58,24 @@ const ProductEditor = ({ isEdit, isNew }) => {
           }
         }
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
-        axios
-          .post('/item_post/item/', formData, tokenConfig())
-          .then((res) => {
-            if (res.data) {
-              console.log(res);
-              setProduct({ ...product, id: res.data.id });
-              resetProduct();
-              navigate('/');
-            }
-          })
-          .catch((err) => {
-            console.log('error:', err);
-            console.log('data:', formData);
-            resetProduct();
-            alert('글을 작성 할 수 없습니다.');
-          });
+        isEdit
+          ? crudApi.editProduct(editId, formData)
+          : axios
+              .post('/item_post/item/', formData, tokenConfig())
+              .then((res) => {
+                if (res.data) {
+                  console.log(res);
+                  setProduct({ ...product, id: res.data.id });
+                  resetProduct();
+                  navigate('/', { replace: true });
+                }
+              })
+              .catch((err) => {
+                console.log('error:', err);
+                console.log('data:', formData);
+                alert('글을 작성 할 수 없습니다.');
+              });
+        navigate('/', { replace: true });
       });
     });
   };
@@ -80,8 +85,6 @@ const ProductEditor = ({ isEdit, isNew }) => {
     const notNum = /[^0-9]/g;
     setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
   };
-
-  const navigate = useNavigate();
 
   const handleSubmit = () => {
     if (product.title.length < 2) {
@@ -93,17 +96,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
     }
 
     if (window.confirm(isEdit ? '글을 수정하시겠습니까?' : '새로운 글을 작성하시겠습니까?')) {
-      if (!isEdit) {
-        onCreate(product);
-      } else {
-        console.log(isEdit);
-      }
-    }
-  };
-
-  const handleRemove = () => {
-    if (window.confirm('정말 삭제하시겠습니까?')) {
-      console.log(1);
+      onCreate(product);
     }
   };
 
@@ -114,13 +107,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
         <PostHeader
           postText={'글작성'}
           leftChild={<PostButton text={'취소하기'} type={''} onClick={() => navigate(-1)} />}
-          rightChild={
-            isEdit ? (
-              <PostButton text={'수정하기'} type={'positive'} onClick={handleSubmit} />
-            ) : (
-              <PostButton onClick={isNew ? handleSubmit : handleRemove} text={isNew ? '작성하기' : '삭제하기'} type={isNew ? 'positive' : 'negative'} />
-            )
-          }
+          rightChild={isEdit ? <PostButton text={'수정하기'} type={'positive'} onClick={handleSubmit} /> : <PostButton onClick={handleSubmit} text={'작성하기'} type={'positive'} />}
         />
         <div className={styles.input_wrap}>
           <section>
@@ -156,20 +143,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
                 variant="outlined"
               />
             </div>
-            <div className={styles.input_box}>
-              <CssTextField
-                name="period"
-                ref={periodRef}
-                value={product.period + '개월'}
-                inputProps={{ maxLength: 5 }}
-                onChange={isNum}
-                focusColor="#f8bbd0"
-                required
-                id="outlined-required"
-                label="착용기간"
-                variant="outlined"
-              />
-            </div>
+
             <div className={styles.input_box}>
               <CssTextField
                 name="height"
@@ -253,7 +227,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
               />
             </div>
 
-            <ImageUploader />
+            <ImageUploader isEdit={isEdit} />
           </section>
         </div>
       </div>

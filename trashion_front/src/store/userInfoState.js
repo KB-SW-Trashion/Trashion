@@ -15,6 +15,7 @@ const userInfoState = atom({
     bottom_size: '',
     introduce: '',
     like_item_count: 0,
+    sold_out_count: 0,
   },
   effects_UNSTABLE: [persistAtom],
 });

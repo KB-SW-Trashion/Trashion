@@ -1,13 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PostButton } from 'components';
 import { productState } from 'store';
 import { useRecoilState } from 'recoil';
 import styles from './ImageUploader.module.css';
 
-const ImageUploader = () => {
+const ImageUploader = (isEdit) => {
   const [showProductImages, setShowProductImages] = useState([]);
   const [showStyleImages, setShowStyleImages] = useState([]);
   const [product, setProduct] = useRecoilState(productState);
+
+  // 수정 시 기존 이미지 파일 리스트 초기화
+  useEffect(() => {
+    isEdit && setProduct({ ...product, photos: [], style_photos: [] });
+  }, []);
 
   // 이미지 상대경로 저장
   const handleAddProductImages = (event) => {

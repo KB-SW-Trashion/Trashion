@@ -44,6 +44,7 @@ export default function MyPage() {
         bottom_size: res.data.profile.bottom_size,
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
+        sold_out_count: res.data.sold_out_count,
       });
       console.log(userInfo);
     });
@@ -72,7 +73,7 @@ export default function MyPage() {
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
                 <p> 상의사이즈 : {userInfo.bottom_size}</p>
-                <p> 거래완료수 : [total_trade]</p>
+                <p> 거래완료수 : {userInfo.sold_out_count}</p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
@@ -83,11 +84,6 @@ export default function MyPage() {
             </div>
           </div>
           <div className={styles.Mypage_buttonbox}>
-            <Link to="/">
-              <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
-                비밀번호 수정
-              </Fab>
-            </Link>
             <Link to="/New_Profile">
               <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
                 내 정보 수정
