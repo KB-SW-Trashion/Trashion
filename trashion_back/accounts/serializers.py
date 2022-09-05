@@ -1,9 +1,11 @@
+from tkinter import TRUE
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Profile
+from item_post.serializers import ItemSerializer
 User = get_user_model()
 
 
@@ -65,15 +67,17 @@ class UserDetailSerializer(serializers.ModelSerializer):
     blocked_user = BlockUserListingField(many=True, read_only=True)
     
     profile = ProfileSerializer(partial=True)
+    item_sets = ItemSerializer(many=True, read_only=True)
     
     id = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     realname = serializers.ReadOnlyField()
     
+    sold_out_count = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'item_sets', 'sold_out_count']
     
     def update(self, instance, validated_data):
         profile_data = validated_data.pop('profile')
@@ -85,3 +89,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
         instance.nickname = validated_data.get('nickname', instance.nickname)
         instance.save()
         return instance
+    
+    def get_sold_out_count(self, obj):
+        return len(obj.item_sets.filter(sold_out=True))
