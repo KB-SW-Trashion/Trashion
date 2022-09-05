@@ -122,6 +122,16 @@ class ItemViewSet(ModelViewSet):
     def perform_update(self, serializer):
         serializer.save(user_id=self.request.user)
 
+    # 아이템 판매완료처리
+    # url: item_post/{pk}/set_sold/
+    @action(detail=True, methods=['PATCH'])
+    def set_sold(self, request, pk):
+        item = self.get_object()
+        item.sold_out = True
+        item.save()
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
+
     # 현재 판매중인 아이템 조회 (판매완료 x)
     @action(detail=False, methods=['GET'])
     def not_sold_item(self, request):
@@ -201,8 +211,8 @@ class ItemViewSet(ModelViewSet):
         height = int(request.GET.get('height', None))
         weight = int(request.GET.get('weight', None))
         
-        blocked_user = Block.objects.filter(blocking_user = request.user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = request.user)#유저를 차단한 유저
+        blocked_user = Block.objects.filter(blocking_user = request.user) # 유저가 차단한 유저
+        user_blocked = Block.objects.filter(blocked_user = request.user) # 유저를 차단한 유저
         
         blocked_user_list = []
         for user in blocked_user:
@@ -225,8 +235,8 @@ class ItemViewSet(ModelViewSet):
     def photo_item_only(self, request):
         item_ids = Photo.objects.distinct().values_list('item_id', flat=True)
         
-        blocked_user = Block.objects.filter(blocking_user = request.user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = request.user)#유저를 차단한 유저
+        blocked_user = Block.objects.filter(blocking_user = request.user) # 유저가 차단한 유저
+        user_blocked = Block.objects.filter(blocked_user = request.user) # 유저를 차단한 유저
         
         blocked_user_list = []
         for user in blocked_user:
@@ -247,8 +257,8 @@ class ItemViewSet(ModelViewSet):
     def stylephoto_item_only(self, request):
         item_ids = StylePhoto.objects.distinct().values_list('item_id', flat=True)
         
-        blocked_user = Block.objects.filter(blocking_user = request.user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = request.user)#유저를 차단한 유저
+        blocked_user = Block.objects.filter(blocking_user = request.user) # 유저가 차단한 유저
+        user_blocked = Block.objects.filter(blocked_user = request.user) # 유저를 차단한 유저
         
         blocked_user_list = []
         for user in blocked_user:
