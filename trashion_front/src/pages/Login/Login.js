@@ -163,16 +163,6 @@ function Login() {
     };
     console.log('구글로그인 시도!', data);
     googleSocialLogin(data);
-    // const {
-    //   googleId,
-    //   profileObj: { email, name },
-    // } = response;
-    // await onSocial({
-    //     socialId : googleId,
-    //     socialType : 'google',
-    //     email,
-    //     nickname : name
-    // });
   };
 
   const onFailure = (error) => {
