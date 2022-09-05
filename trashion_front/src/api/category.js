@@ -8,4 +8,7 @@ export default {
   getCategoryId() {
     return axios.get('item_post/category/');
   },
+  getCategoryName(categoryId) {
+    return axios.get('item_post/category/', categoryId);
+  },
 };

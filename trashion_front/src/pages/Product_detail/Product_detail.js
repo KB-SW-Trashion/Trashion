@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Product_detail_img, Img_small, PostButton, PostHeader, LikeButton } from 'components';
 import styles from './Product_detail.module.css';
 import { useRecoilValue } from 'recoil';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
+import categoryApi from 'api/category';
 
 const Product_detail = () => {
   const navigate = useNavigate();
   const product = useRecoilValue(productState);
+  const [bigCategory, setBigCateogry] = useState('');
+  const [smallCategory, setSmallCategoty] = useState('');
   const [selectImg, setSelectImg] = useState(product.photos[0].photo);
 
   var selected_date = new Date(product.updated_at);
@@ -27,6 +30,17 @@ const Product_detail = () => {
   const handleImageClick = (e) => {
     setSelectImg(e.target.src);
   };
+
+  const getCategory = () => {
+    categoryApi.getCategoryName(product.category_id).then((res) => {
+      setBigCateogry(res.data[product.category_id].big_category);
+      setSmallCategoty(res.data[product.category_id].small_category);
+    });
+  };
+
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   return (
     <>
@@ -49,6 +63,9 @@ const Product_detail = () => {
           <div className={styles.profile_picture_wrap}></div>
           <span className={styles.user_profile}>profile</span>
           <span className={styles.post_date}>{updated_time} 작성</span>
+          {/* <span className={styles.location}>
+            {product.city} {product.gu} {product.gu}
+          </span> */}
         </div>
 
         <div className={styles.detail_box}>
@@ -78,7 +95,9 @@ const Product_detail = () => {
           <div className={styles.discription_box}>
             <div className={styles.product_info}>
               <p className={styles.info}>물품 정보</p>
-              <h3 className={styles.category}>카테고리 : {product.category}</h3>
+              <h3 className={styles.category}>
+                카테고리 : {bigCategory} - {smallCategory}
+              </h3>
               <h3>{product.title}</h3>
               <h3>가격 : {product.price}</h3>
               <p>착용 기간 : {product.period}</p>
