@@ -25,6 +25,8 @@ class Item(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sold_out = models.BooleanField(default=False)
+    purchaser = models.ForeignKey(User, related_name='item_buy_sets',
+                                  default=None, null=True, blank=True, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return self.title
