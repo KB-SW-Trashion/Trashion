@@ -35,7 +35,7 @@ class CategorySerializer(serializers.ModelSerializer):
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = '__all__'
+        fields = ['city', 'gu', 'dong']
 
 class LocationSetSerializer(serializers.ModelSerializer):
     location = LocationSerializer(source='location_id')

@@ -5,17 +5,13 @@ import styles from './Product_detail.module.css';
 import { useRecoilValue } from 'recoil';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
-import categoryApi from 'api/category';
-import locationApi from 'api/locationApi';
 import hangjungdong from 'utils/hangjungdong';
 import crudApi from 'api/crudApi';
 
 const Product_detail = () => {
   const navigate = useNavigate();
   const product = useRecoilValue(productState);
-  const [bigCategory, setBigCateogry] = useState('');
-  const [smallCategory, setSmallCategoty] = useState('');
-  const [locationId, setLocationId] = useState('');
+
   const [cityName, setCityName] = useState('');
   const [guName, setGuName] = useState('');
   const [dongName, setDongName] = useState('');
@@ -40,39 +36,21 @@ const Product_detail = () => {
     setSelectImg(e.target.src);
   };
 
-  // 카테고리 id 로 카테고리 value 가져오기
-  const getCategory = () => {
-    categoryApi.getCategoryName().then((res) => {
-      setBigCateogry(res.data[product.category_id - 1].big_category);
-      setSmallCategoty(res.data[product.category_id - 1].small_category);
+  const getProduct = () => {
+    crudApi.getProductInfo(product.id).then((res) => {
+      product.big_category = res.data.category.big_category;
+      product.small_category = res.data.category.small_category;
+      setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);
+      setGuName(sigugun.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu)[0]?.codeNm);
+      setDongName(
+        dong.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu && el.dong === res.data.locationSet[0].location.dong)[0]?.codeNm,
+      );
     });
   };
 
-  // product id 로 Location set에 있는 location id 가져오기
-  const getLocationId = () => {
-    locationApi.getLocationId().then((res) => {
-      setLocationId(res.data.results.filter((item) => item.id === product.id)[0].location_id);
-    });
-  };
-
-  // location id 로 시/동/구 가져오기
-  const getLocations = () => {
-    locationApi.getLocation(locationId).then((res) => {
-      setCityName(sido.filter((el) => el.sido === res.data.city)[0]?.codeNm);
-      setGuName(sigugun.filter((el) => el.sido === res.data.city && el.sigugun === res.data.gu)[0]?.codeNm);
-      setDongName(dong.filter((el) => el.sido === res.data.city && el.sigugun === res.data.gu && el.dong === res.data.dong)[0]?.codeNm);
-    });
-  };
-
-  // -----------------수정예정------------------
   useEffect(() => {
-    getCategory();
-    getLocationId();
+    getProduct();
   }, []);
-
-  useEffect(() => {
-    getLocations();
-  }, [locationId]);
 
   return (
     <>
@@ -128,7 +106,7 @@ const Product_detail = () => {
             <div className={styles.product_info}>
               <p className={styles.info}>물품 정보</p>
               <h3 className={styles.category}>
-                카테고리 : {bigCategory} - {smallCategory}
+                카테고리 : {product.big_category} - {product.small_category}
               </h3>
               <h3>{product.title}</h3>
               <h3>가격 : {product.price}</h3>

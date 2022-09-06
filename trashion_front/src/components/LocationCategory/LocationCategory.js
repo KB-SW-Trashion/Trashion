@@ -14,7 +14,7 @@ export default function LocationCategory() {
     <div>
       <FormControl sx={{ m: 1, minWidth: 223 }}>
         <InputLabel id="demo-simple-select-helper-label">시/도</InputLabel>
-        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" onChange={(e) => setProduct({ ...product, city: e.target.value })}>
+        <Select required={true} labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" onChange={(e) => setProduct({ ...product, city: e.target.value })}>
           {sido.map((el) => (
             <MenuItem key={el.sido} value={el.sido}>
               {el.codeNm}
@@ -24,7 +24,7 @@ export default function LocationCategory() {
       </FormControl>
       <FormControl sx={{ m: 1, minWidth: 223 }}>
         <InputLabel id="demo-simple-select-helper-label">시/군/구</InputLabel>
-        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" onChange={(e) => setProduct({ ...product, gu: e.target.value })}>
+        <Select required={true} labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" onChange={(e) => setProduct({ ...product, gu: e.target.value })}>
           {sigugun
             .filter((el) => el.sido === product.city)
             .map((el) => (
@@ -36,7 +36,7 @@ export default function LocationCategory() {
       </FormControl>
       <FormControl sx={{ m: 1, minWidth: 223 }}>
         <InputLabel id="demo-simple-select-helper-label">읍/면/동</InputLabel>
-        <Select labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" onChange={(e) => setProduct({ ...product, dong: e.target.value })}>
+        <Select required={true} labelId="demo-simple-select-helper-label" id="demo-simple-select-helper" onChange={(e) => setProduct({ ...product, dong: e.target.value })}>
           {dong
             .filter((el) => el.sido === product.city && el.sigugun === product.gu)
             .map((el) => (
