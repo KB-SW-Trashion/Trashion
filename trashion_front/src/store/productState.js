@@ -10,7 +10,7 @@ const productState = atom({
   default: {
     id: 0,
     user_id: 1,
-    category_id: 0,
+    category_id: 1,
     city: '',
     gu: '',
     dong: '',
@@ -25,6 +25,7 @@ const productState = atom({
     style_photos: [],
     height: '',
     weight: '',
+    purchaser: 1,
   },
   dangerouslyAllowMutability: true,
   effects_UNSTABLE: [persistAtom],

@@ -297,7 +297,6 @@ class ItemViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    pagination_class = None
     authentication_classes = (JWTCookieAuthentication,)
     permission_classes = (AllowAny,)
 

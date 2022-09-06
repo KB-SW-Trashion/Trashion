@@ -28,7 +28,7 @@ const Product_img = (photo) => {
   return (
     <Thumbnail>
       <ImgBox>
-        <Img src={photo.photo} />
+        <Img src={photo && photo.photo} />
       </ImgBox>
     </Thumbnail>
   );
