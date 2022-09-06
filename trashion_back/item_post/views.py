@@ -37,6 +37,7 @@ class ItemViewSet(ModelViewSet):
     ordering = ['-created_at']
     authentication_classes = (JWTCookieAuthentication,)
     permission_classes = (IsOwner,)
+    pagination_class = None
 
     # permission
     def get_permissions(self):
@@ -315,16 +316,19 @@ class CategoryViewSet(ModelViewSet):
 class PhotoViewSet(ModelViewSet):
     queryset = Photo.objects.all()
     serializer_class = PhotoSerializer
+    pagination_class = None
 
 
 class StylePhotoViewSet(ModelViewSet):
     queryset = StylePhoto.objects.all()
     serializer_class = StylePhotoSerializer
+    pagination_class = None
 
 
 class LocationViewSet(ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+    pagination_class = None
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -340,3 +344,4 @@ class LocationViewSet(ModelViewSet):
 class LocationSetViewSet(ModelViewSet):
     queryset = LocationSet.objects.all()
     serializer_class = LocationSetSerializer
+    pagination_class = None

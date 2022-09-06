@@ -28,7 +28,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
   // 새 글 작성시 productstate 초기화
   useEffect(() => {
     isNew && resetProduct();
-  });
+  }, []);
 
   const onCreate = (product) => {
     console.log(product);

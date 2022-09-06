@@ -29,14 +29,13 @@ class StylePhotoSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['big_category', 'small_category']
+        fields = '__all__'
 
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ['city', 'gu', 'dong']
-
+        fields = '__all__'
 
 class LocationSetSerializer(serializers.ModelSerializer):
     location = LocationSerializer(source='location_id')
