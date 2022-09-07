@@ -10,6 +10,7 @@ import user from 'api/userInfo';
 import { userInfoState } from 'store';
 import { setCookie } from 'cookies-next';
 import authApi from 'api/authApi';
+import userimg from 'assets/image/userimg.png';
 
 export default function MyPage() {
   const userAuth = useRecoilValue(authState);
@@ -54,6 +55,8 @@ export default function MyPage() {
     getUser();
   }, []);
 
+  const userProfileImg = userInfo.social_profile;
+
   return (
     <div>
       <Navbar />
@@ -61,7 +64,7 @@ export default function MyPage() {
       <div className={styles.MyPage_bodybox}>
         <div className={styles.MyPage_bodyleft}>
           <div className={styles.Mypage_profileImgbox}>
-            <img className={styles.Mypage_profileImg} src={userInfo.social_profile} />
+            {userProfileImg ? <img className={styles.Mypage_profileImg} src={userInfo.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
           </div>
         </div>
         <div className={styles.MyPage_bodyright}>
