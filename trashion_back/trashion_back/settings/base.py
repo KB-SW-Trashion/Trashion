@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'accounts',
     'item_post',
     'relationship',
+    'review',
     # django-rest-framework
     'rest_framework',
     'rest_framework.authtoken',
