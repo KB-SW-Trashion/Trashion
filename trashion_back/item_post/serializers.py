@@ -32,6 +32,19 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ['city', 'gu', 'dong']
+
+class LocationSetSerializer(serializers.ModelSerializer):
+    location = LocationSerializer(source='location_id')
+
+    class Meta:
+        model = LocationSet
+        fields = '__all__'
+
+
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
@@ -64,13 +77,12 @@ class ItemSerializer(serializers.ModelSerializer):
         return instance
 
 
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = '__all__'
+class RetrieveSerializer(serializers.ModelSerializer):
+    photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
+    style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
+    category = CategorySerializer(source='category_id')
+    locationSet = LocationSetSerializer(source='location_sets', many=True)
 
-
-class LocationSetSerializer(serializers.ModelSerializer):
     class Meta:
-        model = LocationSet
+        model = Item
         fields = '__all__'

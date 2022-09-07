@@ -13,6 +13,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.viewsets import ModelViewSet
 
 from .models import Item, Category, Photo, StylePhoto
+from .serializers import RetrieveSerializer
 from .serializers import *
 from relationship.models import Block
 
@@ -120,7 +121,27 @@ class ItemViewSet(ModelViewSet):
         return Response(serializer.data)
 
     def perform_update(self, serializer):
-        serializer.save(user_id=self.request.user)
+       serializer.save(user_id=self.request.user)
+
+    # 상세조회
+    # url: item_post/item/{int:pk}
+    def retrieve(self, request, *args, **kwargs):
+        item = self.get_object()
+        category = Category.objects.get(id=item.category_id_id)
+        locationset = LocationSet.objects.get(item_id=item)
+        location = locationset.location_id
+        serializer = RetrieveSerializer(item)
+        return Response(serializer.data)
+
+    # 아이템 판매완료처리
+    # url: item_post/{pk}/set_sold/
+    @action(detail=True, methods=['PATCH'])
+    def set_sold(self, request, pk):
+        item = self.get_object()
+        item.sold_out = True
+        item.save()
+        serializer = self.get_serializer(item)
+        return Response(serializer.data)
 
     # 현재 판매중인 아이템 조회 (판매완료 x)
     @action(detail=False, methods=['GET'])
@@ -276,7 +297,6 @@ class ItemViewSet(ModelViewSet):
 class CategoryViewSet(ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    pagination_class = None
     authentication_classes = (JWTCookieAuthentication,)
     permission_classes = (AllowAny,)
 

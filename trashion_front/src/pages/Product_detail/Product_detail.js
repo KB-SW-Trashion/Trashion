@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Product_detail_img, Img_small, PostButton, PostHeader, LikeButton } from 'components';
 import styles from './Product_detail.module.css';
 import { useRecoilValue } from 'recoil';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
+import hangjungdong from 'utils/hangjungdong';
+import crudApi from 'api/crudApi';
 
 const Product_detail = () => {
   const navigate = useNavigate();
   const product = useRecoilValue(productState);
+
+  const [cityName, setCityName] = useState('');
+  const [guName, setGuName] = useState('');
+  const [dongName, setDongName] = useState('');
   const [selectImg, setSelectImg] = useState(product.photos[0].photo);
+  const { sido, sigugun, dong } = hangjungdong;
 
   var selected_date = new Date(product.updated_at);
   const updated_time = timeForToday(selected_date);
@@ -20,6 +27,7 @@ const Product_detail = () => {
 
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
+      crudApi.delete(product.id);
       navigate('/', { replace: true });
     }
   };
@@ -27,6 +35,22 @@ const Product_detail = () => {
   const handleImageClick = (e) => {
     setSelectImg(e.target.src);
   };
+
+  const getProduct = () => {
+    crudApi.getProductInfo(product.id).then((res) => {
+      product.big_category = res.data.category.big_category;
+      product.small_category = res.data.category.small_category;
+      setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);
+      setGuName(sigugun.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu)[0]?.codeNm);
+      setDongName(
+        dong.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu && el.dong === res.data.locationSet[0].location.dong)[0]?.codeNm,
+      );
+    });
+  };
+
+  useEffect(() => {
+    getProduct();
+  }, []);
 
   return (
     <>
@@ -48,6 +72,9 @@ const Product_detail = () => {
         <div className={styles.profile_wrap}>
           <div className={styles.profile_picture_wrap}></div>
           <span className={styles.user_profile}>profile</span>
+          <span className={styles.location}>
+            {cityName} {guName} {dongName}
+          </span>
           <span className={styles.post_date}>{updated_time} 작성</span>
         </div>
 
@@ -78,10 +105,11 @@ const Product_detail = () => {
           <div className={styles.discription_box}>
             <div className={styles.product_info}>
               <p className={styles.info}>물품 정보</p>
-              <h3 className={styles.category}>카테고리 : {product.category}</h3>
+              <h3 className={styles.category}>
+                카테고리 : {product.big_category} - {product.small_category}
+              </h3>
               <h3>{product.title}</h3>
               <h3>가격 : {product.price}</h3>
-              <p>착용 기간 : {product.period}</p>
               <p>사이즈 : {product.size}</p>
               <p>상태 : {product.condition}</p>
             </div>

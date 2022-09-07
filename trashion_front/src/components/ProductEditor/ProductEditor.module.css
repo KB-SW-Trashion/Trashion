@@ -10,8 +10,12 @@
   width: 1000px;
 }
 
+.text_wrap {
+  display: flex;
+}
+
 .input_box {
-  padding: 10px;
+  padding: 8px;
 }
 
 .radio_box {
