@@ -1,0 +1,44 @@
+.chatlogbox {
+  border: 1px solid #d9d9d9;
+  background-color: white;
+  display: flex;
+}
+
+.Mypage_profileImgbox {
+  width: 54px;
+  height: 54px;
+  border-radius: 100%;
+  overflow: hidden;
+  float: right;
+  padding: 3px 3px 3px 31px;
+}
+
+.Mypage_profileImg {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.chat_opponentInfo {
+  display: flex;
+  width: 244px;
+  padding: 7px 0 7px 7px;
+}
+
+.chatlogboxleft {
+  width: 130px;
+}
+
+.chatlogboxright {
+  text-align: right;
+  width: 100px;
+}
+
+.update_time {
+  font-size: 14px;
+}
+
+.chatlogboxmiddle {
+  padding-left: 7px;
+}
