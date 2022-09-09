@@ -9,7 +9,7 @@ const authState = atom({
     isLoggedIn: false,
     name: '',
     email: '',
-    social_img: '',
+    social_profile: '',
     user_id: '',
     access_token: '',
     refresh_token: '',

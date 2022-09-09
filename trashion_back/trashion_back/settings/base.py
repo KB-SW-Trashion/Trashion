@@ -54,7 +54,7 @@ INSTALLED_APPS = [
    
 ]
 
-SITE_ID = 2
+SITE_ID = 3
 
 # 실수로 1번 사이트 지워버려서 2로 했음
 #django.contrib.sites.models.Site.DoesNotExist: Site matching query does not exist. 
