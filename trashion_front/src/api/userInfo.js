@@ -1,4 +1,5 @@
 import axios from './config';
+import tokenConfig from './tokenConfig';
 
 export default {
   getUserEmail(id) {
@@ -10,6 +11,10 @@ export default {
   },
 
   editUserInfo(user_id, data) {
-    return axios.patch('/accounts/detail/' + user_id, data);
+    return axios.patch('/accounts/detail/' + user_id, data, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   },
 };

@@ -8,8 +8,6 @@ const ProfileImageUploader = () => {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [showProfileImage, setShowProfileImage] = useState([]);
 
-  console.log(userInfo.social_profile);
-
   // 이미지 상대경로 저장
   const handleAddProfileImage = (event) => {
     const profile_img = event.target.files;
@@ -54,7 +52,7 @@ const ProfileImageUploader = () => {
       <div className={styles.addButton}>
         <label onChange={handleAddProfileImage} htmlFor="product_file">
           <input type="file" name="product_file" id="product_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
-          제품 사진 업로드
+          프로필 사진 업로드
         </label>
       </div>
     </div>

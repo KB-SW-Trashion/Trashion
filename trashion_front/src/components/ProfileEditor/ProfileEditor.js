@@ -29,11 +29,11 @@ export default function ProductEditor() {
       height: userInfo.height,
       weight: userInfo.weight,
     });
-    setUserInfo({ nickname: userInfo.nickname, profile: profile });
+    setUserInfo({ ...userInfo, nickname: userInfo.nickname, profile: profile });
   }, []);
 
   useEffect(() => {
-    setUserInfo({ nickname: editUserInfo.nickname, profile: profile });
+    setUserInfo({ ...userInfo, nickname: editUserInfo.nickname, profile: profile });
   }, [profile]);
 
   const isNickname = (e) => {
@@ -66,8 +66,13 @@ export default function ProductEditor() {
     onCreate(editUserInfo);
   };
 
-  const onCreate = (data) => {
-    userEdit.editUserInfo(user_id, data).then((res) => console.log(res));
+  const onCreate = (userInfo) => {
+    const formData = new FormData();
+    console.log(userInfo);
+    formData.append('social_profile', userInfo.social_profile[0]);
+    Object.keys(userInfo).forEach((key) => formData.append(key, userInfo[key]));
+    console.log(formData);
+    userEdit.editUserInfo(user_id, formData).then((res) => console.log(res.data));
   };
 
   return (

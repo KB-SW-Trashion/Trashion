@@ -33,7 +33,6 @@ export default function MyPage() {
 
   const getUser = async () => {
     await user.getUserInfo(user_id).then((res) => {
-      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         social_profile: res.data.social_profile,
@@ -47,7 +46,6 @@ export default function MyPage() {
         like_item_count: res.data.like_item_count,
         sold_out_count: res.data.sold_out_count,
       });
-      console.log(userInfo);
     });
   };
 
