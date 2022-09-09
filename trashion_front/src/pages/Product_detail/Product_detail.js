@@ -7,15 +7,20 @@ import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
 import crudApi from 'api/crudApi';
+import userInfo from 'api/userInfo';
+import { authState } from 'store';
 
 const Product_detail = () => {
   const navigate = useNavigate();
   const product = useRecoilValue(productState);
+  const user = useRecoilValue(authState);
 
   const [cityName, setCityName] = useState('');
   const [guName, setGuName] = useState('');
   const [dongName, setDongName] = useState('');
   const [selectImg, setSelectImg] = useState(product.photos[0].photo);
+  const [userHeight, setUserHeight] = useState('');
+  const [userWeight, setUserWeight] = useState('');
   const { sido, sigugun, dong } = hangjungdong;
 
   var selected_date = new Date(product.updated_at);
@@ -34,6 +39,7 @@ const Product_detail = () => {
 
   const handleImageClick = (e) => {
     setSelectImg(e.target.src);
+    console.log(typeof selectImg);
   };
 
   const getProduct = () => {
@@ -49,8 +55,16 @@ const Product_detail = () => {
     });
   };
 
+  const getUserInfo = () => {
+    userInfo.getUserInfo(product.user_id).then((res) => {
+      setUserHeight(res.data.profile.height);
+      setUserWeight(res.data.profile.weight);
+    });
+  };
+
   useEffect(() => {
     getProduct();
+    getUserInfo();
   }, []);
 
   return (
@@ -64,9 +78,7 @@ const Product_detail = () => {
               <div className={styles.button_first}>
                 <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />
               </div>
-              <div>
-                <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />
-              </div>
+              <div>{user.user_id === product.user_id && <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />}</div>
             </div>
           }
         />
@@ -83,23 +95,20 @@ const Product_detail = () => {
           <div className={styles.product_img_box}>
             <div className={styles.img_big}>
               <Product_detail_img selectImg={selectImg} />
-              {/* <img src={selectImg} /> */}
             </div>
             <div className={styles.img_small_wrap}>
-              {product.photos &&
-                product.photos.map((it) => (
-                  <div key={it.id} {...it} onClick={handleImageClick}>
-                    <Img_small key={it.id} {...it} />
-                  </div>
-                ))}
+              {product.photos.map((it) => (
+                <div key={it.id} {...it} onClick={handleImageClick}>
+                  <Img_small key={it.id} {...it} />
+                </div>
+              ))}
             </div>
             <div className={styles.img_small_wrap}>
-              {product.style_photos &&
-                product.style_photos.map((it) => (
-                  <div key={it.id} {...it} onClick={handleImageClick}>
-                    <Img_small key={it.id} {...it} />
-                  </div>
-                ))}
+              {product.style_photos.map((it) => (
+                <div key={it.id} {...it} onClick={handleImageClick}>
+                  <Img_small key={it.id} {...it} />
+                </div>
+              ))}
             </div>
           </div>
 
@@ -116,8 +125,8 @@ const Product_detail = () => {
             </div>
             <div className={styles.seller_info}>
               <p className={styles.info}>판매자 정보</p>
-              <h2>키 : 204cm</h2>
-              <h2>몸무게 : 20kg</h2>
+              <h2>키 : {userHeight}cm</h2>
+              <h2>몸무게 : {userWeight}kg</h2>
               <p>사이즈 : {product.size}</p>
             </div>
             <LikeButton />

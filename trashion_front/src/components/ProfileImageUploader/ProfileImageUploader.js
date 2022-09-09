@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { PostButton } from 'components';
 import { userInfoState } from 'store';
 import { useRecoilState } from 'recoil';

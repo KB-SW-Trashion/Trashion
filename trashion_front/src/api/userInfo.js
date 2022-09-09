@@ -1,5 +1,4 @@
 import axios from './config';
-import tokenConfig from './tokenConfig';
 
 export default {
   getUserEmail(id) {

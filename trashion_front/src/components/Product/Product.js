@@ -6,9 +6,9 @@ import styles from './Product.module.css';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 
-const Product = (product) => {
+const Product = () => {
   const navigate = useNavigate();
-  const [, setProduct] = useRecoilState(productState);
+  const [product, setProduct] = useRecoilState(productState);
 
   var selected_date = new Date(product.updated_at);
   const updated_time = timeForToday(selected_date);
@@ -22,7 +22,7 @@ const Product = (product) => {
 
   return (
     <li className={styles.product} onClick={goDetail}>
-      <Product_img photo={product.photos && product.photos[0].photo} />
+      <Product_img photo={product.photos[0] && product.photos[0].photo} />
       <div className={styles.product_discription}>
         <h4>{product.title}</h4>
 
