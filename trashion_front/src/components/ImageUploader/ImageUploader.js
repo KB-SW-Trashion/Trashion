@@ -11,7 +11,19 @@ const ImageUploader = (isEdit) => {
 
   // 수정 시 기존 이미지 파일 리스트 초기화
   useEffect(() => {
-    isEdit && setProduct({ ...product, photos: [], style_photos: [] });
+    console.log(isEdit);
+    const productImgList = [];
+    const styleImgList = [];
+    for (let i = 0; i < product.photos.length; i++) {
+      productImgList.push(product.photos[i].photo);
+    }
+    for (let i = 0; i < product.style_photos.length; i++) {
+      styleImgList.push(product.style_photos[i].photo);
+    }
+    isEdit && setShowProductImages(productImgList);
+    isEdit && setShowStyleImages(styleImgList);
+    console.log(showProductImages);
+    console.log(product);
   }, []);
 
   // 이미지 상대경로 저장
@@ -43,6 +55,7 @@ const ImageUploader = (isEdit) => {
     let fileArray = Array.from(product.photos);
     fileArray.splice(id, 1);
     setProduct({ ...product, photos: fileArray });
+    console.log(showProductImages);
   };
 
   //style Image
@@ -92,7 +105,7 @@ const ImageUploader = (isEdit) => {
       </div>
       <div className={styles.addButton}>
         <label onChange={handleAddProductImages} htmlFor="product_file">
-          <input type="file" name="product_file" id="product_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
+          <input type="file" name="product_file" id="product_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png', '.jpeg']} className={styles.addButton} required />
           제품 사진 업로드
         </label>
       </div>
@@ -111,7 +124,7 @@ const ImageUploader = (isEdit) => {
       </div>
       <div className={styles.addButton}>
         <label onChange={handleAddStyleImages} htmlFor="style_file">
-          <input type="file" name="style_file" id="style_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
+          <input type="file" name="style_file" id="style_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png', 'jpeg']} className={styles.addButton} required />
           착장 사진 업로드
         </label>
       </div>
