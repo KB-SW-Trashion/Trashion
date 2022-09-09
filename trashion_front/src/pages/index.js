@@ -8,3 +8,4 @@ export { default as New } from './New/New';
 export { default as Edit } from './Edit/Edit';
 export { default as New_Profile } from './New_Profile/New_Profile';
 export { default as Chat } from './Chat/Chat';
+export { default as Findpassword } from './Findpassword/Findpassword';

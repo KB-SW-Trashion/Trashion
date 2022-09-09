@@ -14,7 +14,7 @@ urlpatterns = [
     # path('naver/callback/', login.naver_callback, name='naver_callback'),
     # path('naver/login/finish/', login.NaverLogin.as_view(), name='naver_login_todjango'),
     
-    path('detail/<str:email>', user_edit.UserDetailAPIView.as_view(), name='user_detail'),
+    path('detail/<str:pk>', user_edit.UserDetailAPIView.as_view(), name='user_detail'),
     
     # 유효한 이메일이 유저에게 전달
     re_path(r'^account-confirm-email/$', VerifyEmailView.as_view(), name='account_email_verification_sent'),
