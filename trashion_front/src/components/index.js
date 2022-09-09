@@ -27,3 +27,4 @@ export { default as Product_detail_img } from './Product_img/Product_detail_img'
 export { default as ProfileEditor } from './ProfileEditor/ProfileEditor';
 export { default as Chatlog } from './Chatlog/Chatlog';
 export { default as Chatting } from './Chatting/Chatting';
+export { default as ProfileImageUploader } from './ProfileImageUploader/ProfileImageUploader';

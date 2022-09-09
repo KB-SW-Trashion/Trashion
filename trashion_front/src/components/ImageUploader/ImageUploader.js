@@ -23,7 +23,6 @@ const ImageUploader = (isEdit) => {
       alert('이미지는 4개 이하로 업로드 해 주세요!');
       return;
     }
-    console.log(showProductImages.length);
 
     for (let i = 0; i < imageLists.length; i++) {
       if (imageLists[i].type !== 'image/jpeg' && imageLists[i].type !== 'image/jpg' && imageLists[i].type !== 'image/png') {
@@ -44,7 +43,6 @@ const ImageUploader = (isEdit) => {
     let fileArray = Array.from(product.photos);
     fileArray.splice(id, 1);
     setProduct({ ...product, photos: fileArray });
-    console.log(showProductImages.length);
   };
 
   //style Image
