@@ -53,7 +53,7 @@ class BlockUserListingField(serializers.RelatedField):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ['introduce', 'height', 'weight', 'top_size', 'bottom_size']        
+        fields = ['introduce', 'profile_image', 'height', 'weight', 'top_size', 'bottom_size']        
         
 class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
