@@ -10,6 +10,7 @@ const profileState = atom({
     height: '',
     weight: '',
   },
+  dangerouslyAllowMutability: true,
 });
 
 export default profileState;
