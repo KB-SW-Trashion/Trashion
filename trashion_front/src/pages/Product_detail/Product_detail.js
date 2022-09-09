@@ -38,6 +38,7 @@ const Product_detail = () => {
 
   const getProduct = () => {
     crudApi.getProductInfo(product.id).then((res) => {
+      //Recoil Value는 값 수정이 안됨.
       product.big_category = res.data.category.big_category;
       product.small_category = res.data.category.small_category;
       setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);

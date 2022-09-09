@@ -17,7 +17,7 @@ export default function MyPage() {
   // eslint-disable-next-line no-unused-vars
   const [, setUser] = useRecoilState(authState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const email = userAuth.email;
+  const user_id = userAuth.user_id;
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -32,7 +32,7 @@ export default function MyPage() {
   };
 
   const getUser = async () => {
-    await user.getUserInfo(email).then((res) => {
+    await user.getUserInfo(user_id).then((res) => {
       console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
