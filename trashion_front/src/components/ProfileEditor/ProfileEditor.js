@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 export default function ProductEditor() {
   const userInfo = useRecoilValue(userInfoState);
   const userAuth = useRecoilValue(authState);
-  const email = userAuth.email;
+  const user_id = userAuth.user_id;
 
   const [editUserInfo, setUserInfo] = useState({ nickname: userInfo.nickname });
   const [profile, setProfile] = useState({});
@@ -65,7 +65,7 @@ export default function ProductEditor() {
   };
 
   const onCreate = (data) => {
-    userEdit.editUserInfo(email, data).then((res) => console.log(res));
+    userEdit.editUserInfo(user_id, data).then((res) => console.log(res));
   };
 
   return (

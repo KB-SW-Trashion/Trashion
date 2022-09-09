@@ -13,14 +13,12 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
-    # photo = serializers.ImageField()
     class Meta:
         model = Photo
         fields = ['item_id', 'photo']
 
 
 class StylePhotoSerializer(serializers.ModelSerializer):
-    # photo = serializers.ImageField()
     class Meta:
         model = StylePhoto
         fields = ['item_id', 'user_id', 'photo']

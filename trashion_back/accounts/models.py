@@ -55,7 +55,7 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     introduce = models.TextField(max_length=140, null=True)
-    profile_image = models.URLField(null=True, blank=True)
+    profile_image = models.ImageField(null=True, blank=True)
     height = models.CharField(max_length=3)
     weight = models.CharField(max_length=3)
     top_size = models.CharField(max_length=5)
