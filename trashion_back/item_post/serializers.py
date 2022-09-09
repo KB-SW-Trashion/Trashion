@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from review.serializers import ReviewSerializer
 from .models import *
 
 User = get_user_model()
@@ -46,6 +47,7 @@ class LocationSetSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
+    review = ReviewSerializer(source='review_target', many=True, read_only=True)
 
     class Meta:
         model = Item
@@ -80,6 +82,7 @@ class RetrieveSerializer(serializers.ModelSerializer):
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
     category = CategorySerializer(source='category_id')
     locationSet = LocationSetSerializer(source='location_sets', many=True)
+    review = ReviewSerializer(source='review_target', many=True, read_only=True)
 
     class Meta:
         model = Item
