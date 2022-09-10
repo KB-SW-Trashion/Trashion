@@ -46,9 +46,8 @@ function Login() {
         }
       })
       .catch((err) => {
-        console.clear();
-        console.log(err);
-        alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
+        if (err.response.data.non_field_errors[0] === 'E-mail is not verified.') alert('이메일 인증이 되지 않은 회원입니다. 이메일 인증을 해 주세요.');
+        else alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
       });
   };
   const location = useLocation();
