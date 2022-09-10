@@ -75,9 +75,7 @@ const Product_detail = () => {
           leftChild={<PostButton text={'< 뒤로가기'} onClick={() => navigate(-1)} />}
           rightChild={
             <div className={styles.button_wrap}>
-              <div className={styles.button_first}>
-                <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />
-              </div>
+              <div className={styles.button_first}>{user.user_id === product.user_id && <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />}</div>
               <div>{user.user_id === product.user_id && <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />}</div>
             </div>
           }
