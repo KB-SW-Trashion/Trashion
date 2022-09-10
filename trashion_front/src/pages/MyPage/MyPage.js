@@ -107,9 +107,7 @@ export default function MyPage() {
       <div className={styles.MyPage_list}>
         <p className={styles.MyPage_list_title}>내가 쓴 글</p>
         <hr className={styles.Mypage_hr} />
-        <div>
-          <Product></Product>
-        </div>
+        <div></div>
       </div>
 
       <div className={styles.MyPage_footerbox}>

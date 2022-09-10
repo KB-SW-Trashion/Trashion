@@ -64,10 +64,10 @@ const Register = () => {
     axios
       .post('/dj-rest-auth/registration/', user)
       .then((res) => {
-        if (res.data.access_token) {
+        if (res.data) {
           setIsLoading(false);
           navigate('/');
-          alert('회원가입 성공!');
+          alert('회원가입에 성공 했습니다! 이메일을 인증 해 주세요.');
         }
       })
       .catch((err) => {
