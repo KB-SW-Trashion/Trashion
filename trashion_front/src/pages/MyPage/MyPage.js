@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Navbar, Footer, Product } from 'components';
-// import img_example from '../../img/img_example.jpg';
 import styles from './MyPage.module.css';
 import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
@@ -45,6 +44,7 @@ export default function MyPage() {
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
         sold_out_count: res.data.sold_out_count,
+        profile_image: res.data.profile_image.photo,
       });
     });
   };
@@ -53,7 +53,15 @@ export default function MyPage() {
     getUser();
   }, []);
 
-  const userProfileImg = userInfo.social_profile;
+  let profile_img;
+
+  if (userInfo.social_profile) {
+    profile_img = userInfo.social_profile;
+  } else if (userInfo.profile_image) {
+    profile_img = userInfo.profile_image;
+  } else {
+    profile_img = userimg;
+  }
 
   return (
     <div>
@@ -62,7 +70,7 @@ export default function MyPage() {
       <div className={styles.MyPage_bodybox}>
         <div className={styles.MyPage_bodyleft}>
           <div className={styles.Mypage_profileImgbox}>
-            {userProfileImg ? <img className={styles.Mypage_profileImg} src={userInfo.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
+            <img className={styles.Mypage_profileImg} src={profile_img} />
           </div>
         </div>
         <div className={styles.MyPage_bodyright}>
@@ -73,13 +81,13 @@ export default function MyPage() {
               <div className={styles.Mypage_profilecontentsboxinnerright}>
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
-                <p> 상의사이즈 : {userInfo.bottom_size}</p>
+                <p> 상의사이즈 : {userInfo.top_size}</p>
                 <p> 거래완료수 : {userInfo.sold_out_count}</p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
-                <p> 하의사이즈 : {userInfo.top_size}</p>
+                <p> 하의사이즈 : {userInfo.bottom_size}</p>
                 <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
               </div>
             </div>

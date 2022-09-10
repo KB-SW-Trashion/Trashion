@@ -1,4 +1,3 @@
-from cgitb import small
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -299,6 +298,7 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
     authentication_classes = (JWTCookieAuthentication,)
     permission_classes = (AllowAny,)
+    pagination_class = None
 
     
     def create(self, request, *args, **kwargs):

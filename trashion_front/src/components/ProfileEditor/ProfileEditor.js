@@ -5,10 +5,11 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { radioSX, CssTextField } from '../ProductEditor/CssInput';
-import { useRecoilValue } from 'recoil';
-import userInfoState from 'store/userInfoState';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import userEdit from 'api/userInfo';
 import authState from 'store/authState';
+import userInfoState from 'store/userInfoState';
+import profileState from 'store/profileState';
 import { Link } from 'react-router-dom';
 import { ProfileImageUploader } from 'components';
 import styles from './ProfileEditor.module.css';
@@ -19,7 +20,7 @@ export default function ProductEditor() {
   const user_id = userAuth.user_id;
 
   const [editUserInfo, setUserInfo] = useState({ nickname: userInfo.nickname });
-  const [profile, setProfile] = useState({});
+  const [profile, setProfile] = useRecoilState(profileState);
 
   useEffect(() => {
     setProfile({
@@ -28,12 +29,13 @@ export default function ProductEditor() {
       bottom_size: userInfo.bottom_size,
       height: userInfo.height,
       weight: userInfo.weight,
+      profile_image: userInfo.profile_image,
     });
-    setUserInfo({ ...userInfo, nickname: userInfo.nickname, profile: profile });
+    setUserInfo({ profile: profile, nickname: userInfo.nickname });
   }, []);
 
   useEffect(() => {
-    setUserInfo({ ...userInfo, nickname: editUserInfo.nickname, profile: profile });
+    setUserInfo({ ...editUserInfo, nickname: editUserInfo.nickname, profile: profile });
   }, [profile]);
 
   const isNickname = (e) => {
@@ -68,10 +70,10 @@ export default function ProductEditor() {
 
   const onCreate = (userInfo) => {
     const formData = new FormData();
-    console.log(userInfo);
-    formData.append('social_profile', userInfo.social_profile[0]);
-    Object.keys(userInfo).forEach((key) => formData.append(key, userInfo[key]));
-    console.log(formData);
+    formData.append('nickname', userInfo.nickname);
+    formData.append('profile_image', userInfo.profile.profile_image[0]);
+    formData.append('profile', JSON.stringify(userInfo.profile));
+    // Object.keys(editUserInfo.profile).forEach((key) => formData.append(key, JSON.stringify(editUserInfo.profile[key])));
     userEdit.editUserInfo(user_id, formData).then((res) => console.log(res.data));
   };
 
