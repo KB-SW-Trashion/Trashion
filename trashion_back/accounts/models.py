@@ -1,5 +1,7 @@
-from django.db import models
+import os
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 class UserManager(BaseUserManager):
@@ -55,11 +57,21 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     introduce = models.TextField(max_length=140, null=True)
-    profile_image = models.ImageField(null=True, blank=True)
     height = models.CharField(max_length=3)
     weight = models.CharField(max_length=3)
     top_size = models.CharField(max_length=5)
     bottom_size = models.CharField(max_length=5)
+    
+    def __str__(self):
+        return self.user.email
+
+class ProfileImage(models.Model):
+    user = models.OneToOneField(User, related_name="profile_image", on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='profile', null=True)
+    
+    def delete(self,*args,**kwargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.name))
+        super(User, self).delete(*args,**kwargs)
     
     def __str__(self):
         return self.user.email

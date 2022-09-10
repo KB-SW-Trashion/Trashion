@@ -44,7 +44,7 @@ export default function MyPage() {
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
         sold_out_count: res.data.sold_out_count,
-        profile_image: res.data.profile.profile_image,
+        profile_image: res.data.profile_image.photo,
       });
     });
   };
@@ -53,8 +53,15 @@ export default function MyPage() {
     getUser();
   }, []);
 
-  const userSocialProfileImg = userInfo.social_profile;
-  const userProfileImage = userInfo.profile_image;
+  let profile_img;
+
+  if (userInfo.social_profile) {
+    profile_img = userInfo.social_profile;
+  } else if (userInfo.profile_image) {
+    profile_img = userInfo.profile_image;
+  } else {
+    profile_img = userimg;
+  }
 
   return (
     <div>
@@ -63,7 +70,7 @@ export default function MyPage() {
       <div className={styles.MyPage_bodybox}>
         <div className={styles.MyPage_bodyleft}>
           <div className={styles.Mypage_profileImgbox}>
-            {userSocialProfileImg ? <img className={styles.Mypage_profileImg} src={userInfo.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
+            <img className={styles.Mypage_profileImg} src={profile_img} />
           </div>
         </div>
         <div className={styles.MyPage_bodyright}>

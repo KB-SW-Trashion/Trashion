@@ -1,15 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { PostButton } from 'components';
-import { userInfoState } from 'store';
 import profileState from 'store/profileState';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import userInfoState from 'store/userInfoState';
 import styles from './ProfileImageUploader.module.css';
+import userimg from 'assets/image/userimg.png';
 
 const ProfileImageUploader = () => {
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [showProfileImage, setShowProfileImage] = useState([]);
   const [profile, setProfile] = useRecoilState(profileState);
-
+  const userInfo = useRecoilValue(userInfoState);
   // 이미지 상대경로 저장
   const handleAddProfileImage = (event) => {
     const profile_img = event.target.files;
@@ -26,7 +26,6 @@ const ProfileImageUploader = () => {
     }
     const currentImageUrl = URL.createObjectURL(profile_img[0]);
     imageUrl.push(currentImageUrl);
-
     setShowProfileImage(imageUrl);
     setProfile({ ...profile, profile_image: profile_img });
   };
@@ -39,11 +38,24 @@ const ProfileImageUploader = () => {
     setProfile({ ...profile, profile_image: fileArray });
   };
 
+  let profile_img;
+  if (showProfileImage.length > 0) {
+    profile_img = showProfileImage;
+  } else {
+    if (userInfo.social_profile) {
+      profile_img = userInfo.social_profile;
+    } else if (userInfo.profile_image) {
+      profile_img = userInfo.profile_image;
+    } else {
+      profile_img = userimg;
+    }
+  }
+
   return (
     <div className={styles.wrapUploader}>
       <div className={styles.addPicture}>
         <div className={styles.Mypage_profileImgbox}>
-          <img className={styles.Mypage_profileImg} src={showProfileImage} />
+          <img className={styles.Mypage_profileImg} src={profile_img} />
         </div>
         {showProfileImage.map((image, id) => (
           <div key={id} className={styles.buttonWrap}>
