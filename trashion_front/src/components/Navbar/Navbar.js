@@ -37,7 +37,7 @@ export default function Navbar() {
           <div
             className={styles.icon_wrap}
             onClick={() => {
-              navigate('/new');
+              user.isLoggedIn ? navigate('/new') : navigate('/login');
             }}
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-pencil">
@@ -63,33 +63,23 @@ export default function Navbar() {
             </svg>
           </Link>
 
-          {user.isLoggedIn ? (
-            <Link to="/Mypage">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
-                <path
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </Link>
-          ) : (
-            <Link to="/login">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
-                <path
-                  xmlns="http://www.w3.org/2000/svg"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
-                />
-              </svg>
-            </Link>
-          )}
+          <div
+            className={styles.icon_wrap}
+            onClick={() => {
+              user.isLoggedIn ? navigate('/mypage') : navigate('/login');
+            }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-user">
+              <path
+                xmlns="http://www.w3.org/2000/svg"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M18 19v-1.25c0-2.071-1.919-3.75-4.286-3.75h-3.428C7.919 14 6 15.679 6 17.75V19m9-11a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+            </svg>
+          </div>
         </div>
         <Link to="/">
           <div className={styles.logo_wrap}>
