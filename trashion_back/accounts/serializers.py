@@ -12,7 +12,7 @@ User = get_user_model()
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone','social_profile']
+        fields = ['id', 'email', 'realname', 'nickname', 'social_profile']
         
 class CustomTokenRefreshSerializer(serializers.Serializer):
     refresh_token = serializers.CharField()
