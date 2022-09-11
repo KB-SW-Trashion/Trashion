@@ -25,6 +25,6 @@ export { default as Product_detail_img } from './Product_img/Product_detail_img'
 export { default as ProfileEditor } from './ProfileEditor/ProfileEditor';
 export { default as Chatlog } from './Chatlog/Chatlog';
 export { default as Chatting } from './Chatting/Chatting';
-export { default as Review_good } from './Review_good/Review_good';
-export { default as Review_bad } from './Review_bad/Review_bad';
+export { default as Review } from './Review/Review';
 export { default as ProfileImageUploader } from './ProfileImageUploader/ProfileImageUploader';
+export { default as BasicModal } from './Modal/Modal';
