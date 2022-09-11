@@ -86,6 +86,7 @@ class ItemViewSet(ModelViewSet):
     # update
     # photo, stylephoto > serializers.py의 update()에서 처리
     def update(self, request, *args, **kwargs):
+        print("view", request.data)
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         # 기존 locationset 삭제
