@@ -16,6 +16,7 @@ const userInfoState = atom({
     introduce: '',
     like_item_count: 0,
     sold_out_count: 0,
+    profile_image: '',
   },
   effects_UNSTABLE: [persistAtom],
 });

@@ -6,30 +6,25 @@ from .models import *
 
 User = get_user_model()
 
-
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-
 
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
         fields = ['item_id', 'photo']
 
-
 class StylePhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = StylePhoto
         fields = ['item_id', 'user_id', 'photo']
 
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,7 +37,6 @@ class LocationSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = LocationSet
         fields = '__all__'
-
 
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
@@ -77,7 +71,6 @@ class ItemSerializer(serializers.ModelSerializer):
                                       photo=style_photo_data)
         instance = super().update(instance, validated_data)
         return instance
-
 
 class RetrieveSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
