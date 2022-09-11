@@ -68,10 +68,14 @@ const ProfileImageUploader = () => {
         ))}
       </div>
       <div className={styles.addButton}>
-        <label onChange={handleAddProfileImage} htmlFor="profile_file">
-          <input type="file" name="profile_file" id="profile_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
-          프로필 사진 업로드
-        </label>
+        {userInfo.social_profile ? (
+          <label></label>
+        ) : (
+          <label onChange={handleAddProfileImage} htmlFor="profile_file">
+            <input type="file" name="profile_file" id="profile_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
+            프로필 사진 업로드
+          </label>
+        )}
       </div>
     </div>
   );

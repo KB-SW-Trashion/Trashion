@@ -40,6 +40,7 @@ const Chatting = () => {
         </div>
         {userInfo.nickname}[닉넴]
       </div>
+
       <div className={styles.userchattingbox}>
         <div className={styles.userchatting}>아 채팅 눈물나는데요</div>
       </div>
