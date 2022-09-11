@@ -10,3 +10,8 @@ class UserDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserDetailSerializer
     parser_classes = (MultiPartParser, FormParser)
     
+    def get_parsers(self):
+        if getattr(self, 'swagger_fake_view', False):
+            return []
+
+        return super().get_parsers()
