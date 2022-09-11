@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import React from 'react';
 import { ProductEditor } from 'components';
 
 const Edit = () => {

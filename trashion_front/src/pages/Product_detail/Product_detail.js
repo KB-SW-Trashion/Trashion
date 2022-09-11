@@ -39,15 +39,10 @@ const Product_detail = () => {
 
   const handleImageClick = (e) => {
     setSelectImg(e.target.src);
-    console.log(typeof selectImg);
   };
 
   const getProduct = () => {
     crudApi.getProductInfo(product.id).then((res) => {
-      console.log('???', res.data);
-      //Recoil Value는 값 수정이 안됨.
-      // product.big_category = res.data.category.big_category;
-      // product.small_category = res.data.category.small_category;
       setProduct({
         ...product,
         big_category: res.data.category.big_category,
@@ -66,7 +61,6 @@ const Product_detail = () => {
 
   useEffect(() => {
     getProduct();
-    console.log(product);
   }, []);
 
   return (
@@ -74,7 +68,7 @@ const Product_detail = () => {
       <Navbar />
       <div className={styles.detail_wrap}>
         <PostHeader
-          leftChild={<PostButton text={'< 뒤로가기'} onClick={() => navigate(-1)} />}
+          leftChild={<PostButton text={'< 뒤로가기'} onClick={() => navigate('/')} />}
           rightChild={
             <div className={styles.button_wrap}>
               <div className={styles.button_first}>{user.user_id === product.user_id && <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />}</div>

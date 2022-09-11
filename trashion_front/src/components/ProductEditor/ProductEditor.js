@@ -29,10 +29,30 @@ const ProductEditor = ({ isEdit, isNew }) => {
   const resetProductImgList = () => {
     setProduct({ ...product, photos: [], style_photos: [] });
   };
-  // 새 글 작성시 productstate 초기화
-  useEffect(() => {
-    console.log('preProductImages: ', preProductImages);
+  const preventGoBack = () => {
+    history.pushState(null, '', location.href);
+    if (window.confirm(isEdit ? '글 수정을 취소하시겠습니까?' : '글 작성을 취소하시겠습니까?')) {
+      setProduct({ ...product, photos: preProductImages, style_photos: preStyleImages });
+      isEdit && navigate(`/product_detail/${product.id}`, { replace: true });
+      isNew && navigate('/', { replace: true });
+    }
+  };
 
+  // 브라우저에 렌더링 시 한 번만 실행하는 코드
+  useEffect(() => {
+    (() => {
+      history.pushState(null, '', location.href);
+      window.addEventListener('popstate', preventGoBack);
+    })();
+
+    return () => {
+      window.removeEventListener('popstate', preventGoBack);
+    };
+  }, []);
+
+  // 새 글 작성시 productstate 초기화
+
+  useEffect(() => {
     isNew && resetProduct();
     isEdit && resetProductImgList();
   }, []);
@@ -97,10 +117,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
   };
 
   const handleCancel = () => {
-    console.log(preProductImages, preStyleImages);
-
-    setProduct({ ...product, photos: preProductImages, style_photos: preStyleImages });
-    navigate(-1);
+    navigate(-1, { replace: true });
   };
 
   const handleSubmit = () => {
