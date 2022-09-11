@@ -116,3 +116,7 @@
   font-style: italic;
   color: currentColor;
 }
+
+.Mypage_reviewbox {
+  display: flex;
+}

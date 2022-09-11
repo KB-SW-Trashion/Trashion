@@ -3,7 +3,7 @@ import { Navbar, Chatlog, Chatting } from 'components';
 import styles from './Chat.module.css';
 import { Link } from 'react-router-dom';
 
-export default function MyPage() {
+export default function Chat() {
   return (
     <div>
       <Navbar />

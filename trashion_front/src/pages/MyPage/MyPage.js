@@ -91,6 +91,10 @@ export default function MyPage() {
               </div>
             </div>
           </div>
+          <div className={styles.Mypage_reviewbox}>
+            <Review_good />
+            <Review_bad />
+          </div>
           <div className={styles.Mypage_buttonbox}>
             <Link to="/New_Profile">
               <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
@@ -107,10 +111,6 @@ export default function MyPage() {
         <p className={styles.MyPage_list_title}>내가 쓴 글</p>
         <hr className={styles.Mypage_hr} />
         <div></div>
-      </div>
-
-      <div className={styles.MyPage_footerbox}>
-        <Footer />
       </div>
     </div>
   );
