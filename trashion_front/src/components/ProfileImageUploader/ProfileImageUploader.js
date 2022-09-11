@@ -27,7 +27,11 @@ const ProfileImageUploader = () => {
     const currentImageUrl = URL.createObjectURL(profile_img[0]);
     imageUrl.push(currentImageUrl);
     setShowProfileImage(imageUrl);
-    setProfile({ ...profile, profile_image: profile_img });
+    if (profile_img.length > 0) {
+      setProfile({ ...profile, profile_image: profile_img });
+    } else {
+      setProfile({ ...profile });
+    }
   };
 
   // X버튼 클릭 시 이미지 삭제

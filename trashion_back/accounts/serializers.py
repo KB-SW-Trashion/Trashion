@@ -87,15 +87,18 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES
-        ProfileImage.objects.filter(user=instance).delete()
-        for photo in images_data.getlist('profile_image'):
-            ProfileImage.objects.create(user=instance, photo=photo)
+        print(images_data)
+        if(images_data):
+            ProfileImage.objects.filter(user=instance).delete()
+            for photo in images_data.getlist('profile_image'):
+                ProfileImage.objects.create(user=instance, photo=photo)
             
         instance.nickname = self.context['request'].data.get('nickname')
         instance.save()
         
         profile_data = json.loads(self.context['request'].data.get('profile'))
-        profile_data.pop('profile_image')
+        if(profile_data.get('profile_image')):
+            profile_data.pop('profile_image')
         profile = instance.profile
 
         for k, v in profile_data.items():
