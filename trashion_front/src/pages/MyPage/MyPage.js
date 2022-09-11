@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navbar, Footer, Product } from 'components';
+import { Navbar, Product, Review_bad, Review_good } from 'components';
 // import img_example from '../../img/img_example.jpg';
 import styles from './MyPage.module.css';
 import Fab from '@mui/material/Fab';
@@ -86,6 +86,10 @@ export default function MyPage() {
               </div>
             </div>
           </div>
+          <div className={styles.Mypage_reviewbox}>
+            <Review_good />
+            <Review_bad />
+          </div>
           <div className={styles.Mypage_buttonbox}>
             <Link to="/New_Profile">
               <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
@@ -104,10 +108,6 @@ export default function MyPage() {
         <div>
           <Product></Product>
         </div>
-      </div>
-
-      <div className={styles.MyPage_footerbox}>
-        <Footer />
       </div>
     </div>
   );

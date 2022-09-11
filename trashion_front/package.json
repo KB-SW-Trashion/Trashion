@@ -24,6 +24,7 @@
     "react-google-login": "^5.2.2",
     "react-heart": "^1.0.6",
     "react-hook-form": "^7.34.2",
+    "react-modal-hover": "^1.1.13",
     "react-redux": "^8.0.2",
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
