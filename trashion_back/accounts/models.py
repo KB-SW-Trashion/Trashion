@@ -46,8 +46,6 @@ class User(AbstractUser):
     social_profile = models.URLField(null=True,blank=True)
     realname = models.CharField(max_length=50, blank=True)
     nickname = models.CharField(max_length=50, null=True, unique=True) 
-    address = models.CharField(max_length=200, blank=True)
-    phone = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.email
