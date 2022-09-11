@@ -32,7 +32,6 @@ export default function MyPage() {
 
   useEffect(() => {
     user.getUserInfo(user_id).then((res) => {
-      console.log('2', res.data);
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,

@@ -69,16 +69,11 @@ export default function ProductEditor() {
   };
 
   const onCreate = (userInfo) => {
-    console.log(userInfo);
-
     const formData = new FormData();
     formData.append('nickname', userInfo.nickname);
     if (typeof userInfo.profile.profile_image === 'object') {
       formData.append('profile_image', userInfo.profile.profile_image[0]);
-    } else {
-      formData.append('profile_image', userInfo.profile.profile_image);
     }
-    console.log(formData.get('profile_image'));
     formData.append('profile', JSON.stringify(userInfo.profile));
     userEdit.editUserInfo(user_id, formData).then((res) => console.log(res.data));
   };
@@ -103,7 +98,13 @@ export default function ProductEditor() {
           상의 사이즈
           <br />
           <FormControl>
-            <RadioGroup row aria-labelledby="demo-row-radio-buttons-group-label" name="row-radio-buttons-group" onChange={(e) => setProfile({ ...profile, top_size: e.target.value })}>
+            <RadioGroup
+              row
+              aria-labelledby="demo-row-radio-buttons-group-label"
+              name="row-radio-buttons-group"
+              value={profile.top_size}
+              onChange={(e) => setProfile({ ...profile, top_size: e.target.value })}
+            >
               <FormControlLabel value="XS" control={<Radio sx={radioSX} />} label="XS" />
               <FormControlLabel value="S" control={<Radio sx={radioSX} />} label="S" />
               <FormControlLabel value="M" control={<Radio sx={radioSX} />} label="M" />
