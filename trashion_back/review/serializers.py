@@ -11,10 +11,10 @@ class ReviewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Review
-        fields = ['id', 'reviewer', 'target', 'satisfied', 'review']
+        fields = ['reviewer', 'target', 'satisfied', 'review']
         
     def get_reviewer(self, obj):
         return obj.reviewer.nickname
     
     def get_target(self, obj):
-        return obj.target.title
+        return obj.target.user_id.id

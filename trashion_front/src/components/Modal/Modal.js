@@ -1,11 +1,13 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import styles from '../Review/Review.module.css';
-import { makeStyles } from '@mui/styles';
 
+import reviewApi from 'api/reviewApi';
+import { authState } from 'store';
 const style = {
   position: 'absolute',
   top: '60%',
@@ -35,9 +37,20 @@ const Review_bad = {
 };
 
 export default function BasicModal({ good }) {
-  const [open, setOpen] = React.useState(false);
+  const userAuth = useRecoilValue(authState);
+  const user_id = userAuth.user_id;
+
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [review, setReview] = useState([]);
+
+  useEffect(() => {
+    reviewApi.getReview().then((res) => {
+      setReview([res.data]);
+      console.log(review);
+    });
+  }, []);
 
   return (
     <div>
