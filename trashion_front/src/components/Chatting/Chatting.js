@@ -4,7 +4,7 @@ import styles from './Chatting.module.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { authState } from 'store';
 import user from 'api/userInfo';
-import { timeForToday } from 'utils/timeforToday';
+import { ProfileImageUploader } from 'components';
 import userimg from 'assets/image/userimg.png';
 
 const Chatting = () => {
@@ -51,6 +51,9 @@ const Chatting = () => {
 
       <div className={styles.chat_inputbox}>
         <input className={styles.chat_input} placeholder="메세지를 입력하세요" type="text" />
+        <div className={styles.image_uploader_wrap}>
+          <ProfileImageUploader />
+        </div>
       </div>
     </div>
   );
