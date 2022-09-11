@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navbar, Footer, MypageProductList, Review_bad, Review_good } from 'components';
+import { Navbar, MypageProductList, Review } from 'components';
 import styles from './MyPage.module.css';
 import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
@@ -92,8 +92,7 @@ export default function MyPage() {
             </div>
           </div>
           <div className={styles.Mypage_reviewbox}>
-            <Review_good />
-            <Review_bad />
+            <Review />
           </div>
           <div className={styles.Mypage_buttonbox}>
             <Link to="/New_Profile">
