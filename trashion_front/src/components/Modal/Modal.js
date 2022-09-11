@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import styles from '../Review/Review.module.css';
-import { makeStyles } from '@mui/styles';
 
 const style = {
   position: 'absolute',
