@@ -87,7 +87,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES
-        print(images_data)
         if(images_data):
             ProfileImage.objects.filter(user=instance).delete()
             for photo in images_data.getlist('profile_image'):
