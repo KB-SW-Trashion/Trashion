@@ -3,7 +3,7 @@ import { Navbar, Footer, Product } from 'components';
 import styles from './MyPage.module.css';
 import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { authState } from 'store';
 import user from 'api/userInfo';
 import { userInfoState } from 'store';
@@ -13,11 +13,11 @@ import userimg from 'assets/image/userimg.png';
 
 export default function MyPage() {
   const userAuth = useRecoilValue(authState);
-  // eslint-disable-next-line no-unused-vars
   const [, setUser] = useRecoilState(authState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
+  const resetUserInfo = useResetRecoilState(userInfoState);
 
   const handleLogout = async () => {
     await authApi.getUser().then(() => {
@@ -30,11 +30,12 @@ export default function MyPage() {
     navigate('/');
   };
 
-  const getUser = async () => {
-    await user.getUserInfo(user_id).then((res) => {
+  useEffect(() => {
+    console.log('1', userInfo);
+    user.getUserInfo(user_id).then((res) => {
+      console.log('2', res.data);
       setUserInfo({
         nickname: res.data.nickname,
-        social_profile: res.data.social_profile,
         following_amount: res.data.following_count,
         follower_amount: res.data.follower_count,
         height: res.data.profile.height,
@@ -44,14 +45,16 @@ export default function MyPage() {
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
         sold_out_count: res.data.sold_out_count,
-        profile_image: res.data.profile_image.photo,
       });
+      if (res.data.social_profile) {
+        setUserInfo((userInfo) => ({ ...userInfo, social_profile: res.data.social_profile }));
+      } else if (res.data.profile_image.photo) {
+        setUserInfo((userInfo) => ({ ...userInfo, profile_image: res.data.profile_image.photo }));
+      }
     });
-  };
-
-  useEffect(() => {
-    getUser();
   }, []);
+
+  console.log('3', userInfo);
 
   let profile_img;
 
