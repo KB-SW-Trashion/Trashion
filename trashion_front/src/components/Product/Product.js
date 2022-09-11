@@ -7,9 +7,7 @@ import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 
 const Product = (product) => {
-  useEffect(() => {
-    console.log(product);
-  }, []);
+  useEffect(() => {}, []);
   const navigate = useNavigate();
   const [, setProduct] = useRecoilState(productState);
 
