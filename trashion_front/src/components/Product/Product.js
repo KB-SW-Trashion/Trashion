@@ -27,8 +27,9 @@ const Product = (product) => {
       <div className={styles.product_discription}>
         <h4>{product.title}</h4>
 
-        <span className={styles.product_price}>Price: {product.price}</span>
+        <span className={styles.product_price}>Price: {product.price}원</span>
         <span className={styles.product_size}>Size: {product.size}</span>
+        <br />
         <span className={styles.update_time}>{updated_time}</span>
       </div>
     </li>

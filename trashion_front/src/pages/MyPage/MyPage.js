@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Navbar, Footer, Product } from 'components';
+import { Navbar, Footer, MypageProductList, Review_bad, Review_good } from 'components';
 import styles from './MyPage.module.css';
 import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
@@ -110,8 +110,14 @@ export default function MyPage() {
       <div className={styles.MyPage_list}>
         <p className={styles.MyPage_list_title}>내가 쓴 글</p>
         <hr className={styles.Mypage_hr} />
-        <div></div>
+        <div className={styles.MypageProductList}>
+          <MypageProductList user_id={user_id} />
+        </div>
       </div>
+
+      {/* <div className={styles.MyPage_footerbox}>
+        <Footer />
+      </div> */}
     </div>
   );
 }
