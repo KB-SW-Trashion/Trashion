@@ -7,4 +7,3 @@ class ReviewList(generics.ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     pagination_class = None
-    

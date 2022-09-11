@@ -4,8 +4,11 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from item_post.models import Item
+
 from .models import *
 from item_post.serializers import ItemSerializer
+
 User = get_user_model()
 
 
@@ -59,7 +62,13 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['introduce', 'height', 'weight', 'top_size', 'bottom_size']        
-        
+
+class ItemSerializer(ItemSerializer):
+    class Meta:
+        ref_name = "Account"
+        model = Item
+        fields = ['id', 'review']
+
 class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
     following_count = serializers.IntegerField(source='following.count', read_only=True)

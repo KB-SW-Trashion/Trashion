@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react';
-import { Navbar, MypageProductList, Review } from 'components';
-import styles from './MyPage.module.css';
-import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { authState } from 'store';
-import user from 'api/userInfo';
-import { userInfoState } from 'store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Navbar, MypageProductList, Review } from 'components';
+import Fab from '@mui/material/Fab';
+import styles from './MyPage.module.css';
+import { userInfoState, authState } from 'store';
 import { setCookie } from 'cookies-next';
 import authApi from 'api/authApi';
+import user from 'api/userInfo';
 import userimg from 'assets/image/userimg.png';
 
 export default function MyPage() {
@@ -17,7 +16,6 @@ export default function MyPage() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
-  const resetUserInfo = useResetRecoilState(userInfoState);
 
   const handleLogout = async () => {
     await authApi.getUser().then(() => {
@@ -32,6 +30,7 @@ export default function MyPage() {
 
   useEffect(() => {
     user.getUserInfo(user_id).then((res) => {
+      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,
@@ -90,6 +89,7 @@ export default function MyPage() {
                 <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
               </div>
             </div>
+            <p> 최근 리뷰 </p>
           </div>
           <div className={styles.Mypage_reviewbox}>
             <Review />
