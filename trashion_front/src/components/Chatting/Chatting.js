@@ -51,9 +51,7 @@ const Chatting = () => {
 
       <div className={styles.chat_inputbox}>
         <input className={styles.chat_input} placeholder="메세지를 입력하세요" type="text" />
-        <div className={styles.image_uploader_wrap}>
-          <ProfileImageUploader />
-        </div>
+        <div className={styles.image_uploader_wrap}>{/* <ProfileImageUploader /> */}</div>
       </div>
     </div>
   );
