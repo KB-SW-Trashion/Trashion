@@ -78,12 +78,12 @@ class UserDetailSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     realname = serializers.ReadOnlyField()
-    
+    social_profile = serializers.ReadOnlyField()
     sold_out_count = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
+        fields = ['id', 'email', 'realname', 'nickname', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
     
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES
