@@ -59,9 +59,7 @@ class ItemSerializer(serializers.ModelSerializer):
         return item
 
     def update(self, instance, validated_data):
-        print("시리얼라이저", self.context['request'].data)
         images_data = self.context['request'].FILES
-        print("이미지", images_data)
         Photo.objects.filter(item_id=instance).delete()
         StylePhoto.objects.filter(item_id=instance).delete()
         for photo_data in images_data.getlist('photos_data'):

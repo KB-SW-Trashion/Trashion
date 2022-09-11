@@ -68,10 +68,6 @@ class Profile(models.Model):
 class ProfileImage(models.Model):
     user = models.OneToOneField(User, related_name="profile_image", on_delete=models.CASCADE)
     photo = models.ImageField(upload_to='profile', null=True)
-    
-    def delete(self,*args,**kwargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.name))
-        super(User, self).delete(*args,**kwargs)
-    
+
     def __str__(self):
         return self.user.email

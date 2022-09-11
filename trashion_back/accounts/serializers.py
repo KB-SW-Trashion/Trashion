@@ -1,3 +1,4 @@
+from email.mime import image
 import json
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
@@ -87,15 +88,23 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES
-        ProfileImage.objects.filter(user=instance).delete()
-        for photo in images_data.getlist('profile_image'):
-            ProfileImage.objects.create(user=instance, photo=photo)
+        
+        if(images_data):
+            ProfileImage.objects.filter(user=instance).delete()
+            for photo in images_data.getlist('profile_image'):
+                ProfileImage.objects.create(user=instance, photo=photo)
+        elif (images_data != "undefined"):
+            images_data = self.context['request'].data.get('profile_image')
+            images_data = images_data.replace("http://localhost:8000/media/", "")
+            ProfileImage.objects.filter(user=instance).delete()
+            ProfileImage.objects.create(user=instance, photo=images_data)
             
         instance.nickname = self.context['request'].data.get('nickname')
         instance.save()
         
         profile_data = json.loads(self.context['request'].data.get('profile'))
-        profile_data.pop('profile_image')
+        if(profile_data.get('profile_image')):
+            profile_data.pop('profile_image')
         profile = instance.profile
 
         for k, v in profile_data.items():

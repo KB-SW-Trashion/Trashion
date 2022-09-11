@@ -31,7 +31,6 @@ export default function MyPage() {
   };
 
   useEffect(() => {
-    console.log('1', userInfo);
     user.getUserInfo(user_id).then((res) => {
       console.log('2', res.data);
       setUserInfo({
@@ -48,13 +47,11 @@ export default function MyPage() {
       });
       if (res.data.social_profile) {
         setUserInfo((userInfo) => ({ ...userInfo, social_profile: res.data.social_profile }));
-      } else if (res.data.profile_image.photo) {
+      } else if (res.data.profile_image) {
         setUserInfo((userInfo) => ({ ...userInfo, profile_image: res.data.profile_image.photo }));
       }
     });
   }, []);
-
-  console.log('3', userInfo);
 
   let profile_img;
 

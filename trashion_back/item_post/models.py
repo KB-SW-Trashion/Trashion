@@ -47,18 +47,10 @@ class Photo(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='photo_sets')
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
 
-    def delete(self,*args,**kwargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.name))
-        super(Item, self).delete(*args,**kwargs)
-
 class StylePhoto(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='style_photo_sets')
     user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='style_photo_sets')
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
-    
-    def delete(self,*args,**kwargs):
-        os.remove(os.path.join(settings.MEDIA_ROOT, self.photo.name))
-        super(Item, self).delete(*args,**kwargs)
     
     def __str__(self):
         return self.item_id.title
