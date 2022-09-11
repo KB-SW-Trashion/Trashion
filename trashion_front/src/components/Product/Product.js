@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product_img } from 'components';
 import { useRecoilState } from 'recoil';
@@ -6,9 +6,12 @@ import styles from './Product.module.css';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 
-const Product = () => {
+const Product = (product) => {
+  useEffect(() => {
+    console.log(product);
+  }, []);
   const navigate = useNavigate();
-  const [product, setProduct] = useRecoilState(productState);
+  const [, setProduct] = useRecoilState(productState);
 
   var selected_date = new Date(product.updated_at);
   const updated_time = timeForToday(selected_date);

@@ -4,7 +4,7 @@ import { ProductEditor } from 'components';
 const New = () => {
   return (
     <div>
-      <ProductEditor isNew={true} />
+      <ProductEditor isNew={true} isEdit={false} />
     </div>
   );
 };

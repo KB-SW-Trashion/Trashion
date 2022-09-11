@@ -4,26 +4,29 @@ import { productState } from 'store';
 import { useRecoilState } from 'recoil';
 import styles from './ImageUploader.module.css';
 
-const ImageUploader = (isEdit) => {
+const ImageUploader = ({ isEdit }) => {
   const [showProductImages, setShowProductImages] = useState([]);
   const [showStyleImages, setShowStyleImages] = useState([]);
   const [product, setProduct] = useRecoilState(productState);
 
-  // 수정 시 기존 이미지 파일 리스트 초기화
+  let productImgList = [];
+  let styleImgList = [];
+
+  const getImgList = () => {
+    productImgList = product.photos.map(({ photo }) => photo);
+    styleImgList = product.style_photos.map(({ photo }) => photo);
+  };
+
+  const setOldImgList = () => {
+    setShowProductImages(productImgList);
+    setShowStyleImages(styleImgList);
+  };
+
   useEffect(() => {
-    console.log(isEdit);
-    const productImgList = [];
-    const styleImgList = [];
-    for (let i = 0; i < product.photos.length; i++) {
-      productImgList.push(product.photos[i].photo);
-    }
-    for (let i = 0; i < product.style_photos.length; i++) {
-      styleImgList.push(product.style_photos[i].photo);
-    }
-    isEdit && setShowProductImages(productImgList);
-    isEdit && setShowStyleImages(styleImgList);
+    isEdit && getImgList();
+    isEdit && setOldImgList();
+
     console.log(showProductImages);
-    console.log(product);
   }, []);
 
   // 이미지 상대경로 저장
