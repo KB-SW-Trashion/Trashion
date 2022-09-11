@@ -13,7 +13,7 @@ import productState from 'store/productState';
 import axios from 'axios';
 import tokenConfig from 'api/tokenConfig';
 import category from 'api/category';
-import crudApi from 'api/crudApi';
+import itemApi from 'api/itemApi';
 
 const ProductEditor = ({ isEdit, isNew }) => {
   const navigate = useNavigate();
@@ -87,7 +87,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
 
         isEdit
-          ? crudApi.editProduct(editId, formData)
+          ? itemApi.editProduct(editId, formData)
           : axios
               .post('/item_post/item/', formData, tokenConfig())
               .then((res) => {

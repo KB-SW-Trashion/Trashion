@@ -6,7 +6,7 @@ import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
-import crudApi from 'api/crudApi';
+import itemApi from 'api/itemApi';
 import userInfo from 'api/userInfo';
 import { authState } from 'store';
 
@@ -32,7 +32,7 @@ const Product_detail = () => {
 
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      crudApi.delete(product.id);
+      itemApi.delete(product.id);
       navigate('/', { replace: true });
     }
   };
@@ -42,7 +42,7 @@ const Product_detail = () => {
   };
 
   const getProduct = () => {
-    crudApi.getProductInfo(product.id).then((res) => {
+    itemApi.getProductInfo(product.id).then((res) => {
       setProduct({
         ...product,
         big_category: res.data.category.big_category,
