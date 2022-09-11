@@ -1,9 +1,12 @@
 .product {
   position: relative;
-  width: 318px;
+  width: 300px;
   float: left;
   height: 530px;
   margin: 30px 0 70px 30px;
+  border: 1px solid #f8bbd0;
+  border-radius: 10px;
+  padding: 10px;
   cursor: pointer;
 }
 .product_discription {
@@ -26,5 +29,6 @@
 
 .update_time {
   float: right;
+  font-size: 12px;
   color: grey;
 }

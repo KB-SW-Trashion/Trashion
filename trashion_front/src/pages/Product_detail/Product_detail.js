@@ -116,6 +116,8 @@ const Product_detail = () => {
               <h3>가격 : {product.price}</h3>
               <p>사이즈 : {product.size}</p>
               <p>상태 : {product.condition}</p>
+              {product.height && <p>키 : {product.height}cm</p>}
+              {product.wegiht && <p>몸무게 : {product.weight}kg</p>}
             </div>
             <div className={styles.seller_info}>
               <p className={styles.info}>판매자 정보</p>
