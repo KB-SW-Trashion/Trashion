@@ -9,24 +9,12 @@ const ImageUploader = ({ isEdit }) => {
   const [showStyleImages, setShowStyleImages] = useState([]);
   const [product, setProduct] = useRecoilState(productState);
 
-  let productImgList = [];
-  let styleImgList = [];
-
-  const getImgList = () => {
-    productImgList = product.photos.map(({ photo }) => photo);
-    styleImgList = product.style_photos.map(({ photo }) => photo);
-  };
-
-  const setOldImgList = () => {
-    setShowProductImages(productImgList);
-    setShowStyleImages(styleImgList);
+  const resetProductImgList = () => {
+    setProduct({ ...product, photos: [], style_photos: [] });
   };
 
   useEffect(() => {
-    isEdit && getImgList();
-    isEdit && setOldImgList();
-
-    console.log(showProductImages);
+    isEdit && resetProductImgList();
   }, []);
 
   // 이미지 상대경로 저장
@@ -58,7 +46,6 @@ const ImageUploader = ({ isEdit }) => {
     let fileArray = Array.from(product.photos);
     fileArray.splice(id, 1);
     setProduct({ ...product, photos: fileArray });
-    console.log(showProductImages);
   };
 
   //style Image

@@ -12,13 +12,6 @@ export default {
     return axios.delete(`/item_post/item/${id}`, tokenConfig());
   },
   editProduct(id, data) {
-    return axios
-      .patch(`/item_post/item/${id}/`, data, tokenConfig())
-      .then((res) => {
-        console.log('res: ', res);
-      })
-      .catch((err) => {
-        console.log('err: ', err);
-      });
+    return axios.patch(`/item_post/item/${id}/`, data, tokenConfig());
   },
 };

@@ -25,7 +25,6 @@ const ProductEditor = ({ isEdit, isNew }) => {
   // 새 글 작성시 productstate 초기화
   useEffect(() => {
     isNew && resetProduct();
-    isEdit && console.log(product);
   }, []);
 
   const onCreate = (product) => {
@@ -56,14 +55,13 @@ const ProductEditor = ({ isEdit, isNew }) => {
           }
         }
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
-        console.log(formData.get('photos_data'));
+
         isEdit
           ? crudApi.editProduct(editId, formData)
           : axios
               .post('/item_post/item/', formData, tokenConfig())
               .then((res) => {
                 if (res.data) {
-                  console.log('res: ', res);
                   setProduct({ ...product, id: res.data.id });
                   resetProduct();
                   navigate('/', { replace: true });
@@ -71,8 +69,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
               })
               .catch((err) => {
                 console.log('error:', err);
-                console.log(product);
-                console.log('data:', formData);
+
                 alert('글을 작성 할 수 없습니다.');
               });
         navigate('/', { replace: true });
