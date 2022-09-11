@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Product_detail_img, Img_small, PostButton, PostHeader, LikeButton } from 'components';
 import styles from './Product_detail.module.css';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
@@ -12,13 +12,13 @@ import { authState } from 'store';
 
 const Product_detail = () => {
   const navigate = useNavigate();
-  const product = useRecoilValue(productState);
+  const [product, setProduct] = useRecoilState(productState);
   const user = useRecoilValue(authState);
 
   const [cityName, setCityName] = useState('');
   const [guName, setGuName] = useState('');
   const [dongName, setDongName] = useState('');
-  const [selectImg, setSelectImg] = useState(product.photos[0].photo);
+  const [selectImg, setSelectImg] = useState(product.photos[0] && product.photos[0].photo);
   const [userHeight, setUserHeight] = useState('');
   const [userWeight, setUserWeight] = useState('');
   const { sido, sigugun, dong } = hangjungdong;
@@ -44,9 +44,18 @@ const Product_detail = () => {
 
   const getProduct = () => {
     crudApi.getProductInfo(product.id).then((res) => {
+      console.log('???', res.data);
       //Recoil Value는 값 수정이 안됨.
-      product.big_category = res.data.category.big_category;
-      product.small_category = res.data.category.small_category;
+      // product.big_category = res.data.category.big_category;
+      // product.small_category = res.data.category.small_category;
+      setProduct({
+        ...product,
+        big_category: res.data.category.big_category,
+        small_category: res.data.category.small_category,
+        seller_height: res.data.seller_height,
+        seller_weight: res.data.seller_weight,
+      });
+
       setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);
       setGuName(sigugun.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu)[0]?.codeNm);
       setDongName(
@@ -55,16 +64,9 @@ const Product_detail = () => {
     });
   };
 
-  const getUserInfo = () => {
-    userInfo.getUserInfo(product.user_id).then((res) => {
-      setUserHeight(res.data.profile.height);
-      setUserWeight(res.data.profile.weight);
-    });
-  };
-
   useEffect(() => {
     getProduct();
-    getUserInfo();
+    console.log(product);
   }, []);
 
   return (
@@ -123,8 +125,8 @@ const Product_detail = () => {
             </div>
             <div className={styles.seller_info}>
               <p className={styles.info}>판매자 정보</p>
-              <h2>키 : {userHeight}cm</h2>
-              <h2>몸무게 : {userWeight}kg</h2>
+              <h2>키 : {product.seller_height}cm</h2>
+              <h2>몸무게 : {product.seller_weight}kg</h2>
               <p>사이즈 : {product.size}</p>
             </div>
             <LikeButton />

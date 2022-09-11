@@ -9,14 +9,6 @@ const ImageUploader = ({ isEdit }) => {
   const [showStyleImages, setShowStyleImages] = useState([]);
   const [product, setProduct] = useRecoilState(productState);
 
-  const resetProductImgList = () => {
-    setProduct({ ...product, photos: [], style_photos: [] });
-  };
-
-  useEffect(() => {
-    isEdit && resetProductImgList();
-  }, []);
-
   // 이미지 상대경로 저장
   const handleAddProductImages = (event) => {
     const imageLists = event.target.files;

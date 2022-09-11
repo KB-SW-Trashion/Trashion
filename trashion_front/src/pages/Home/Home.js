@@ -28,7 +28,7 @@ export default function Home() {
           <Category />
         </div>
         <div className={styles.wrap_content}>
-          <div className={styles.button_wrap}>
+          {/* <div className={styles.button_wrap}>
             <div className={styles.toggleIcon} id="tabProduct" onClick={tabHandler}>
               <FontAwesomeIcon icon={faShirt} size="4x" />
             </div>
@@ -36,7 +36,7 @@ export default function Home() {
             <div className={styles.toggleIcon} id="tabStyle" onClick={tabHandler}>
               <FontAwesomeIcon icon={faUserTie} size="2x" />
             </div>
-          </div>
+          </div> */}
 
           <ul className={styles.contents}>
             <ProductList />

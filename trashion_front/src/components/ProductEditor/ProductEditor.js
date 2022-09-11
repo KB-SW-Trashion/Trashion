@@ -1,5 +1,5 @@
 import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory, Navbar } from 'components';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
@@ -19,12 +19,22 @@ const ProductEditor = ({ isEdit, isNew }) => {
   const navigate = useNavigate();
 
   const editId = useParams().id;
+
   const [product, setProduct] = useRecoilState(productState);
+
+  const [preProductImages] = useState(product.photos);
+  const [preStyleImages] = useState(product.style_photos);
   const resetProduct = useResetRecoilState(productState);
 
+  const resetProductImgList = () => {
+    setProduct({ ...product, photos: [], style_photos: [] });
+  };
   // 새 글 작성시 productstate 초기화
   useEffect(() => {
+    console.log('preProductImages: ', preProductImages);
+
     isNew && resetProduct();
+    isEdit && resetProductImgList();
   }, []);
 
   const onCreate = (product) => {
@@ -81,6 +91,16 @@ const ProductEditor = ({ isEdit, isNew }) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
+    console.log(product.photos);
+    console.log('preProductImages: ', preProductImages);
+    console.log('preStyleImages: ', preStyleImages);
+  };
+
+  const handleCancel = () => {
+    console.log(preProductImages, preStyleImages);
+
+    setProduct({ ...product, photos: preProductImages, style_photos: preStyleImages });
+    navigate(-1);
   };
 
   const handleSubmit = () => {
@@ -110,7 +130,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
         <div className={styles.main}>
           <PostHeader
             postText={'글작성'}
-            leftChild={<PostButton text={'취소하기'} type={''} onClick={() => navigate(-1)} />}
+            leftChild={<PostButton text={'취소하기'} type={''} onClick={handleCancel} />}
             rightChild={isEdit ? <PostButton text={'수정하기'} type={'positive'} onClick={handleSubmit} /> : <PostButton onClick={handleSubmit} text={'작성하기'} type={'positive'} />}
           />
           <div className={styles.input_wrap}>
