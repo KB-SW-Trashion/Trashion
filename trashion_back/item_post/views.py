@@ -1,4 +1,3 @@
-from cgitb import small
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 
@@ -87,6 +86,7 @@ class ItemViewSet(ModelViewSet):
     # update
     # photo, stylephoto > serializers.py의 update()에서 처리
     def update(self, request, *args, **kwargs):
+        print("view", request.data)
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         # 기존 locationset 삭제
@@ -299,6 +299,7 @@ class CategoryViewSet(ModelViewSet):
     serializer_class = CategorySerializer
     authentication_classes = (JWTCookieAuthentication,)
     permission_classes = (AllowAny,)
+    pagination_class = None
 
     
     def create(self, request, *args, **kwargs):

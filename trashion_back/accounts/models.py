@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 class UserManager(BaseUserManager):
@@ -55,11 +55,17 @@ class User(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
     introduce = models.TextField(max_length=140, null=True)
-    profile_image = models.URLField(null=True, blank=True)
     height = models.CharField(max_length=3)
     weight = models.CharField(max_length=3)
     top_size = models.CharField(max_length=5)
     bottom_size = models.CharField(max_length=5)
     
+    def __str__(self):
+        return self.user.email
+
+class ProfileImage(models.Model):
+    user = models.OneToOneField(User, related_name="profile_image", on_delete=models.CASCADE)
+    photo = models.ImageField(upload_to='profile', null=True)
+
     def __str__(self):
         return self.user.email

@@ -4,15 +4,10 @@ import { productState } from 'store';
 import { useRecoilState } from 'recoil';
 import styles from './ImageUploader.module.css';
 
-const ImageUploader = (isEdit) => {
+const ImageUploader = ({ isEdit }) => {
   const [showProductImages, setShowProductImages] = useState([]);
   const [showStyleImages, setShowStyleImages] = useState([]);
   const [product, setProduct] = useRecoilState(productState);
-
-  // 수정 시 기존 이미지 파일 리스트 초기화
-  useEffect(() => {
-    isEdit && setProduct({ ...product, photos: [], style_photos: [] });
-  }, []);
 
   // 이미지 상대경로 저장
   const handleAddProductImages = (event) => {
@@ -23,7 +18,6 @@ const ImageUploader = (isEdit) => {
       alert('이미지는 4개 이하로 업로드 해 주세요!');
       return;
     }
-    console.log(showProductImages.length);
 
     for (let i = 0; i < imageLists.length; i++) {
       if (imageLists[i].type !== 'image/jpeg' && imageLists[i].type !== 'image/jpg' && imageLists[i].type !== 'image/png') {
@@ -44,7 +38,6 @@ const ImageUploader = (isEdit) => {
     let fileArray = Array.from(product.photos);
     fileArray.splice(id, 1);
     setProduct({ ...product, photos: fileArray });
-    console.log(showProductImages.length);
   };
 
   //style Image
@@ -94,7 +87,7 @@ const ImageUploader = (isEdit) => {
       </div>
       <div className={styles.addButton}>
         <label onChange={handleAddProductImages} htmlFor="product_file">
-          <input type="file" name="product_file" id="product_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
+          <input type="file" name="product_file" id="product_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png', '.jpeg']} className={styles.addButton} required />
           제품 사진 업로드
         </label>
       </div>
@@ -113,7 +106,7 @@ const ImageUploader = (isEdit) => {
       </div>
       <div className={styles.addButton}>
         <label onChange={handleAddStyleImages} htmlFor="style_file">
-          <input type="file" name="style_file" id="style_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png']} className={styles.addButton} required />
+          <input type="file" name="style_file" id="style_file" style={{ display: 'none' }} multiple accept={['.jpg', '.png', 'jpeg']} className={styles.addButton} required />
           착장 사진 업로드
         </label>
       </div>

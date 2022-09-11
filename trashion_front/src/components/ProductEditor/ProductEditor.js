@@ -1,5 +1,5 @@
 import { PostButton, PostHeader, ImageUploader, SelectBox, LocationCategory, Navbar } from 'components';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import styles from './ProductEditor.module.css';
@@ -13,18 +13,48 @@ import productState from 'store/productState';
 import axios from 'axios';
 import tokenConfig from 'api/tokenConfig';
 import category from 'api/category';
-import crudApi from 'api/crudApi';
+import itemApi from 'api/itemApi';
 
 const ProductEditor = ({ isEdit, isNew }) => {
   const navigate = useNavigate();
 
   const editId = useParams().id;
+
   const [product, setProduct] = useRecoilState(productState);
+
+  const [preProductImages] = useState(product.photos);
+  const [preStyleImages] = useState(product.style_photos);
   const resetProduct = useResetRecoilState(productState);
 
+  const resetProductImgList = () => {
+    setProduct({ ...product, photos: [], style_photos: [] });
+  };
+  const preventGoBack = () => {
+    history.pushState(null, '', location.href);
+    if (window.confirm(isEdit ? '글 수정을 취소하시겠습니까?' : '글 작성을 취소하시겠습니까?')) {
+      setProduct({ ...product, photos: preProductImages, style_photos: preStyleImages });
+      isEdit && navigate(`/product_detail/${product.id}`, { replace: true });
+      isNew && navigate('/', { replace: true });
+    }
+  };
+
+  // 브라우저에 렌더링 시 한 번만 실행하는 코드
+  useEffect(() => {
+    (() => {
+      history.pushState(null, '', location.href);
+      window.addEventListener('popstate', preventGoBack);
+    })();
+
+    return () => {
+      window.removeEventListener('popstate', preventGoBack);
+    };
+  }, []);
+
   // 새 글 작성시 productstate 초기화
+
   useEffect(() => {
     isNew && resetProduct();
+    isEdit && resetProductImgList();
   }, []);
 
   const onCreate = (product) => {
@@ -38,7 +68,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
     };
     category.postCategory(category_data).then(() => {
       category.getCategoryId().then((res) => {
-        const category = res.data.results;
+        const category = res.data;
         const category_filter = category.filter((i) => i.small_category === product.small_category);
         const id = category_filter[0].id;
         product.purchaser = 1;
@@ -55,13 +85,13 @@ const ProductEditor = ({ isEdit, isNew }) => {
           }
         }
         Object.keys(product).forEach((key) => formData.append(key, product[key]));
+
         isEdit
-          ? crudApi.editProduct(editId, formData)
+          ? itemApi.editProduct(editId, formData)
           : axios
               .post('/item_post/item/', formData, tokenConfig())
               .then((res) => {
                 if (res.data) {
-                  console.log(res);
                   setProduct({ ...product, id: res.data.id });
                   resetProduct();
                   navigate('/', { replace: true });
@@ -69,8 +99,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
               })
               .catch((err) => {
                 console.log('error:', err);
-                console.log(product);
-                console.log('data:', formData);
+
                 alert('글을 작성 할 수 없습니다.');
               });
         navigate('/', { replace: true });
@@ -81,8 +110,14 @@ const ProductEditor = ({ isEdit, isNew }) => {
   const isNum = (e) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
-    console.log(product);
     setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
+    console.log(product.photos);
+    console.log('preProductImages: ', preProductImages);
+    console.log('preStyleImages: ', preStyleImages);
+  };
+
+  const handleCancel = () => {
+    navigate(-1, { replace: true });
   };
 
   const handleSubmit = () => {
@@ -112,7 +147,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
         <div className={styles.main}>
           <PostHeader
             postText={'글작성'}
-            leftChild={<PostButton text={'취소하기'} type={''} onClick={() => navigate(-1)} />}
+            leftChild={<PostButton text={'취소하기'} type={''} onClick={handleCancel} />}
             rightChild={isEdit ? <PostButton text={'수정하기'} type={'positive'} onClick={handleSubmit} /> : <PostButton onClick={handleSubmit} text={'작성하기'} type={'positive'} />}
           />
           <div className={styles.input_wrap}>

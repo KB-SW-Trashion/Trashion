@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
-import { Navbar, Product, Review_bad, Review_good } from 'components';
-// import img_example from '../../img/img_example.jpg';
+import { Navbar, Footer, Product } from 'components';
 import styles from './MyPage.module.css';
 import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { authState } from 'store';
 import user from 'api/userInfo';
 import { userInfoState } from 'store';
@@ -14,11 +13,11 @@ import userimg from 'assets/image/userimg.png';
 
 export default function MyPage() {
   const userAuth = useRecoilValue(authState);
-  // eslint-disable-next-line no-unused-vars
   const [, setUser] = useRecoilState(authState);
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
-  const email = userAuth.email;
+  const user_id = userAuth.user_id;
   const navigate = useNavigate();
+  const resetUserInfo = useResetRecoilState(userInfoState);
 
   const handleLogout = async () => {
     await authApi.getUser().then(() => {
@@ -31,12 +30,10 @@ export default function MyPage() {
     navigate('/');
   };
 
-  const getUser = async () => {
-    await user.getUserInfo(email).then((res) => {
-      console.log(res.data);
+  useEffect(() => {
+    user.getUserInfo(user_id).then((res) => {
       setUserInfo({
         nickname: res.data.nickname,
-        social_profile: res.data.social_profile,
         following_amount: res.data.following_count,
         follower_amount: res.data.follower_count,
         height: res.data.profile.height,
@@ -47,15 +44,23 @@ export default function MyPage() {
         like_item_count: res.data.like_item_count,
         sold_out_count: res.data.sold_out_count,
       });
-      console.log(userInfo);
+      if (res.data.social_profile) {
+        setUserInfo((userInfo) => ({ ...userInfo, social_profile: res.data.social_profile }));
+      } else if (res.data.profile_image) {
+        setUserInfo((userInfo) => ({ ...userInfo, profile_image: res.data.profile_image.photo }));
+      }
     });
-  };
-
-  useEffect(() => {
-    getUser();
   }, []);
 
-  const userProfileImg = userInfo.social_profile;
+  let profile_img;
+
+  if (userInfo.social_profile) {
+    profile_img = userInfo.social_profile;
+  } else if (userInfo.profile_image) {
+    profile_img = userInfo.profile_image;
+  } else {
+    profile_img = userimg;
+  }
 
   return (
     <div>
@@ -64,7 +69,7 @@ export default function MyPage() {
       <div className={styles.MyPage_bodybox}>
         <div className={styles.MyPage_bodyleft}>
           <div className={styles.Mypage_profileImgbox}>
-            {userProfileImg ? <img className={styles.Mypage_profileImg} src={userInfo.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
+            <img className={styles.Mypage_profileImg} src={profile_img} />
           </div>
         </div>
         <div className={styles.MyPage_bodyright}>
@@ -75,13 +80,13 @@ export default function MyPage() {
               <div className={styles.Mypage_profilecontentsboxinnerright}>
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
-                <p> 상의사이즈 : {userInfo.bottom_size}</p>
+                <p> 상의사이즈 : {userInfo.top_size}</p>
                 <p> 거래완료수 : {userInfo.sold_out_count}</p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
-                <p> 하의사이즈 : {userInfo.top_size}</p>
+                <p> 하의사이즈 : {userInfo.bottom_size}</p>
                 <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
               </div>
             </div>
@@ -105,9 +110,7 @@ export default function MyPage() {
       <div className={styles.MyPage_list}>
         <p className={styles.MyPage_list_title}>내가 쓴 글</p>
         <hr className={styles.Mypage_hr} />
-        <div>
-          <Product></Product>
-        </div>
+        <div></div>
       </div>
     </div>
   );

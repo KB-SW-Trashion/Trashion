@@ -1,8 +1,9 @@
+import os
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 User = get_user_model()
-
 
 class Category(models.Model):
     big_category = models.CharField(max_length=20)
@@ -10,7 +11,6 @@ class Category(models.Model):
 
     def __str__(self):
         return self.big_category + "-" + self.small_category
-
 
 class Item(models.Model):
     user_id = models.ForeignKey(User, related_name='item_sets', on_delete=models.CASCADE)
@@ -31,7 +31,6 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
-
 class Location(models.Model):
     city = models.CharField(max_length=10)
     gu = models.CharField(max_length=10)
@@ -40,16 +39,13 @@ class Location(models.Model):
     def __str__(self):
         return self.city+" "+self.gu+" "+self.dong
 
-
 class LocationSet(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='location_sets')
     location_id = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location_sets')
 
-
 class Photo(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='photo_sets')
     photo = models.ImageField(upload_to='item_post', blank=True, null=True)
-
 
 class StylePhoto(models.Model):
     item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='style_photo_sets')

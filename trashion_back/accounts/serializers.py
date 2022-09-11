@@ -1,10 +1,10 @@
-from tkinter import TRUE
+import json
 from django.contrib.auth import get_user_model
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Profile
+from .models import *
 from item_post.serializers import ItemSerializer
 User = get_user_model()
 
@@ -50,6 +50,11 @@ class BlockUserListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.blocked_user.nickname}'        
         
+class ProfileImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfileImage
+        fields =  ['photo']
+        
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
@@ -67,6 +72,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     blocked_user = BlockUserListingField(many=True, read_only=True)
     
     profile = ProfileSerializer(partial=True)
+    profile_image = ProfileImageSerializer()
     item_sets = ItemSerializer(many=True, read_only=True)
     
     id = serializers.ReadOnlyField()
@@ -77,17 +83,27 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'item_sets', 'sold_out_count']
+        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
     
     def update(self, instance, validated_data):
-        profile_data = validated_data.pop('profile')
+        images_data = self.context['request'].FILES
+        if(images_data):
+            ProfileImage.objects.filter(user=instance).delete()
+            for photo in images_data.getlist('profile_image'):
+                ProfileImage.objects.create(user=instance, photo=photo)
+            
+        instance.nickname = self.context['request'].data.get('nickname')
+        instance.save()
+        
+        profile_data = json.loads(self.context['request'].data.get('profile'))
+        if(profile_data.get('profile_image')):
+            profile_data.pop('profile_image')
         profile = instance.profile
+
         for k, v in profile_data.items():
             setattr(profile, k, v)
         profile.save()
         
-        instance.nickname = validated_data.get('nickname', instance.nickname)
-        instance.save()
         return instance
     
     def get_sold_out_count(self, obj):

@@ -2,20 +2,25 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Navbar, Product_detail_img, Img_small, PostButton, PostHeader, LikeButton } from 'components';
 import styles from './Product_detail.module.css';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
 import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
-import crudApi from 'api/crudApi';
+import itemApi from 'api/itemApi';
+import userInfo from 'api/userInfo';
+import { authState } from 'store';
 
 const Product_detail = () => {
   const navigate = useNavigate();
-  const product = useRecoilValue(productState);
+  const [product, setProduct] = useRecoilState(productState);
+  const user = useRecoilValue(authState);
 
   const [cityName, setCityName] = useState('');
   const [guName, setGuName] = useState('');
   const [dongName, setDongName] = useState('');
-  const [selectImg, setSelectImg] = useState(product.photos[0].photo);
+  const [selectImg, setSelectImg] = useState(product.photos[0] && product.photos[0].photo);
+  const [userHeight, setUserHeight] = useState('');
+  const [userWeight, setUserWeight] = useState('');
   const { sido, sigugun, dong } = hangjungdong;
 
   var selected_date = new Date(product.updated_at);
@@ -27,7 +32,7 @@ const Product_detail = () => {
 
   const handleRemove = () => {
     if (window.confirm('정말 삭제하시겠습니까?')) {
-      crudApi.delete(product.id);
+      itemApi.delete(product.id);
       navigate('/', { replace: true });
     }
   };
@@ -37,9 +42,15 @@ const Product_detail = () => {
   };
 
   const getProduct = () => {
-    crudApi.getProductInfo(product.id).then((res) => {
-      product.big_category = res.data.category.big_category;
-      product.small_category = res.data.category.small_category;
+    itemApi.getProductInfo(product.id).then((res) => {
+      setProduct({
+        ...product,
+        big_category: res.data.category.big_category,
+        small_category: res.data.category.small_category,
+        seller_height: res.data.seller_height,
+        seller_weight: res.data.seller_weight,
+      });
+
       setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);
       setGuName(sigugun.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu)[0]?.codeNm);
       setDongName(
@@ -57,15 +68,11 @@ const Product_detail = () => {
       <Navbar />
       <div className={styles.detail_wrap}>
         <PostHeader
-          leftChild={<PostButton text={'< 뒤로가기'} onClick={() => navigate(-1)} />}
+          leftChild={<PostButton text={'< 뒤로가기'} onClick={() => navigate('/')} />}
           rightChild={
             <div className={styles.button_wrap}>
-              <div className={styles.button_first}>
-                <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />
-              </div>
-              <div>
-                <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />
-              </div>
+              <div className={styles.button_first}>{user.user_id === product.user_id && <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />}</div>
+              <div>{user.user_id === product.user_id && <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />}</div>
             </div>
           }
         />
@@ -82,23 +89,20 @@ const Product_detail = () => {
           <div className={styles.product_img_box}>
             <div className={styles.img_big}>
               <Product_detail_img selectImg={selectImg} />
-              {/* <img src={selectImg} /> */}
             </div>
             <div className={styles.img_small_wrap}>
-              {product.photos &&
-                product.photos.map((it) => (
-                  <div key={it.id} {...it} onClick={handleImageClick}>
-                    <Img_small key={it.id} {...it} />
-                  </div>
-                ))}
+              {product.photos.map((it) => (
+                <div key={it.id} {...it} onClick={handleImageClick}>
+                  <Img_small key={it.id} {...it} />
+                </div>
+              ))}
             </div>
             <div className={styles.img_small_wrap}>
-              {product.style_photos &&
-                product.style_photos.map((it) => (
-                  <div key={it.id} {...it} onClick={handleImageClick}>
-                    <Img_small key={it.id} {...it} />
-                  </div>
-                ))}
+              {product.style_photos.map((it) => (
+                <div key={it.id} {...it} onClick={handleImageClick}>
+                  <Img_small key={it.id} {...it} />
+                </div>
+              ))}
             </div>
           </div>
 
@@ -115,8 +119,8 @@ const Product_detail = () => {
             </div>
             <div className={styles.seller_info}>
               <p className={styles.info}>판매자 정보</p>
-              <h2>키 : 204cm</h2>
-              <h2>몸무게 : 20kg</h2>
+              <h2>키 : {product.seller_height}cm</h2>
+              <h2>몸무게 : {product.seller_weight}kg</h2>
               <p>사이즈 : {product.size}</p>
             </div>
             <LikeButton />

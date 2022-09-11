@@ -1,36 +1,30 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from review.serializers import ReviewSerializer
 from .models import *
 
 User = get_user_model()
-
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
 
-
 class PhotoSerializer(serializers.ModelSerializer):
-    # photo = serializers.ImageField()
     class Meta:
         model = Photo
         fields = ['item_id', 'photo']
 
-
 class StylePhotoSerializer(serializers.ModelSerializer):
-    # photo = serializers.ImageField()
     class Meta:
         model = StylePhoto
         fields = ['item_id', 'user_id', 'photo']
-
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
-
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,10 +38,10 @@ class LocationSetSerializer(serializers.ModelSerializer):
         model = LocationSet
         fields = '__all__'
 
-
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
+    review = ReviewSerializer(source='review_target', many=True, read_only=True)
 
     class Meta:
         model = Item
@@ -76,12 +70,14 @@ class ItemSerializer(serializers.ModelSerializer):
         instance = super().update(instance, validated_data)
         return instance
 
-
 class RetrieveSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
     category = CategorySerializer(source='category_id')
     locationSet = LocationSetSerializer(source='location_sets', many=True)
+    review = ReviewSerializer(source='review_target', many=True, read_only=True)
+    seller_height = serializers.ReadOnlyField(source = 'user_id.profile.height')
+    seller_weight = serializers.ReadOnlyField(source='user_id.profile.weight') 
 
     class Meta:
         model = Item
