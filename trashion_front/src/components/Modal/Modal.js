@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 import reviewApi from 'api/reviewApi';
-import { authState } from 'store';
+import { authState, reviewState } from 'store';
 const style = {
   position: 'absolute',
   top: '60%',
@@ -26,6 +26,7 @@ const Review_good = {
   bgcolor: '#f8bbd0',
   borderRadius: '100%',
   minWidth: '26px',
+  margin: '15px',
 };
 
 const Review_bad = {
@@ -36,32 +37,39 @@ const Review_bad = {
   minWidth: '26px',
 };
 
-export default function BasicModal({ good }) {
-  const userAuth = useRecoilValue(authState);
-  const user_id = userAuth.user_id;
-
+function Review({ review }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [review, setReview] = useState([]);
-
-  useEffect(() => {
-    reviewApi.getReview().then((res) => {
-      setReview([res.data]);
-      console.log(review);
-    });
-  }, []);
 
   return (
-    <div>
-      <Button onClick={handleOpen} sx={good ? Review_good : Review_bad}></Button>
+    <>
+      <Button onClick={handleOpen} sx={review.satisfied === 'SF' ? Review_good : Review_bad}></Button>
       <Modal open={open} onClose={handleClose} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            여기다가 쓰면 됩니당 근디 이거 뜨는 위치는 조정을 해야하긴함 하 눈물나네
+            {review.review}
           </Typography>
         </Box>
       </Modal>
+    </>
+  );
+}
+
+export default function BasicModal() {
+  const userAuth = useRecoilValue(authState);
+  const review = useRecoilValue(reviewState);
+  const user_id = userAuth.user_id;
+
+  let review_filter = review.filter((i) => i.target === user_id);
+
+  return (
+    <div>
+      <div>
+        {review_filter.map((review) => (
+          <Review review={review} key={review.id} />
+        ))}
+      </div>
     </div>
   );
 }
