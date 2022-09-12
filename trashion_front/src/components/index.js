@@ -28,3 +28,4 @@ export { default as Chatting } from './Chatting/Chatting';
 export { default as Review } from './Review/Review';
 export { default as ProfileImageUploader } from './ProfileImageUploader/ProfileImageUploader';
 export { default as BasicModal } from './Modal/Modal';
+export { default as Chatting_drop } from './Chatting/Chatting_drop';

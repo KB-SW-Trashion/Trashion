@@ -15,11 +15,12 @@
 }
 
 .Mypage_profileImgbox {
-  width: 31px;
-  height: 31px;
+  width: 45px;
+  height: 45px;
   border-radius: 100%;
   overflow: hidden;
   padding-right: 7px;
+  margin-top: 10px;
 }
 
 .Mypage_profileImg {
@@ -27,6 +28,12 @@
   height: 100%;
 
   object-fit: cover;
+}
+
+.Chatting_Nicknamebox {
+  width: 500px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .userchattingbox {
