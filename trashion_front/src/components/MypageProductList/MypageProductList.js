@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import item from 'api/itemApi';
+import axios from 'axios';
 import { Product } from 'components';
 
 const MypageProductList = ({ user_id }) => {
   const [productList, setProductList] = useState();
 
   useEffect(() => {
-    item.getMyItem(user_id).then((res) => {
-      setProductList(res.data);
-    });
+    const fetchData = async () => {
+      try {
+        const { data: response } = await axios.get('/item_post/item');
+        const filteredProductList = response.results.filter((org) => org.user_id === user_id);
+        setProductList(filteredProductList);
+      } catch (err) {
+        console.log('err: ', err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (

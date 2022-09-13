@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
+import reviewApi from 'api/reviewApi';
 import { authState, reviewState } from 'store';
 const style = {
   position: 'absolute',
@@ -25,7 +26,7 @@ const Review_good = {
   bgcolor: '#f8bbd0',
   borderRadius: '100%',
   minWidth: '26px',
-  margin: '5px',
+  margin: '15px',
 };
 
 const Review_bad = {
@@ -34,13 +35,13 @@ const Review_bad = {
   bgcolor: '#d9d9d9',
   borderRadius: '100%',
   minWidth: '26px',
-  margin: '5px',
 };
 
 function Review({ review }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   return (
     <>
       <Button onClick={handleOpen} sx={review.satisfied === 'SF' ? Review_good : Review_bad}></Button>
@@ -61,9 +62,7 @@ export default function BasicModal() {
   const user_id = userAuth.user_id;
 
   let review_filter = review.filter((i) => i.target === user_id);
-  review_filter = review_filter.sort(function (a, b) {
-    return b.id - a.id;
-  });
+
   return (
     <div>
       <div>
