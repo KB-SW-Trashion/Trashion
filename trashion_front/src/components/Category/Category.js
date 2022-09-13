@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import categoryState from 'store/categoryState';
 import category from 'api/category';
@@ -11,6 +11,7 @@ import Collapse from '@mui/material/Collapse';
 import Typography from '@mui/material/Typography';
 
 const Category = () => {
+  const [categoryList, setCategoryList] = useState([]);
   const [categoryFilter, setCategoryFilter] = useRecoilState(categoryState);
   const [categoryId, setCategoryId] = useState('');
   const [open1, setOpen1] = useState(false);
@@ -18,24 +19,28 @@ const Category = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
-  const getCategoryId = () => {
-    category.getCategoryId(categoryFilter).then((res) => {
-      const category = res.data.results;
-      const category_filter = category.filter((i) => i.small_category === categoryFilter.smallCategory);
-      setCategoryId(category_filter[0].id);
+  useEffect(() => {
+    category.getCategoryId().then((res) => {
+      setCategoryList(res.data);
     });
+  }, []);
+
+  const getCategoryId = () => {
+    const category_filter = categoryList.filter((i) => i.small_category === categoryFilter.smallCategory);
+    setCategoryId(category_filter[0].id);
   };
 
   const handleSmallCategory = (e) => {
     setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
     getCategoryId();
     console.log(categoryId);
+    console.log('categoryFilter: ', categoryFilter);
   };
 
   const handleClick1 = (e) => {
     setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
-    console.log(categoryFilter);
-    console.log(e);
+    // console.log(categoryFilter);
+    // console.log(e);
 
     setOpen1(!open1);
     setOpen2(false);

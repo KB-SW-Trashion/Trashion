@@ -111,9 +111,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
-    console.log(product.photos);
-    console.log('preProductImages: ', preProductImages);
-    console.log('preStyleImages: ', preStyleImages);
+    console.log(product);
   };
 
   const handleCancel = () => {

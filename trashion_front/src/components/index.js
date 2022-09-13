@@ -28,3 +28,4 @@ export { default as Chatting } from './Chatting/Chatting';
 export { default as Review_good } from './Review_good/Review_good';
 export { default as Review_bad } from './Review_bad/Review_bad';
 export { default as ProfileImageUploader } from './ProfileImageUploader/ProfileImageUploader';
+export { default as LocationChip } from './LocationChip/LocationChip';
