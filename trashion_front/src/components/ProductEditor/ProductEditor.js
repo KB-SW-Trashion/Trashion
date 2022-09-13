@@ -68,6 +68,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
     };
     category.postCategory(category_data).then(() => {
       category.getCategoryId().then((res) => {
+        console.log(product);
         const category = res.data;
         const category_filter = category.filter((i) => i.small_category === product.small_category);
         const id = category_filter[0].id;
@@ -111,9 +112,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
     const curValue = e.currentTarget.value;
     const notNum = /[^0-9]/g;
     setProduct({ ...product, [e.target.name]: curValue.replace(notNum, '') });
-    console.log(product.photos);
-    console.log('preProductImages: ', preProductImages);
-    console.log('preStyleImages: ', preStyleImages);
+    console.log(product);
   };
 
   const handleCancel = () => {
