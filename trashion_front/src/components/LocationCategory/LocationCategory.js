@@ -26,12 +26,9 @@ export default function LocationCategory() {
   const handleDong = (e) => {
     setProduct({ ...product, dong: e.target.value });
     setCityInfo({ ...cityInfo, dong: e.target.value });
-    console.log(cityInfo);
   };
 
-  useEffect(() => {
-    console.log(product);
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div>
       <FormControl sx={{ m: 1, minWidth: 223 }}>
