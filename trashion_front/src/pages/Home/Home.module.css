@@ -29,6 +29,7 @@
   align-items: center;
   justify-content: center;
 } */
+
 .line {
   font-size: 20px;
 }
@@ -44,6 +45,11 @@
 }
 
 .buttonWrap {
+  display: flex;
   margin-top: 13px;
-  margin-left: 10px;
+  margin-left: 20px;
+}
+
+.applyLocationButton {
+  margin-left: 20px;
 }
