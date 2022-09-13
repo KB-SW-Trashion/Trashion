@@ -163,10 +163,35 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # 카테고리별 아이템 조회
+    # 빅카테고리별 아이템 조회('bigCategory'를 받아서 그걸로 분류)
+    @action(detail=False, methods=['GET'])
+    def bigCategory_item(self, request):
+        user_id = request.GET['user_id']
+        user = User.objects.get(pk=user_id)
+
+        blocked_user = Block.objects.filter(blocking_user=user)  # 유저가 차단한 유저
+        user_blocked = Block.objects.filter(blocked_user=user)  # 유저를 차단한 유저
+
+        blocked_user_list = []
+        for user in blocked_user:
+            blocked_user_list.append(user.blocked_user.id)
+
+        user_blocked_list = []
+        for user in user_blocked:
+            user_blocked_list.append(user.blocking_user_id)
+
+        categorys = Category.objects.filter(big_category=request.GET.get('bigCategory'))
+        category_ids = []
+        for i in categorys:
+            category_ids.append(i.id)
+        items = Item.objects.filter(category_id__in=category_ids).exclude(user_id__in=blocked_user_list)
+        items = items.exclude(user_id__in=user_blocked_list)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    # 카테고리별 아이템 조회('category_id'를 받아서 그걸로 분류)
     @action(detail=False, methods=['GET'])
     def category_item(self, request):
-        print(request.GET)
         user_id = request.GET['user_id']
         user = User.objects.get(pk=user_id)
         
@@ -180,8 +205,6 @@ class ItemViewSet(ModelViewSet):
         user_blocked_list = []
         for user in user_blocked:
             user_blocked_list.append(user.blocking_user_id)
-        
-        print(blocked_user_list, user_blocked_list)
          
         items = Item.objects.filter(category_id=request.GET.get('category_id')).exclude(user_id__in=blocked_user_list)
         items = items.exclude(user_id__in=user_blocked_list)
