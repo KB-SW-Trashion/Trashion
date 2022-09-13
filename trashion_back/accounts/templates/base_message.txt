@@ -1,0 +1,4 @@
+{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name %}Trashion에 오신 걸 환영합니다!{% endblocktrans %}
+
+{{ site_domain }}{% block content %}{% endblock %}
+{% endautoescape %}

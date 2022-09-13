@@ -91,7 +91,6 @@ ACCOUNT_EMAIL_REQUIRED = True            # email 필드 사용 o
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False        # username 필드 사용 x
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 REST_USE_JWT = True
 
@@ -123,7 +122,7 @@ ROOT_URLCONF = 'trashion_back.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'accounts')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -218,7 +217,7 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ACCOUNT_CONFIRM_EMAIL_ON_GET = True # 유저가 받은 링크를 클릭하면 회원가입 완료되게끔
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/' # 사이트와 관련한 자동응답을 받을 이메일 주소,'webmaster@localhost'
-
+EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://localhost:3000' # 사이트와 관련한 자동응답을 받을 이메일 주소,'webmaster@localhost'
+LOGIN_REDIRECT_URLNAME = 'http://localhost:3000'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "Trashion"
