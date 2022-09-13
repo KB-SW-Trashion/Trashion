@@ -4,15 +4,18 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from item_post.models import Item
+
 from .models import *
 from item_post.serializers import ItemSerializer
+
 User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone','social_profile']
+        fields = ['id', 'email', 'realname', 'nickname', 'social_profile']
         
 class CustomTokenRefreshSerializer(serializers.Serializer):
     refresh_token = serializers.CharField()
@@ -59,7 +62,13 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ['introduce', 'height', 'weight', 'top_size', 'bottom_size']        
-        
+
+class ItemSerializer(ItemSerializer):
+    class Meta:
+        ref_name = "Account"
+        model = Item
+        fields = ['id', 'review']
+
 class UserDetailSerializer(serializers.ModelSerializer):
     following = FollowingListingField(many=True, read_only=True)
     following_count = serializers.IntegerField(source='following.count', read_only=True)
@@ -78,12 +87,12 @@ class UserDetailSerializer(serializers.ModelSerializer):
     id = serializers.ReadOnlyField()
     email = serializers.ReadOnlyField()
     realname = serializers.ReadOnlyField()
-    
+    social_profile = serializers.ReadOnlyField()
     sold_out_count = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'address', 'phone', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
+        fields = ['id', 'email', 'realname', 'nickname', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
     
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES

@@ -17,4 +17,4 @@ class ReviewSerializer(serializers.ModelSerializer):
         return obj.reviewer.nickname
     
     def get_target(self, obj):
-        return obj.target.title
+        return obj.target.user_id.id

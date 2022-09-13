@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { Navbar, Footer, MypageProductList, Review_bad, Review_good } from 'components';
-import styles from './MyPage.module.css';
-import Fab from '@mui/material/Fab';
 import { Link, useNavigate } from 'react-router-dom';
-import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { authState } from 'store';
-import user from 'api/userInfo';
-import { userInfoState } from 'store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { Navbar, MypageProductList, Review } from 'components';
+import Fab from '@mui/material/Fab';
+import styles from './MyPage.module.css';
+import { userInfoState, authState, reviewState } from 'store';
 import { setCookie } from 'cookies-next';
 import authApi from 'api/authApi';
+import user from 'api/userInfo';
+import reviewApi from 'api/reviewApi';
 import userimg from 'assets/image/userimg.png';
 
 export default function MyPage() {
@@ -17,7 +17,7 @@ export default function MyPage() {
   const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
-  const resetUserInfo = useResetRecoilState(userInfoState);
+  const [review, setReview] = useRecoilState(reviewState);
 
   const handleLogout = async () => {
     await authApi.getUser().then(() => {
@@ -32,6 +32,10 @@ export default function MyPage() {
 
   useEffect(() => {
     user.getUserInfo(user_id).then((res) => {
+      console.log(res.data);
+      reviewApi.getReview().then((res) => {
+        setReview(res.data);
+      });
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,
@@ -90,20 +94,22 @@ export default function MyPage() {
                 <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
               </div>
             </div>
-          </div>
-          <div className={styles.Mypage_reviewbox}>
-            <Review_good />
-            <Review_bad />
-          </div>
-          <div className={styles.Mypage_buttonbox}>
-            <Link to="/New_Profile">
-              <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
-                내 정보 수정
+            <div>
+              <h3> 최근 리뷰 </h3>
+            </div>
+            <div className={styles.Mypage_reviewbox}>
+              <Review />
+            </div>
+            <div className={styles.Mypage_buttonbox}>
+              <Link to="/New_Profile">
+                <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
+                  내 정보 수정
+                </Fab>
+              </Link>
+              <Fab variant="extended" onClick={handleLogout} sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', fontWeight: 'bolder' }}>
+                로그아웃
               </Fab>
-            </Link>
-            <Fab variant="extended" onClick={handleLogout} sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', fontWeight: 'bolder' }}>
-              로그아웃
-            </Fab>
+            </div>
           </div>
         </div>
       </div>
