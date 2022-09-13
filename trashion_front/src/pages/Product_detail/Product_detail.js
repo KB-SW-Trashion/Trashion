@@ -7,7 +7,6 @@ import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
 import itemApi from 'api/itemApi';
-import userInfo from 'api/userInfo';
 import { authState } from 'store';
 
 const Product_detail = () => {
@@ -19,8 +18,6 @@ const Product_detail = () => {
   const [guName, setGuName] = useState('');
   const [dongName, setDongName] = useState('');
   const [selectImg, setSelectImg] = useState(product.photos[0] && product.photos[0].photo);
-  const [userHeight, setUserHeight] = useState('');
-  const [userWeight, setUserWeight] = useState('');
   const { sido, sigugun, dong } = hangjungdong;
 
   var selected_date = new Date(product.updated_at);

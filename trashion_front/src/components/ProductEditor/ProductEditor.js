@@ -68,6 +68,7 @@ const ProductEditor = ({ isEdit, isNew }) => {
     };
     category.postCategory(category_data).then(() => {
       category.getCategoryId().then((res) => {
+        console.log(product);
         const category = res.data;
         const category_filter = category.filter((i) => i.small_category === product.small_category);
         const id = category_filter[0].id;
