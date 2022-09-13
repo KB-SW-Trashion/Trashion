@@ -27,5 +27,9 @@ export { default as Chatlog } from './Chatlog/Chatlog';
 export { default as Chatting } from './Chatting/Chatting';
 export { default as Review } from './Review/Review';
 export { default as ProfileImageUploader } from './ProfileImageUploader/ProfileImageUploader';
+<<<<<<< HEAD
+export { default as LocationChip } from './LocationChip/LocationChip';
+=======
 export { default as BasicModal } from './Modal/Modal';
 export { default as Chatting_drop } from './Chatting/Chatting_drop';
+>>>>>>> 5df00864abac9fa2a6c0374b9930fd91cbe956ce

@@ -13,13 +13,14 @@
 }
 
 .contents {
+  margin-top: 0px;
   list-style: none;
 }
 
 .toggleIcon {
   margin: 0 5px;
 }
-
+/* 
 .button_wrap {
   width: 150px;
   margin: 0 auto;
@@ -27,11 +28,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
+} */
 .line {
   font-size: 20px;
 }
 
 .toggleIcon:hover {
   cursor: pointer;
+}
+
+.locationWrap {
+  margin-top: 100px;
+  margin-left: 105px;
+  display: flex;
+}
+
+.buttonWrap {
+  margin-top: 13px;
+  margin-left: 10px;
 }
