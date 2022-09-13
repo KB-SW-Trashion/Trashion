@@ -15,6 +15,6 @@ export default {
     return axios.patch(`/item_post/item/${id}/`, data, tokenConfig());
   },
   getMyItem(id) {
-    return axios.get(`/item_post/item/my_item/?user_id=${id}`, tokenConfig());
+    return axios.get(`/item_post/item/my_item/?user_id=${id}`);
   },
 };

@@ -41,7 +41,7 @@ class ItemViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action in ['create']:
             self.permission_classes = [IsAuthenticated, ]
-        elif self.action in ['update', 'partial_update', 'destroy', 'my_item']:
+        elif self.action in ['update', 'partial_update', 'destroy']:
             self.permission_classes = [IsOwner, ]
         else:
             self.permission_classes = [AllowAny, ]
