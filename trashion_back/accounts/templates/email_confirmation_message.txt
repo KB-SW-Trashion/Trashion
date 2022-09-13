@@ -1,0 +1,7 @@
+{% extends "templates/base_message.txt" %}
+{% load account %}
+{% load i18n %}
+
+{% block content %}{% autoescape off %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}회원가입을 완료하려면 아래 링크를 눌러주세요.
+
+{{ activate_url }}{% endblocktrans %}{% endautoescape %}{% endblock %}
