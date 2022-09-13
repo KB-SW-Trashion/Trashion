@@ -5,7 +5,7 @@ import { Navbar, MypageProductList, Review } from 'components';
 import Fab from '@mui/material/Fab';
 import styles from './MyPage.module.css';
 import { userInfoState, authState, reviewState } from 'store';
-import { setCookie } from 'cookies-next';
+import { setCookie, getCookie } from 'cookies-next';
 import authApi from 'api/authApi';
 import user from 'api/userInfo';
 import reviewApi from 'api/reviewApi';
@@ -32,9 +32,8 @@ export default function MyPage() {
 
   useEffect(() => {
     user.getUserInfo(user_id).then((res) => {
-      console.log(res.data);
       reviewApi.getReview().then((res) => {
-        setReview(res.data);
+        setReview(res.data.results);
       });
       setUserInfo({
         nickname: res.data.nickname,
