@@ -42,7 +42,7 @@ class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
     review = ReviewSerializer(source='review_target', many=True, read_only=True)
-    locationSet = LocationSetSerializer(source='location_sets', many=True)
+    # locationSet = LocationSetSerializer(source='location_sets', many=True)
     
     class Meta:
         model = Item

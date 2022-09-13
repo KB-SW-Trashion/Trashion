@@ -7,4 +7,7 @@ export default {
   getLocation(locationId) {
     return axios.get(`item_post/location/${locationId}`);
   },
+  getfilteredItem(cityId, guId, dongId) {
+    return axios.get(`item_post/item/?&city=${cityId}&gu=${guId}&dong=${dongId}`);
+  },
 };
