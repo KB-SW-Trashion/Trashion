@@ -214,11 +214,11 @@ class ItemViewSet(ModelViewSet):
     # 지역별 아이템 조회
     @action(detail=False, methods=['GET'])
     def location_item(self, request):
-        city = request.GET.get('city', None)  # 시는 한개
+        city = request.GET.getlist('city', None)  # 시 여러개 선택가능
         gu = request.GET.getlist('gu', None)  # 구는 여러개 선택 가능
         dong = request.GET.getlist('dong', None)  # 동은 여러개 선택 가능
         locations = Location.objects.filter(
-            Q(city=city) & Q(gu__in=gu) & Q(dong__in=dong)
+            Q(city__in=city) & Q(gu__in=gu) & Q(dong__in=dong)
         )
         location_ids = []
         for i in locations:
