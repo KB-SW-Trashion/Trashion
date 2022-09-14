@@ -23,7 +23,7 @@ class IsOwner(permissions.BasePermission):
         return bool(request.user and request.user.is_authenticated)
 
     def has_object_permissions(self, request, view, obj):
-      return obj.user_id == request.user
+        return obj.user_id == request.user
 
 
 class ItemViewSet(ModelViewSet):
@@ -41,7 +41,7 @@ class ItemViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action in ['create']:
             self.permission_classes = [IsAuthenticated, ]
-        elif self.action in ['update', 'partial_update', 'destroy', 'my_item']:
+        elif self.action in ['update', 'partial_update', 'destroy']:
             self.permission_classes = [IsOwner, ]
         else:
             self.permission_classes = [AllowAny, ]
