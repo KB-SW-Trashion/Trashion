@@ -19,6 +19,7 @@ export default function Home() {
   const [chipIndex, setChipIndex] = useState(0);
   const [locationIndex, setLocationIndex] = useState(0);
   const [locationList, setLocationList] = useState([]);
+  // const [isNotClicked, setIsNotClicked] = useState(true);
   const cityInfo = useRecoilValue(locationState);
   const resetCityInfo = useResetRecoilState(locationState);
   const { sido, sigugun, dong } = hangjungdong;
@@ -29,14 +30,6 @@ export default function Home() {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
     setLocationList((locations) => locations.filter((location) => location.key !== chipToDelete.key));
   };
-
-  useEffect(() => {
-    setChipData([]);
-    setChipIndex(0);
-    setLocationIndex(0);
-    setLocationList([]);
-    resetCityInfo();
-  }, []);
 
   const addLocation = () => {
     let city =
@@ -58,18 +51,29 @@ export default function Home() {
       alert('지역은 최대 5개만 설정 가능합니다!');
       return;
     }
-    // setIsResetLocationCategory(true);
-    // console.log(isResetLocationCategory);
+    // setIsNotClicked(true);
   };
+  let filteredByLocation = [];
 
   const setLocation = () => {
     for (let i = 0; i < locationList.length; i++) {
       locationApi.getfilteredItem(locationList[i].cityInfo.city, locationList[i].cityInfo.gu, locationList[i].cityInfo.dong).then((res) => {
-        console.log(res);
+        for (let j = 0; j < res.data.length; j++) {
+          filteredByLocation.push(res.data[j]);
+        }
       });
     }
-    console.log(locationList);
+    console.log(filteredByLocation.length);
+    // setIsNotClicked(false);
   };
+  useEffect(() => {
+    setChipData([]);
+    setChipIndex(0);
+    setLocationIndex(0);
+    setLocationList([]);
+    resetCityInfo();
+    // setIsNotClicked(true);
+  }, []);
 
   return (
     <div>
@@ -130,7 +134,7 @@ export default function Home() {
           </div> */}
 
           <ul className={styles.contents}>
-            <ProductList />
+            <ProductList filteredByLocation={filteredByLocation} />
           </ul>
         </div>
       </div>

@@ -224,22 +224,23 @@ class ItemViewSet(ModelViewSet):
         for i in locations:
             location_ids.append(i.id)
 
-        user_id = request.data['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.data['user_id']
+        # user = User.objects.get(pk=user_id)
         
-        blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
         
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
         
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)
 
-        locationsets = LocationSet.objects.filter(location_id__in=location_ids).exclude(user_id__in=blocked_user_list)
-        locationsets = locationsets.exclude(user_id__in=user_blocked_list)
+        locationsets = LocationSet.objects.filter(location_id__in=location_ids)
+        # .exclude(user_id__in=blocked_user_list)
+        # locationsets = locationsets.exclude(user_id__in=user_blocked_list)
         
         item_ids = []
         for i in locationsets:
