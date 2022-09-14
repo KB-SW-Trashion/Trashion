@@ -1,0 +1,43 @@
+.Scrap_productbox {
+  width: 960px;
+  height: 100px;
+  display: flex;
+  margin: 1rem auto;
+}
+
+.Scrap_product_img {
+  width: 100px;
+  height: 100px;
+  max-width: 100px;
+  max-height: 100px;
+  margin-right: 16px;
+}
+
+.Scrap_product_infobox {
+  width: 844px;
+}
+
+.Scrap_product_title {
+  margin-bottom: 21px;
+}
+
+.Scrap_product_location {
+  font-size: small;
+  color: #6c6c6c;
+}
+
+.Scrap_product_buttonbox {
+  display: flex;
+}
+
+.Scrap_product_price {
+  flex: 1;
+}
+
+.Scrap_product_buybutton {
+  width: 177px;
+  height: 40px;
+  background-color: #f8bbd0;
+  border: 0;
+  border-radius: 5px;
+}

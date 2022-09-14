@@ -8,3 +8,6 @@ export { default as Edit } from './Edit/Edit';
 export { default as New_Profile } from './New_Profile/New_Profile';
 export { default as Chat } from './Chat/Chat';
 export { default as Findpassword } from './Findpassword/Findpassword';
+export { default as Scrap_List } from './Scrap_List/Scrap_List';
+export { default as Sell_List } from './Sell_List/Sell_List';
+export { default as Buy_List } from './Buy_List/Buy_List';
