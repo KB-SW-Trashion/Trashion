@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import styles from './Scrap_Product.module.css';
 import userimg from 'assets/image/userimg.png';
-import authApi from 'api/authApi';
-import user from 'api/userInfo';
 import { useNavigate } from 'react-router-dom';
 import { productState } from 'store';
 import { useRecoilState } from 'recoil';
