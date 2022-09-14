@@ -166,48 +166,50 @@ class ItemViewSet(ModelViewSet):
     # 빅카테고리별 아이템 조회('bigCategory'를 받아서 그걸로 분류)
     @action(detail=False, methods=['GET'])
     def bigCategory_item(self, request):
-        user_id = request.GET['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.GET['user_id']
+        # user = User.objects.get(pk=user_id)
 
-        blocked_user = Block.objects.filter(blocking_user=user)  # 유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user=user)  # 유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user=user)  # 유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user=user)  # 유저를 차단한 유저
 
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
 
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)
 
         categorys = Category.objects.filter(big_category=request.GET.get('bigCategory'))
         category_ids = []
         for i in categorys:
             category_ids.append(i.id)
-        items = Item.objects.filter(category_id__in=category_ids).exclude(user_id__in=blocked_user_list)
-        items = items.exclude(user_id__in=user_blocked_list)
+        items = Item.objects.filter(category_id__in=category_ids)
+        # .exclude(user_id__in=blocked_user_list)
+        # items = items.exclude(user_id__in=user_blocked_list)
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 카테고리별 아이템 조회('category_id'를 받아서 그걸로 분류)
     @action(detail=False, methods=['GET'])
     def category_item(self, request):
-        user_id = request.GET['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.GET['user_id']
+        # user = User.objects.get(pk=user_id)
         
-        blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
         
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
         
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)
          
-        items = Item.objects.filter(category_id=request.GET.get('category_id')).exclude(user_id__in=blocked_user_list)
-        items = items.exclude(user_id__in=user_blocked_list)
+        items = Item.objects.filter(category_id=request.GET.get('category_id'))
+        # .exclude(user_id__in=blocked_user_list)
+        # items = items.exclude(user_id__in=user_blocked_list)
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -224,22 +226,23 @@ class ItemViewSet(ModelViewSet):
         for i in locations:
             location_ids.append(i.id)
 
-        user_id = request.data['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.data['user_id']
+        # user = User.objects.get(pk=user_id)
         
-        blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
         
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
         
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)
 
-        locationsets = LocationSet.objects.filter(location_id__in=location_ids).exclude(user_id__in=blocked_user_list)
-        locationsets = locationsets.exclude(user_id__in=user_blocked_list)
+        locationsets = LocationSet.objects.filter(location_id__in=location_ids)
+        # .exclude(user_id__in=blocked_user_list)
+        # locationsets = locationsets.exclude(user_id__in=user_blocked_list)
         
         item_ids = []
         for i in locationsets:
@@ -253,25 +256,26 @@ class ItemViewSet(ModelViewSet):
         height = int(request.GET.get('height', None))
         weight = int(request.GET.get('weight', None))
         
-        user_id = request.data['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.data['user_id']
+        # user = User.objects.get(pk=user_id)
         
-        blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
         
         
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
         
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)
         
         items = Item.objects.filter(
             Q(height__range=[height-3, height+3]) & Q(weight__range=[weight-3, weight+3])
-        ).exclude(user_id__in=blocked_user_list)
-        items = items.exclude(user_id__in=user_blocked_list)
+        )
+        # .exclude(user_id__in=blocked_user_list)
+        # items = items.exclude(user_id__in=user_blocked_list)
         
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -281,23 +285,24 @@ class ItemViewSet(ModelViewSet):
     def photo_item_only(self, request):
         item_ids = Photo.objects.distinct().values_list('item_id', flat=True)
         
-        user_id = request.data['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.data['user_id']
+        # user = User.objects.get(pk=user_id)
         
-        blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
         
         
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
         
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)        
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)        
         
-        items = Item.objects.filter(id__in=item_ids).exclude(user_id__in=blocked_user_list)
-        items = items.exclude(user_id__in=user_blocked_list)
+        items = Item.objects.filter(id__in=item_ids)
+        # .exclude(user_id__in=blocked_user_list)
+        # items = items.exclude(user_id__in=user_blocked_list)
         
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -307,23 +312,24 @@ class ItemViewSet(ModelViewSet):
     def stylephoto_item_only(self, request):
         item_ids = StylePhoto.objects.distinct().values_list('item_id', flat=True)
         
-        user_id = request.data['user_id']
-        user = User.objects.get(pk=user_id)
+        # user_id = request.data['user_id']
+        # user = User.objects.get(pk=user_id)
         
-        blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
+        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
+        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
         
         
-        blocked_user_list = []
-        for user in blocked_user:
-            blocked_user_list.append(user.blocked_user.id)
+        # blocked_user_list = []
+        # for user in blocked_user:
+        #     blocked_user_list.append(user.blocked_user.id)
         
-        user_blocked_list = []
-        for user in user_blocked:
-            user_blocked_list.append(user.blocking_user_id)     
+        # user_blocked_list = []
+        # for user in user_blocked:
+        #     user_blocked_list.append(user.blocking_user_id)     
         
-        items = Item.objects.filter(id__in=item_ids).exclude(user_id__in=blocked_user_list)
-        items = items.exclude(user_id__in=user_blocked_list)
+        items = Item.objects.filter(id__in=item_ids)
+        # .exclude(user_id__in=blocked_user_list)
+        # items = items.exclude(user_id__in=user_blocked_list)
         
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
