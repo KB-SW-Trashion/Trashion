@@ -11,7 +11,7 @@ class ReviewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Review
-        fields = ['reviewer', 'target', 'satisfied', 'review']
+        fields = ['id', 'reviewer', 'target', 'satisfied', 'review', 'updated_at']
         
     def get_reviewer(self, obj):
         return obj.reviewer.nickname
