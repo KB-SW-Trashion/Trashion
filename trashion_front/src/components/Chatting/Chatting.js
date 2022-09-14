@@ -6,6 +6,8 @@ import { authState } from 'store';
 import user from 'api/userInfo';
 import { ProfileImageUploader, Chatting_drop } from 'components';
 import userimg from 'assets/image/userimg.png';
+import Fab from '@mui/material/Fab';
+import { Link } from 'react-router-dom';
 
 const Chatting = () => {
   const userAuth = useRecoilValue(authState);
@@ -38,7 +40,14 @@ const Chatting = () => {
         <div className={styles.Mypage_profileImgbox}>
           {userProfileImg ? <img className={styles.Mypage_profileImg} src={userInfo.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
         </div>
-        <div className={styles.Chatting_Nicknamebox}>{userInfo.nickname}[닉넴]</div>
+        <div className={styles.Chatting_Nicknamebox}>
+          {userInfo.nickname}[닉넴]
+          <Link to="/Review_Write">
+            <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
+              거래완료
+            </Fab>
+          </Link>
+        </div>
 
         <Chatting_drop />
       </div>
