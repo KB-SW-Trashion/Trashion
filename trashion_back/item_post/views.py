@@ -122,7 +122,7 @@ class ItemViewSet(ModelViewSet):
     def perform_update(self, serializer):
        serializer.save(user_id=self.request.user)
 
-    # 상세조회
+    #상세조회
     # url: item_post/item/{int:pk}
     def retrieve(self, request, *args, **kwargs):
         item = self.get_object()
@@ -141,6 +141,64 @@ class ItemViewSet(ModelViewSet):
         item.save()
         serializer = self.get_serializer(item)
         return Response(serializer.data)
+
+    # 필터 종합
+    @action(detail=False, methods=['GET'])
+    def filter_all(self, request):
+        city = request.GET.getlist('city', None)
+        gu = request.GET.getlist('gu', None)
+        dong = request.GET.getlist('dong', None)
+        big_category = request.GET.getlist('big_category', None)
+        small_category = request.GET.getlist('small_category', None)
+        height = request.GET.get('height', None)
+        weight = request.GET.get('weight', None)
+        sold_out = request.GET.get('sold_out', None)
+        locations = Location.objects.all()
+        categorys = Category.objects.all()
+        items = []
+        print(big_category, small_category)
+        # 지역별 조회
+        if city is not None:
+            if gu == []:  # city만 보여주기
+                locations = locations.filter(Q(city__in=city))
+            elif dong == []:  # city랑 gu만 보여주기
+                locations = Location.objects.filter(Q(city__in=city) & Q(gu__in=gu))
+            else: # city, gu, dong 다 보여주기
+                locations = Location.objects.filter(Q(city__in=city) & Q(gu__in=gu) & Q(dong__in=dong))
+            location_ids = []
+            for i in locations:
+                location_ids.append(i.id)
+            locationsets = LocationSet.objects.filter(location_id__in=location_ids)
+            for i in locationsets:
+                items.append(i.item_id)
+        # 카테고리 조회
+        if big_category is not None:
+            if small_category == []:
+                categorys = categorys.filter(Q(big_category__in=big_category))
+            else:
+                categorys = categorys.filter(Q(big_category__in=big_category) & Q(small_category__in=small_category))
+            category_ids = []
+            for i in categorys:
+                category_ids.append(i.id)
+            cate_item = Item.objects.filter(category_id__in=category_ids)
+            items.extend(cate_item)
+        # 판매완료/판매중 조회...
+        if sold_out is not None:
+            s_items = Item.objects.filter(sold_out=sold_out)
+            items.extend(s_items)
+        # 키/몸무게 사이즈별 조회
+        if height is not None:
+            height = int(height)
+            if weight is None:
+                s_items = Item.objects.filter(Q(height__range=[height - 3, height + 3]))
+            else:
+                weight = int(weight)
+                s_items = Item.objects.filter(
+                    Q(height__range=[height - 3, height + 3]) & Q(weight__range=[weight - 3, weight + 3])
+                )
+            items.extend(s_items)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 현재 판매중인 아이템 조회 (판매완료 x)
     @action(detail=False, methods=['GET'])
