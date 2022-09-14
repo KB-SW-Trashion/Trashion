@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton } from 'components';
+import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton, LocationProductList } from 'components';
 import { styled } from '@mui/material/styles';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
@@ -9,8 +9,7 @@ import locationApi from 'api/locationApi';
 import styles from './Home.module.css';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
 import { locationState } from 'store';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShirt, faUserTie } from '@fortawesome/free-solid-svg-icons';
+
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
 }));
@@ -23,20 +22,18 @@ export default function Home() {
   const resetCityInfo = useResetRecoilState(locationState);
   const { sido, sigugun, dong } = hangjungdong;
   const [chipData, setChipData] = useState([]);
-  // const [isResetLocationCategory, setIsResetLocationCategory] = useState(false);
+  const [productList, setProductList] = useState([]);
 
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
     setLocationList((locations) => locations.filter((location) => location.key !== chipToDelete.key));
   };
 
-  useEffect(() => {
-    setChipData([]);
-    setChipIndex(0);
-    setLocationIndex(0);
-    setLocationList([]);
-    resetCityInfo();
-  }, []);
+  const getProductList = async (item) => {
+    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong).then((res) => {
+      setProductList(res.data);
+    });
+  };
 
   const addLocation = () => {
     let city =
@@ -49,28 +46,23 @@ export default function Home() {
       alert('지역을 선택 해 주세요!');
       return;
     }
-    if (locationList.length < 5) {
+    if (locationList.length < 1) {
       setLocationList([...locationList, { key: locationIndex, cityInfo }]);
       setChipData([...chipData, { key: chipIndex, label: city }]);
       setChipIndex(() => chipIndex + 1);
       setLocationIndex(() => locationIndex + 1);
     } else {
-      alert('지역은 최대 5개만 설정 가능합니다!');
+      alert('지역은 최대 한 곳만 설정 가능합니다!');
       return;
     }
-    // setIsResetLocationCategory(true);
-    // console.log(isResetLocationCategory);
   };
+  let filteredByLocation = [];
 
-  const setLocation = () => {
-    for (let i = 0; i < locationList.length; i++) {
-      locationApi.getfilteredItem(locationList[i].cityInfo.city, locationList[i].cityInfo.gu, locationList[i].cityInfo.dong).then((res) => {
-        console.log(res);
-      });
-    }
-    console.log(locationList);
-  };
-
+  useEffect(() => {
+    locationList.forEach((item) => {
+      getProductList(item);
+    });
+  }, [locationList]);
   return (
     <div>
       <Navbar />
@@ -85,9 +77,6 @@ export default function Home() {
             <div className={styles.buttonWrap}>
               <div>
                 <PostButton text={'추가하기'} onClick={addLocation} />
-              </div>
-              <div className={styles.applyLocationButton}>
-                <PostButton text={'적용하기'} type={'positive'} onClick={setLocation} />
               </div>
             </div>
           </div>
@@ -106,11 +95,9 @@ export default function Home() {
             >
               {chipData.map((data) => {
                 let icon;
-
                 if (data.label === 'React') {
                   icon = <TagFacesIcon />;
                 }
-
                 return (
                   <ListItem key={data.key}>
                     <Chip icon={icon} label={data.label} onDelete={handleDelete(data)} />
@@ -119,19 +106,8 @@ export default function Home() {
               })}
             </Paper>
           </div>
-          {/* <div className={styles.button_wrap}>
-            <div className={styles.toggleIcon} id="tabProduct" onClick={tabHandler}>
-              <FontAwesomeIcon icon={faShirt} size="4x" />
-            </div>
-            <span className={styles.line}>|</span>
-            <div className={styles.toggleIcon} id="tabStyle" onClick={tabHandler}>
-              <FontAwesomeIcon icon={faUserTie} size="2x" />
-            </div>
-          </div> */}
 
-          <ul className={styles.contents}>
-            <ProductList />
-          </ul>
+          <ul className={styles.contents}>{locationList.length > 0 ? <LocationProductList productList={productList} /> : <ProductList filteredByLocation={filteredByLocation} />}</ul>
         </div>
       </div>
       <Footer />
