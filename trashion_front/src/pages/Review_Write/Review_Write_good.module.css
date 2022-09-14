@@ -87,5 +87,11 @@
 }
 
 .Review_Write_Radiobtnbox {
-  margin-left: 9rem;
+  margin-left: 8rem;
+}
+
+.Review_Write_TextFieldbox {
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+  text-align: center;
 }
