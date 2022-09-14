@@ -36,10 +36,6 @@ class CustomAccountAdapter(DefaultAccountAdapter):
         self.send_mail(email_template, emailconfirmation.email_address.email, ctx)
         
     def render_mail(self, template_prefix, email, context, headers=None):
-        """
-        Renders an e-mail to `email`.  `template_prefix` identifies the
-        e-mail that is to be sent, e.g. "account/email/email_confirmation"
-        """
         to = [email] if isinstance(email, str) else email
         subject = " 회원가입 이메일 인증"
         subject = self.format_email_subject(subject)
