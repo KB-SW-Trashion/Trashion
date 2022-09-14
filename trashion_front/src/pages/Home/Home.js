@@ -8,7 +8,7 @@ import hangjungdong from 'utils/hangjungdong';
 import locationApi from 'api/locationApi';
 import styles from './Home.module.css';
 import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { locationState } from 'store';
+import { locationState, categoryState } from 'store';
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -19,7 +19,7 @@ export default function Home() {
   const [locationIndex, setLocationIndex] = useState(0);
   const [locationList, setLocationList] = useState([]);
   const cityInfo = useRecoilValue(locationState);
-  const resetCityInfo = useResetRecoilState(locationState);
+  const categoryInfo = useRecoilValue(categoryState);
   const { sido, sigugun, dong } = hangjungdong;
   const [chipData, setChipData] = useState([]);
   const [productList, setProductList] = useState([]);
@@ -47,7 +47,7 @@ export default function Home() {
       return;
     }
     if (locationList.length < 1) {
-      setLocationList([...locationList, { key: locationIndex, cityInfo }]);
+      setLocationList([...locationList, { key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory }]);
       setChipData([...chipData, { key: chipIndex, label: city }]);
       setChipIndex(() => chipIndex + 1);
       setLocationIndex(() => locationIndex + 1);
@@ -62,7 +62,12 @@ export default function Home() {
     locationList.forEach((item) => {
       getProductList(item);
     });
+    console.log(locationList);
   }, [locationList]);
+
+  useEffect(() => {
+    console.log(categoryInfo);
+  }, [categoryInfo]);
   return (
     <div>
       <Navbar />

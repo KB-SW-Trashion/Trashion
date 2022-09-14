@@ -19,22 +19,22 @@ const Category = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
-  useEffect(() => {
-    category.getCategoryId().then((res) => {
-      setCategoryList(res.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   category.getCategoryId().then((res) => {
+  //     setCategoryList(res.data);
+  //   });
+  // }, []);
 
   const getCategoryId = () => {
     const category_filter = categoryList.filter((i) => i.small_category === categoryFilter.smallCategory);
-    setCategoryId(category_filter[0].id);
+    // setCategoryId(category_filter[0].id);
   };
 
   const handleSmallCategory = (e) => {
     setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
     getCategoryId();
-    console.log(categoryId);
-    console.log('categoryFilter: ', categoryFilter);
+    // console.log(categoryId);
+    // console.log('categoryFilter: ', categoryFilter);
   };
 
   const handleClick1 = (e) => {
@@ -120,7 +120,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="셔츠/블라우스" onClick={handleSmallCategory} />
+            <ListItemText primary="셔츠 / 블라우스" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -170,7 +170,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="트레이닝 팬츠" onClick={handleSmallCategory} />
+            <ListItemText primary="트레이닝팬츠" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
