@@ -20,19 +20,23 @@ export default function MyPage() {
   const [review, setReview] = useRecoilState(reviewState);
 
   const handleLogout = async () => {
-    await authApi.getUser().then(() => {
-      setUser({
-        isLoggedIn: false,
-        access_token: setCookie(-1),
-        refresh_token: setCookie(-1),
-      }).catch(() =>
+    console.log(getCookie('access_token'));
+    await authApi
+      .getUser()
+      .then(() => {
         setUser({
           isLoggedIn: false,
           access_token: setCookie(-1),
           refresh_token: setCookie(-1),
-        }),
-      );
-    });
+        });
+      })
+      .catch((err) => {
+        setUser({
+          isLoggedIn: false,
+          access_token: setCookie(-1),
+          refresh_token: setCookie(-1),
+        });
+      });
     navigate('/');
   };
 
