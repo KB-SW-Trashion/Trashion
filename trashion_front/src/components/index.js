@@ -34,3 +34,4 @@ export { default as List_Null_Sell } from './List_Null/List_Null_Sell';
 export { default as List_Null_Buy } from './List_Null/List_Null_Buy';
 export { default as Scrap_product } from './Scrap_product/Scrap_product';
 export { default as Scrap_product_img } from './Scrap_product_img/Scrap_product_img';
+export { default as AccountMenu } from './Mypage_Menubox/Mypage_Menubox';

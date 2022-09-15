@@ -1,34 +1,32 @@
-import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { List_Null_Scrap, Navbar, Scrap_product, Product } from 'components';
-import { userInfoState } from 'store';
-import item from 'api/itemApi';
+import React, { useEffect } from 'react';
+import { List_Null_Scrap, Navbar, Scrap_product } from 'components';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import user from 'api/userInfo';
+import { userInfoState, authState, reviewState } from 'store';
 
 export default function Scrap_List() {
-  const user_info = useRecoilValue(userInfoState);
-  const like_item_id = user_info.likeitem_sets;
-  const [productList, setProductList] = useState();
-
-  const getProductList = async (item_id) => {
-    console.log(item_id.likeitem);
-    await item.getProductInfo(item_id.likeitem).then((res) => {
-      // setProductList([...productList, res.data]);
-      setProductList((productList) => [...productList, res.data]);
-    });
-  };
+  const userAuth = useRecoilValue(authState);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const user_id = userAuth.user_id;
 
   useEffect(() => {
-    like_item_id.forEach((item) => {
-      getProductList(item);
+    user.getUserInfo(user_id).then((res) => {
+      setUserInfo({
+        like_item_count: res.data.like_item_count,
+      });
+      if (res.data.social_profile) {
+        setUserInfo((userInfo) => ({ ...userInfo, social_profile: res.data.social_profile }));
+      } else if (res.data.profile_image) {
+        setUserInfo((userInfo) => ({ ...userInfo, profile_image: res.data.profile_image.photo }));
+      }
     });
   }, []);
 
   return (
     <div>
       <Navbar />
-      <>
-        <ul>{productList && productList.map((it) => <Scrap_product key={it.id} {...it} />)}</ul>
-      </>
+
+      {userInfo.like_item_count === '0' ? <List_Null_Scrap /> : <Scrap_product />}
     </div>
   );
 }

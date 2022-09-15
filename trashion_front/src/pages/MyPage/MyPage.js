@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { Navbar, MypageProductList, Review } from 'components';
+import { Navbar, MypageProductList, Review, List_Null_Scrap, Scrap_product, AccountMenu } from 'components';
 import Fab from '@mui/material/Fab';
 import styles from './MyPage.module.css';
 import { userInfoState, authState, reviewState } from 'store';
@@ -79,7 +79,7 @@ export default function MyPage() {
   return (
     <div>
       <Navbar />
-
+      <AccountMenu />
       <div className={styles.MyPage_bodybox}>
         <div className={styles.MyPage_bodyleft}>
           <div className={styles.Mypage_profileImgbox}>
@@ -95,16 +95,14 @@ export default function MyPage() {
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
                 <p> 상의사이즈 : {userInfo.top_size}</p>
-                <p>
-                  거래완료수 : <Link to="/Buy_List">{userInfo.sold_out_count}</Link>
-                </p>
+                <p>거래완료수 : {userInfo.sold_out_count}</p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.bottom_size}</p>
                 <p>
-                  내가 찜한 아이템 : <Link to="/Scrap_List">{userInfo.like_item_count}</Link>
+                  내가 찜한 아이템 : <Link to={userInfo.like_item_count === '0' ? <List_Null_Scrap /> : <Scrap_product />}>{userInfo.like_item_count}</Link>
                 </p>
               </div>
             </div>
