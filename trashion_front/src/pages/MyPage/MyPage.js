@@ -20,13 +20,23 @@ export default function MyPage() {
   const [review, setReview] = useRecoilState(reviewState);
 
   const handleLogout = async () => {
-    await authApi.getUser().then(() => {
-      setUser({
-        isLoggedIn: false,
-        access_token: setCookie(-1),
-        refresh_token: setCookie(-1),
+    console.log(getCookie('access_token'));
+    await authApi
+      .getUser()
+      .then(() => {
+        setUser({
+          isLoggedIn: false,
+          access_token: setCookie(-1),
+          refresh_token: setCookie(-1),
+        });
+      })
+      .catch((err) => {
+        setUser({
+          isLoggedIn: false,
+          access_token: setCookie(-1),
+          refresh_token: setCookie(-1),
+        });
       });
-    });
     navigate('/');
   };
 
@@ -84,13 +94,17 @@ export default function MyPage() {
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
                 <p> 상의사이즈 : {userInfo.top_size}</p>
-                <p> 거래완료수 : {userInfo.sold_out_count}</p>
+                <p>
+                  거래완료수 : <Link to="/Buy_List">{userInfo.sold_out_count}</Link>
+                </p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.bottom_size}</p>
-                <p> 내가 찜한 아이템 : {userInfo.like_item_count}</p>
+                <p>
+                  내가 찜한 아이템 : <Link to="/Scrap_List">{userInfo.like_item_count}</Link>
+                </p>
               </div>
             </div>
             <div>

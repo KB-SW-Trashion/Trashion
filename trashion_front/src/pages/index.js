@@ -11,3 +11,6 @@ export { default as Findpassword } from './Findpassword/Findpassword';
 export { default as Scrap_List } from './Scrap_List/Scrap_List';
 export { default as Sell_List } from './Sell_List/Sell_List';
 export { default as Buy_List } from './Buy_List/Buy_List';
+export { default as Review_Write } from './Review_Write/Review_Write';
+export { default as Review_Write_good } from './Review_Write/Review_Write_good';
+export { default as Review_Write_bad } from './Review_Write/Review_Write_bad';
