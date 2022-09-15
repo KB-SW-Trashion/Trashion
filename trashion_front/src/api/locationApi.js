@@ -10,12 +10,12 @@ export default {
   getfilteredItem(cityId, guId, dongId, bigCategory, smallCategory) {
     if (bigCategory && smallCategory)
       return axios.get(
-        `item_post/item/?&location_item_sets_location_id_city=${cityId}&location_item_sets_location_id_gu=${guId}&location_item_sets_location_id_dong=${dongId}&big_category=${bigCategory}&small_category=${smallCategory}`,
+        `item_post/item/?&location_item_sets__location_id__city=${cityId}&location_item_sets__location_id__gu=${guId}&location_item_sets__location_id__dong=${dongId}&category_id__big_category=${bigCategory}&category_id__small_category=${smallCategory}`,
       );
     else if (bigCategory && !smallCategory)
       return axios.get(
-        `item_post/item/?&location_item_sets_location_id_city=${cityId}&location_item_sets_location_id_gu=${guId}&location_item_sets_location_id_dong=${dongId}&big_category=${bigCategory}`,
+        `item_post/item/?&location_item_sets__location_id__city=${cityId}&location_item_sets__location_id__gu=${guId}&location_item_sets__location_id__dong=${dongId}&category_id__big_category=${bigCategory}`,
       );
-    else return axios.get(`item_post/item/?&location_item_sets_location_id_city=${cityId}&location_item_sets_location_id_gu=${guId}&location_item_sets_location_id_dong=${dongId}`);
+    else return axios.get(`item_post/item/?&location_item_sets__location_id__city=${cityId}&location_item_sets__location_id__gu=${guId}&location_item_sets__location_id__dong=${dongId}`);
   },
 };

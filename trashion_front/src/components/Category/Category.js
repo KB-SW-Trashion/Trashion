@@ -19,29 +19,25 @@ const Category = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
-  // useEffect(() => {
-  //   category.getCategoryId().then((res) => {
-  //     setCategoryList(res.data);
-  //   });
-  // }, []);
-
   const getCategoryId = () => {
     const category_filter = categoryList.filter((i) => i.small_category === categoryFilter.smallCategory);
-    // setCategoryId(category_filter[0].id);
   };
 
   const handleSmallCategory = (e) => {
-    setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
+    e.target.innerText === '전체' ? setCategoryFilter({ ...categoryFilter, smallCategory: '' }) : setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
     getCategoryId();
-    // console.log(categoryId);
-    // console.log('categoryFilter: ', categoryFilter);
+  };
+
+  const handleClick0 = (e) => {
+    setCategoryFilter({});
+    setOpen1(false);
+    setOpen2(false);
+    setOpen3(false);
+    setOpen4(false);
   };
 
   const handleClick1 = (e) => {
     setCategoryFilter({ bigCategory: e.target.innerText });
-    // console.log(categoryFilter);
-    // console.log(e);
-
     setOpen1(!open1);
     setOpen2(false);
     setOpen3(false);
@@ -49,7 +45,6 @@ const Category = () => {
   };
   const handleClick2 = (e) => {
     setCategoryFilter({ bigCategory: e.target.innerText });
-
     setOpen2(!open2);
     setOpen1(false);
     setOpen3(false);
@@ -57,7 +52,6 @@ const Category = () => {
   };
   const handleClick3 = (e) => {
     setCategoryFilter({ bigCategory: e.target.innerText });
-
     setOpen3(!open3);
     setOpen1(false);
     setOpen2(false);
@@ -65,7 +59,6 @@ const Category = () => {
   };
   const handleClick4 = (e) => {
     setCategoryFilter({ bigCategory: e.target.innerText });
-
     setOpen4(!open4);
     setOpen1(false);
     setOpen2(false);
@@ -84,6 +77,16 @@ const Category = () => {
       }
     >
       {/* -----------------------------상의----------------------------- */}
+      <ListItemButton onClick={handleClick0}>
+        <ListItemIcon></ListItemIcon>
+        <ListItemText
+          primary={
+            <Typography type="body2" style={{ color: 'black', fontWeight: 'bold' }}>
+              전체
+            </Typography>
+          }
+        />
+      </ListItemButton>
       <ListItemButton onClick={handleClick1}>
         <ListItemIcon></ListItemIcon>
         <ListItemText
@@ -98,7 +101,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" />
+            <ListItemText primary="전체" onClick={handleSmallCategory} />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
@@ -146,7 +149,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" />
+            <ListItemText primary="전체" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -198,7 +201,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" />
+            <ListItemText primary="전체" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -250,7 +253,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" />
+            <ListItemText primary="전체" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>

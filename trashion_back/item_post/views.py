@@ -32,7 +32,7 @@ class IsOwner(permissions.BasePermission):
 
 class ItemViewSet(ModelViewSet):
     queryset = Item.objects.all()\
-        .prefetch_related('location_item_sets') #?—­ì°¸ì¡°?Š” prefetch_related, ? •ì°¸ì¡°?Š” select_related!
+        .prefetch_related('location_item_sets') #ì—­ì°¸ì¡°ëŠ” prefetch_related, ì •ì°¸ì¡°ëŠ” select_related!
     serializer_class = ItemSerializer
     parser_classes = (MultiPartParser, FormParser)
     filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend, ]
@@ -57,7 +57,7 @@ class ItemViewSet(ModelViewSet):
 
     # create
     def create(self, request, *args, **kwargs):
-        # location ë°›ì•„?˜¤ê¸?
+        # location ë°›ì•„ì˜¤ê¸°
         city = request.data['city']
         gu = request.data['gu']
         dong = request.data['dong']
@@ -73,32 +73,32 @@ class ItemViewSet(ModelViewSet):
                 )
         else:
             return Response(
-                {"message": "ì£¼ì†Œ? •ë³´ë?? ëª¨ë‘ ?…? ¥?•´ì£¼ì„¸?š”."},
+                {"message": "ì£¼ì†Œì •ë³´ë¥¼ ëª¨ë‘ ì…ë ¥í•´ì£¼ì„¸ìš”."},
                 status=status.HTTP_400_BAD_REQUEST
             )
             
-        # photo, stylephoto > serializers.py?˜ create()?—?„œ ì²˜ë¦¬
+        # photo, stylephoto > serializers.pyì˜ create()ì—ì„œ ì²˜ë¦¬
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         new_item = Item.objects.get(id=serializer.data['id'])
         headers = self.get_success_headers(serializer.data)
-        # LocationSet ê°ì²´ë§Œë“¤ê¸?
+        # LocationSet ê°ì²´ë§Œë“¤ê¸°
         LocationSet.objects.create(item_id=new_item, location_id=location)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-    # ?‘?„±? ??™ ????¥
+    # ì‘ì„±ì ìë™ ì €ì¥
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user)
 
     # update
-    # photo, stylephoto > serializers.py?˜ update()?—?„œ ì²˜ë¦¬
+    # photo, stylephoto > serializers.pyì˜ update()ì—ì„œ ì²˜ë¦¬
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
-        # ê¸°ì¡´ locationset ?‚­? œ
+        # ê¸°ì¡´ locationset ì‚­ì œ
         LocationSet.objects.filter(item_id=instance).delete()
-        # location ë°›ì•„?˜¤ê¸?
+        # location ë°›ì•„ì˜¤ê¸°
         city = request.data['city']
         gu = request.data['gu']
         dong = request.data['dong']
@@ -114,7 +114,7 @@ class ItemViewSet(ModelViewSet):
                 )
         else:
             return Response(
-                {"message": "ì£¼ì†Œ? •ë³´ë?? ëª¨ë‘ ?…? ¥?•´ì£¼ì„¸?š”."},
+                {"message": "ì£¼ì†Œì •ë³´ë¥¼ ëª¨ë‘ ì…ë ¥í•´ì£¼ì„¸ìš”."},
                 status=status.HTTP_400_BAD_REQUEST
             )
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
@@ -130,7 +130,7 @@ class ItemViewSet(ModelViewSet):
     def perform_update(self, serializer):
        serializer.save(user_id=self.request.user)
 
-    #?ƒ?„¸ì¡°íšŒ
+    #ìƒì„¸ì¡°íšŒ
     # url: item_post/item/{int:pk}
     def retrieve(self, request, *args, **kwargs):
         item = self.get_object()
@@ -140,7 +140,7 @@ class ItemViewSet(ModelViewSet):
         serializer = RetrieveSerializer(item)
         return Response(serializer.data)
 
-    # ?•„?´?…œ ?Œë§¤ì™„ë£Œì²˜ë¦?
+    # ì•„ì´í…œ íŒë§¤ì™„ë£Œì²˜ë¦¬
     # url: item_post/{pk}/set_sold/
     @action(detail=True, methods=['PATCH'])
     def set_sold(self, request, pk):
@@ -150,86 +150,28 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(item)
         return Response(serializer.data)
 
-    # ?•„?„° ì¢…í•©
-    @action(detail=False, methods=['GET'])
-    def filter_all(self, request):
-        city = request.GET.getlist('city', None)
-        gu = request.GET.getlist('gu', None)
-        dong = request.GET.getlist('dong', None)
-        big_category = request.GET.getlist('big_category', None)
-        small_category = request.GET.getlist('small_category', None)
-        height = request.GET.get('height', None)
-        weight = request.GET.get('weight', None)
-        sold_out = request.GET.get('sold_out', None)
-        locations = Location.objects.all()
-        categorys = Category.objects.all()
-        items = []
-        print(big_category, small_category)
-        # ì§??—­ë³? ì¡°íšŒ
-        if city is not None:
-            if gu == []:  # cityë§? ë³´ì—¬ì£¼ê¸°
-                locations = locations.filter(Q(city__in=city))
-            elif dong == []:  # city?‘ guë§? ë³´ì—¬ì£¼ê¸°
-                locations = Location.objects.filter(Q(city__in=city) & Q(gu__in=gu))
-            else: # city, gu, dong ?‹¤ ë³´ì—¬ì£¼ê¸°
-                locations = Location.objects.filter(Q(city__in=city) & Q(gu__in=gu) & Q(dong__in=dong))
-            location_ids = []
-            for i in locations:
-                location_ids.append(i.id)
-            locationsets = LocationSet.objects.filter(location_id__in=location_ids)
-            for i in locationsets:
-                items.append(i.item_id)
-        # ì¹´í…Œê³ ë¦¬ ì¡°íšŒ
-        if big_category is not None:
-            if small_category == []:
-                categorys = categorys.filter(Q(big_category__in=big_category))
-            else:
-                categorys = categorys.filter(Q(big_category__in=big_category) & Q(small_category__in=small_category))
-            category_ids = []
-            for i in categorys:
-                category_ids.append(i.id)
-            cate_item = Item.objects.filter(category_id__in=category_ids)
-            items.extend(cate_item)
-        # ?Œë§¤ì™„ë£?/?Œë§¤ì¤‘ ì¡°íšŒ...
-        if sold_out is not None:
-            s_items = Item.objects.filter(sold_out=sold_out)
-            items.extend(s_items)
-        # ?‚¤/ëª¸ë¬´ê²? ?‚¬?´ì¦ˆë³„ ì¡°íšŒ
-        if height is not None:
-            height = int(height)
-            if weight is None:
-                s_items = Item.objects.filter(Q(height__range=[height - 3, height + 3]))
-            else:
-                weight = int(weight)
-                s_items = Item.objects.filter(
-                    Q(height__range=[height - 3, height + 3]) & Q(weight__range=[weight - 3, weight + 3])
-                )
-            items.extend(s_items)
-        serializer = self.get_serializer(items, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # ?˜„?¬ ?Œë§¤ì¤‘?¸ ?•„?´?…œ ì¡°íšŒ (?Œë§¤ì™„ë£? x)
+    # í˜„ì¬ íŒë§¤ì¤‘ì¸ ì•„ì´í…œ ì¡°íšŒ (íŒë§¤ì™„ë£Œ x)
     @action(detail=False, methods=['GET'])
     def not_sold_item(self, request):
         items = Item.objects.filter(sold_out=False)
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # ?Œë§¤ëœ ?•„?´?…œ (?Œë§¤ì™„ë£?)
+    # íŒë§¤ëœ ì•„ì´í…œ (íŒë§¤ì™„ë£Œ)
     @action(detail=False, methods=['GET'])
     def sold_item(self, request):
         items = Item.objects.filter(sold_out=True)
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # ?‚´ ?•„?´?…œ ì¡°íšŒ
+    # ë‚´ ì•„ì´í…œ ì¡°íšŒ
     @action(detail=False, methods=['GET'])
     def my_item(self, request):
         items = Item.objects.filter(user_id=request.GET.get('user_id'))
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # ?¼ë°? ?´ë¯¸ì??ë§? ëª¨ì•„ë³´ê¸° : ê°™ì?? ?•„?´?…œ?— ?‚¬ì§? ?—¬?Ÿ¬?¥?¼ ê²½ìš°?—?Š” ?•œ?¥ë§?!
+    # ì¼ë°˜ ì´ë¯¸ì§€ë§Œ ëª¨ì•„ë³´ê¸° : ê°™ì€ ì•„ì´í…œì— ì‚¬ì§„ ì—¬ëŸ¬ì¥ì¼ ê²½ìš°ì—ëŠ” í•œì¥ë§Œ!
     @action(detail=False, methods=['GET'])
     def photo_item_only(self, request):
         item_ids = Photo.objects.distinct().values_list('item_id', flat=True)
@@ -237,7 +179,7 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # ì°©ì¥ ?´ë¯¸ì??ë§? ëª¨ì•„ë³´ê¸° : ê°™ì?? ?•„?´?…œ?— ?‚¬ì§? ?—¬?Ÿ¬?¥?¼ ê²½ìš°?—?Š” ?•œ?¥ë§?!
+    # ì°©ì¥ ì´ë¯¸ì§€ë§Œ ëª¨ì•„ë³´ê¸° : ê°™ì€ ì•„ì´í…œì— ì‚¬ì§„ ì—¬ëŸ¬ì¥ì¼ ê²½ìš°ì—ëŠ” í•œì¥ë§Œ!
     @action(detail=False, methods=['GET'])
     def stylephoto_item_only(self, request):
         item_ids = StylePhoto.objects.distinct().values_list('item_id', flat=True)
@@ -245,7 +187,7 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    # ê²??ƒ‰ ê¸°ëŠ¥ (description ê¸°ì??)
+    # ê²€ìƒ‰ ê¸°ëŠ¥ (description ê¸°ì¤€)
     @action(detail=False, methods=['GET'])
     def search_item(self, request):
         q = request.GET.get('q', None)

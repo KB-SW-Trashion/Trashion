@@ -7,7 +7,7 @@ import TagFacesIcon from '@mui/icons-material/TagFaces';
 import hangjungdong from 'utils/hangjungdong';
 import locationApi from 'api/locationApi';
 import styles from './Home.module.css';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
 import { locationState, categoryState } from 'store';
 
 const ListItem = styled('li')(({ theme }) => ({
@@ -18,7 +18,7 @@ export default function Home() {
   const [chipIndex, setChipIndex] = useState(0);
   const [locationIndex, setLocationIndex] = useState(0);
   const [locationList, setLocationList] = useState({});
-  const cityInfo = useRecoilValue(locationState);
+  const [cityInfo, setCityInfo] = useRecoilState(locationState);
   const categoryInfo = useRecoilValue(categoryState);
   const { sido, sigugun, dong } = hangjungdong;
   const [chipData, setChipData] = useState([]);
@@ -26,12 +26,14 @@ export default function Home() {
 
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-    setLocationList((locations) => locations.filter((location) => location.key !== chipToDelete.key));
+    setCityInfo({ city: '', dong: '', gu: '' });
+    setLocationList([]);
+    setLocationIndex(0);
   };
 
   const getProductList = async (item) => {
     await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category).then((res) => {
-      setProductList(res.data);
+      setProductList(res.data.results);
       console.log('res: ', res);
     });
   };
@@ -60,15 +62,14 @@ export default function Home() {
   };
 
   useEffect(() => {
-    // locationList.forEach((item) => {
     getProductList(locationList);
-    // });
     console.log(locationList);
   }, [locationList]);
 
   useEffect(() => {
     setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
     getProductList(locationList);
+    console.log(categoryInfo);
   }, [categoryInfo]);
 
   useEffect(() => {
@@ -76,6 +77,7 @@ export default function Home() {
     setLocationIndex(0);
     setChipIndex(0);
     setChipData([]);
+    console.log(chipData);
   }, []);
 
   return (
@@ -122,7 +124,7 @@ export default function Home() {
             </Paper>
           </div>
 
-          <ul className={styles.contents}>{locationIndex > 0 ? <LocationProductList productList={productList} /> : <ProductList />}</ul>
+          <ul className={styles.contents}>{chipData.length || categoryInfo.bigCategory ? <LocationProductList productList={productList} /> : <ProductList />}</ul>
         </div>
       </div>
       <Footer />
