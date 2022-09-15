@@ -7,7 +7,7 @@ const MypageProductList = ({ user_id }) => {
 
   useEffect(() => {
     item.getMyItem(user_id).then((res) => {
-      setProductList(res.data);
+      setProductList(res.data.results);
     });
   }, []);
 
