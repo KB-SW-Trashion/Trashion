@@ -76,11 +76,13 @@ export default function Home() {
 
   useEffect(() => {
     getProductList(locationList);
+    setPage(1);
   }, [locationList]);
 
   useEffect(() => {
     setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
     getProductList(locationList);
+    setPage(1);
   }, [categoryInfo]);
 
   useEffect(() => {
