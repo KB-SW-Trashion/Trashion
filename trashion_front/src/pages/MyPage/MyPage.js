@@ -44,7 +44,6 @@ export default function MyPage() {
       reviewApi.getReview().then((res) => {
         setReview(res.data.results);
       });
-      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,

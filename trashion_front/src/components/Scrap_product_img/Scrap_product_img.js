@@ -3,7 +3,7 @@ import React from 'react';
 const Scrap_product_img = (photo) => {
   return (
     <div>
-      <img src={photo && photo.photo} />
+      <img src={photo && photo.photo} height="120" width="120" />
     </div>
   );
 };

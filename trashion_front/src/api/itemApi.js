@@ -31,4 +31,7 @@ export default {
       );
     else return axios.get(`item_post/item/?&location_item_sets__location_id__city=${cityId}&location_item_sets__location_id__gu=${guId}&location_item_sets__location_id__dong=${dongId}`);
   },
+  getItem(id) {
+    return axios.get('/item_post/item');
+  },
 };

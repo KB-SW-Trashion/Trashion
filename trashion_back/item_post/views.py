@@ -11,6 +11,7 @@ from rest_framework import status, permissions
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.viewsets import ModelViewSet
@@ -167,9 +168,13 @@ class ItemViewSet(ModelViewSet):
     # 내 아이템 조회
     @action(detail=False, methods=['GET'])
     def my_item(self, request):
-        items = Item.objects.filter(user_id=request.GET.get('user_id'))
-        serializer = self.get_serializer(items, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        paginator = PageNumberPagination()
+        paginator.page_size = 8
+        items = Item.objects.filter(user_id=request.GET.get('user_id')).order_by('-updated_at')
+        results = paginator.paginate_queryset(items, request)
+        serializer = self.get_serializer(results, many=True)
+        
+        return paginator.get_paginated_response(serializer.data)
 
     # 일반 이미지만 모아보기 : 같은 아이템에 사진 여러장일 경우에는 한장만!
     @action(detail=False, methods=['GET'])
