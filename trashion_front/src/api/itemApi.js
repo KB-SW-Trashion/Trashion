@@ -17,4 +17,7 @@ export default {
   getMyItem(id) {
     return axios.get(`/item_post/item/my_item/?user_id=${id}`);
   },
+  getItem(id) {
+    return axios.get('/item_post/item');
+  },
 };

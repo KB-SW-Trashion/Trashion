@@ -1,34 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
-import { List_Null_Scrap, Navbar, Scrap_product, Product } from 'components';
-import { userInfoState } from 'store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { authState } from 'store';
+import { Navbar, Scrap_product } from 'components';
 import item from 'api/itemApi';
 
 export default function Scrap_List() {
-  const user_info = useRecoilValue(userInfoState);
-  const like_item_id = user_info.likeitem_sets;
-  const [productList, setProductList] = useState();
-
-  const getProductList = async (item_id) => {
-    console.log(item_id.likeitem);
-    await item.getProductInfo(item_id.likeitem).then((res) => {
-      // setProductList([...productList, res.data]);
-      setProductList((productList) => [...productList, res.data]);
-    });
-  };
+  const [productList, setProductList] = useState([]);
+  const userAuth = useRecoilValue(authState);
+  const user_id = userAuth.user_id;
 
   useEffect(() => {
-    like_item_id.forEach((item) => {
-      getProductList(item);
-    });
+    const fetchData = async () => {
+      try {
+        const { data: response } = await item.getItem();
+        console.log(response.results);
+        console.log(response.results[1].likeuser_sets.includes(String(user_id)));
+        let res_filter = response.results.filter((i) => i.likeuser_sets.includes(String(user_id)));
+        console.log(res_filter);
+        setProductList(res_filter);
+      } catch (err) {
+        console.log('err: ', err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div>
       <Navbar />
-      <>
-        <ul>{productList && productList.map((it) => <Scrap_product key={it.id} {...it} />)}</ul>
-      </>
+      <ul>{productList && productList.map((it) => <Scrap_product key={it.id} {...it} />)}</ul>
     </div>
   );
 }

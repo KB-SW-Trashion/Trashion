@@ -169,6 +169,7 @@ class ItemViewSet(ModelViewSet):
     def my_item(self, request):
         items = Item.objects.filter(user_id=request.GET.get('user_id'))
         serializer = self.get_serializer(items, many=True)
+        
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 일반 이미지만 모아보기 : 같은 아이템에 사진 여러장일 경우에는 한장만!
