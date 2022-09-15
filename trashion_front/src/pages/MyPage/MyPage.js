@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { Navbar, MypageProductList, Review } from 'components';
+import { Navbar, MypageProductList, Review, Footer } from 'components';
 import Fab from '@mui/material/Fab';
 import styles from './MyPage.module.css';
 import { userInfoState, authState, reviewState } from 'store';
@@ -9,7 +9,10 @@ import { setCookie, getCookie } from 'cookies-next';
 import authApi from 'api/authApi';
 import user from 'api/userInfo';
 import reviewApi from 'api/reviewApi';
+import Pagination from 'react-js-pagination';
 import userimg from 'assets/image/userimg.png';
+import item from 'api/itemApi';
+import '../Home/Pagination.css';
 
 export default function MyPage() {
   const userAuth = useRecoilValue(authState);
@@ -18,6 +21,25 @@ export default function MyPage() {
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
   const [review, setReview] = useRecoilState(reviewState);
+  const [page, setPage] = useState(1);
+
+  const [productList, setProductList] = useState();
+
+  useEffect(() => {
+    item.getMyItem(user_id, page).then((res) => {
+      setProductList(res.data.results);
+    });
+  }, []);
+
+  useEffect(() => {
+    item.getMyItem(user_id, page).then((res) => {
+      setProductList(res.data.results);
+    });
+  }, [page]);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
   const handleLogout = async () => {
     console.log(getCookie('access_token'));
@@ -129,9 +151,14 @@ export default function MyPage() {
       <div className={styles.MyPage_list}>
         <p className={styles.MyPage_list_title}>내가 쓴 글</p>
         <hr className={styles.Mypage_hr} />
+      </div>
+      <div className={styles.productBox}>
         <div className={styles.MypageProductList}>
-          <MypageProductList user_id={user_id} />
+          <MypageProductList productList={productList} />
         </div>
+      </div>
+      <div className={styles.pagination_wrap}>
+        <Pagination activePage={page} itemsCountPerPage={8} totalItemsCount={10} pageRangeDisplayed={5} prevPageText={'‹'} nextPageText={'›'} onChange={handlePageChange} />
       </div>
 
       {/* <div className={styles.MyPage_footerbox}>

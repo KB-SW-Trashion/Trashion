@@ -1,16 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import item from 'api/itemApi';
+import React from 'react';
 import { Product } from 'components';
 
-const MypageProductList = ({ user_id }) => {
-  const [productList, setProductList] = useState();
-
-  useEffect(() => {
-    item.getMyItem(user_id).then((res) => {
-      setProductList(res.data);
-    });
-  }, []);
-
+const MypageProductList = ({ productList }) => {
   return (
     <>
       <ul>{productList && productList.map((it) => <Product key={it.id} {...it} />)}</ul>

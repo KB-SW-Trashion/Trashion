@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton, LocationProductList } from 'components';
+import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton } from 'components';
 import { styled } from '@mui/material/styles';
 import Pagination from 'react-js-pagination';
 import Chip from '@mui/material/Chip';
@@ -9,9 +9,8 @@ import hangjungdong from 'utils/hangjungdong';
 import itemApi from 'api/itemApi';
 import styles from './Home.module.css';
 import './Pagination.css';
-import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { locationState, categoryState } from 'store';
-import axios from 'axios';
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -41,12 +40,10 @@ export default function Home() {
       ? await itemApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category, page).then((res) => {
           setProductList(res.data.results);
           setTotalItem(res.data.count);
-          console.log('res: ', res);
         })
-      : await itemApi.getProduct().then((res) => {
+      : await itemApi.getProduct(page).then((res) => {
           setProductList(res.data.results);
           setTotalItem(res.data.count);
-          console.log('item: ', item);
         });
   };
 
@@ -87,11 +84,17 @@ export default function Home() {
   }, [categoryInfo]);
 
   useEffect(() => {
+    getProductList(locationList);
+  }, [page]);
+
+  useEffect(() => {
+    setPage(1);
     getProductList();
     setLocationList([]);
     setLocationIndex(0);
     setChipIndex(0);
     setChipData([]);
+    console.log(productList);
   }, []);
 
   return (
@@ -114,13 +117,14 @@ export default function Home() {
           <div className={styles.locationChipWrap}>
             <Paper
               sx={{
-                display: 'flex',
+                ...(chipData.length ? { display: 'flex' } : { display: 'none' }),
                 justifyContent: 'center',
                 flexWrap: 'wrap',
                 listStyle: 'none',
                 p: 0.5,
                 ml: 14,
-                width: 1300,
+                width: 200,
+                height: 40,
               }}
               component="ul"
             >
@@ -136,6 +140,11 @@ export default function Home() {
                 );
               })}
             </Paper>
+            {categoryInfo.bigCategory && (
+              <span className={styles.categoryText}>
+                카테고리: {categoryInfo.bigCategory} {categoryInfo.smallCategory}
+              </span>
+            )}
           </div>
 
           <ul className={styles.contents}>
