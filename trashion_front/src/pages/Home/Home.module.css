@@ -1,5 +1,4 @@
 .main {
-  height: 1900px;
   display: flex;
 }
 
@@ -50,6 +49,8 @@
   margin-left: 20px;
 }
 
-.applyLocationButton {
-  margin-left: 20px;
+.pagination_wrap {
+  width: 350px;
+  margin: 0 auto;
+  margin-bottom: 50px;
 }
