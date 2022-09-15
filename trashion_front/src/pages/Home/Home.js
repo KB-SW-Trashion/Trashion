@@ -17,7 +17,7 @@ const ListItem = styled('li')(({ theme }) => ({
 export default function Home() {
   const [chipIndex, setChipIndex] = useState(0);
   const [locationIndex, setLocationIndex] = useState(0);
-  const [locationList, setLocationList] = useState([]);
+  const [locationList, setLocationList] = useState({});
   const cityInfo = useRecoilValue(locationState);
   const categoryInfo = useRecoilValue(categoryState);
   const { sido, sigugun, dong } = hangjungdong;
@@ -30,8 +30,9 @@ export default function Home() {
   };
 
   const getProductList = async (item) => {
-    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong).then((res) => {
+    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category).then((res) => {
       setProductList(res.data);
+      console.log('res: ', res);
     });
   };
 
@@ -46,8 +47,9 @@ export default function Home() {
       alert('지역을 선택 해 주세요!');
       return;
     }
-    if (locationList.length < 1) {
-      setLocationList([...locationList, { key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory }]);
+    if (locationIndex < 1) {
+      setLocationList([]);
+      setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
       setChipData([...chipData, { key: chipIndex, label: city }]);
       setChipIndex(() => chipIndex + 1);
       setLocationIndex(() => locationIndex + 1);
@@ -56,18 +58,26 @@ export default function Home() {
       return;
     }
   };
-  let filteredByLocation = [];
 
   useEffect(() => {
-    locationList.forEach((item) => {
-      getProductList(item);
-    });
+    // locationList.forEach((item) => {
+    getProductList(locationList);
+    // });
     console.log(locationList);
   }, [locationList]);
 
   useEffect(() => {
-    console.log(categoryInfo);
+    setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
+    getProductList(locationList);
   }, [categoryInfo]);
+
+  useEffect(() => {
+    setLocationList([]);
+    setLocationIndex(0);
+    setChipIndex(0);
+    setChipData([]);
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -112,7 +122,7 @@ export default function Home() {
             </Paper>
           </div>
 
-          <ul className={styles.contents}>{locationList.length > 0 ? <LocationProductList productList={productList} /> : <ProductList filteredByLocation={filteredByLocation} />}</ul>
+          <ul className={styles.contents}>{locationIndex > 0 ? <LocationProductList productList={productList} /> : <ProductList />}</ul>
         </div>
       </div>
       <Footer />

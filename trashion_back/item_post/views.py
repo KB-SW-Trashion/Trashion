@@ -177,6 +177,7 @@ class ItemViewSet(ModelViewSet):
                 categorys = categorys.filter(Q(big_category__in=big_category))
             else:
                 categorys = categorys.filter(Q(big_category__in=big_category) & Q(small_category__in=small_category))
+            print(categorys)
             category_ids = []
             for i in categorys:
                 category_ids.append(i.id)

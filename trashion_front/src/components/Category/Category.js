@@ -38,7 +38,7 @@ const Category = () => {
   };
 
   const handleClick1 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
+    setCategoryFilter({ bigCategory: e.target.innerText });
     // console.log(categoryFilter);
     // console.log(e);
 
@@ -48,7 +48,7 @@ const Category = () => {
     setOpen4(false);
   };
   const handleClick2 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
+    setCategoryFilter({ bigCategory: e.target.innerText });
 
     setOpen2(!open2);
     setOpen1(false);
@@ -56,7 +56,7 @@ const Category = () => {
     setOpen4(false);
   };
   const handleClick3 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
+    setCategoryFilter({ bigCategory: e.target.innerText });
 
     setOpen3(!open3);
     setOpen1(false);
@@ -64,7 +64,7 @@ const Category = () => {
     setOpen4(false);
   };
   const handleClick4 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
+    setCategoryFilter({ bigCategory: e.target.innerText });
 
     setOpen4(!open4);
     setOpen1(false);
@@ -98,7 +98,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" onClick={handleSmallCategory} />
+            <ListItemText primary="전체" />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
@@ -146,7 +146,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" onClick={handleSmallCategory} />
+            <ListItemText primary="전체" />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -198,7 +198,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" onClick={handleSmallCategory} />
+            <ListItemText primary="전체" />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -250,7 +250,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="전체" onClick={handleSmallCategory} />
+            <ListItemText primary="전체" />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
