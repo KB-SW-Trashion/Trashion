@@ -75,7 +75,7 @@ class RetrieveSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
     category = CategorySerializer(source='category_id')
-    locationSet = LocationSetSerializer(source='location_sets', many=True)
+    location_sets = LocationSetSerializer(source='location_item_sets', many=True)
     review = ReviewSerializer(source='review_target', many=True, read_only=True)
     seller_height = serializers.ReadOnlyField(source = 'user_id.profile.height')
     seller_weight = serializers.ReadOnlyField(source='user_id.profile.weight') 
