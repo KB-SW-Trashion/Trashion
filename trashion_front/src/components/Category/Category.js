@@ -19,13 +19,8 @@ const Category = () => {
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
 
-  const getCategoryId = () => {
-    const category_filter = categoryList.filter((i) => i.small_category === categoryFilter.smallCategory);
-  };
-
   const handleSmallCategory = (e) => {
     e.target.innerText === '전체' ? setCategoryFilter({ ...categoryFilter, smallCategory: '' }) : setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
-    getCategoryId();
   };
 
   const handleClick0 = (e) => {

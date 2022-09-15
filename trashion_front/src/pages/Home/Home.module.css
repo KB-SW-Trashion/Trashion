@@ -7,6 +7,7 @@
 }
 
 .wrap_content {
+  margin: 0 auto;
   width: 1500px;
   height: 100%;
 }
@@ -53,4 +54,17 @@
   width: 350px;
   margin: 0 auto;
   margin-bottom: 50px;
+}
+
+.locationChipWrap {
+  width: 1000px;
+  display: flex;
+}
+
+.locationChipWrap .categoryText {
+  margin-left: 50px;
+  line-height: 80px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #e95e8f;
 }
