@@ -4,6 +4,7 @@ import logo from 'assets/image/logo.png';
 import { useNavigate, Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import authState from './../../store/authState';
+
 export default function Navbar() {
   const user = useRecoilValue(authState);
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export default function Navbar() {
     <>
       <div className={styles.logobox}>
         <div className={styles.buttonbox}>
-          <Link to="/">
+          <Link to="/Chat">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-chats">
               <path
                 xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +52,7 @@ export default function Navbar() {
               />
             </svg>
           </div>
-          <Link to="/">
+          <Link to="/Scrap_List">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24" className="humbleicons hi-heart">
               <path
                 xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { Navbar, MypageProductList, Review, Footer } from 'components';
+import { Navbar, ProductList, Review, List_Null_Scrap, Scrap_product, AccountMenu } from 'components';
 import Fab from '@mui/material/Fab';
 import styles from './MyPage.module.css';
 import { userInfoState, authState, reviewState } from 'store';
@@ -15,9 +15,8 @@ import item from 'api/itemApi';
 import '../Home/Pagination.css';
 
 export default function MyPage() {
-  const userAuth = useRecoilValue(authState);
-  const [, setUser] = useRecoilState(authState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [userAuth, setUser] = useRecoilState(authState); //로그인 정보
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState); //유저 개인 정보
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
   const [review, setReview] = useRecoilState(reviewState);
@@ -77,6 +76,7 @@ export default function MyPage() {
         bottom_size: res.data.profile.bottom_size,
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
+        likeitem_sets: res.data.likeitem_sets,
         sold_out_count: res.data.sold_out_count,
       });
       if (res.data.social_profile) {
@@ -100,7 +100,7 @@ export default function MyPage() {
   return (
     <div>
       <Navbar />
-
+      <AccountMenu />
       <div className={styles.MyPage_bodybox}>
         <div className={styles.MyPage_bodyleft}>
           <div className={styles.Mypage_profileImgbox}>
@@ -116,17 +116,13 @@ export default function MyPage() {
                 <p> 팔로워 : {userInfo.follower_amount}</p>
                 <p> 키 : {userInfo.height}</p>
                 <p> 상의사이즈 : {userInfo.top_size}</p>
-                <p>
-                  거래완료수 : <Link to="/Buy_List">{userInfo.sold_out_count}</Link>
-                </p>
+                <p>거래완료수 : {userInfo.sold_out_count}</p>
               </div>
               <div>
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.bottom_size}</p>
-                <p>
-                  내가 찜한 아이템 : <Link to="/Scrap_List">{userInfo.like_item_count}</Link>
-                </p>
+                <p>내가 찜한 아이템 : {userInfo.like_item_count !== 0 ? <Link to="/Scrap_List">{userInfo.like_item_count}</Link> : <>{userInfo.like_item_count}</>}</p>
               </div>
             </div>
             <div>
@@ -154,7 +150,7 @@ export default function MyPage() {
       </div>
       <div className={styles.productBox}>
         <div className={styles.MypageProductList}>
-          <MypageProductList productList={productList} />
+          <ProductList productList={productList} />
         </div>
       </div>
       <div className={styles.pagination_wrap}>
