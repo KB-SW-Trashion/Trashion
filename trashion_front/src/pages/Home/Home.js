@@ -7,8 +7,8 @@ import TagFacesIcon from '@mui/icons-material/TagFaces';
 import hangjungdong from 'utils/hangjungdong';
 import locationApi from 'api/locationApi';
 import styles from './Home.module.css';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { locationState } from 'store';
+import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
+import { locationState, categoryState } from 'store';
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -17,21 +17,24 @@ const ListItem = styled('li')(({ theme }) => ({
 export default function Home() {
   const [chipIndex, setChipIndex] = useState(0);
   const [locationIndex, setLocationIndex] = useState(0);
-  const [locationList, setLocationList] = useState([]);
-  const cityInfo = useRecoilValue(locationState);
-  const resetCityInfo = useResetRecoilState(locationState);
+  const [locationList, setLocationList] = useState({});
+  const [cityInfo, setCityInfo] = useRecoilState(locationState);
+  const categoryInfo = useRecoilValue(categoryState);
   const { sido, sigugun, dong } = hangjungdong;
   const [chipData, setChipData] = useState([]);
   const [productList, setProductList] = useState([]);
 
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-    setLocationList((locations) => locations.filter((location) => location.key !== chipToDelete.key));
+    setCityInfo({ city: '', dong: '', gu: '' });
+    setLocationList([]);
+    setLocationIndex(0);
   };
 
   const getProductList = async (item) => {
-    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong).then((res) => {
-      setProductList(res.data);
+    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category).then((res) => {
+      setProductList(res.data.results);
+      console.log('res: ', res);
     });
   };
 
@@ -46,8 +49,9 @@ export default function Home() {
       alert('지역을 선택 해 주세요!');
       return;
     }
-    if (locationList.length < 1) {
-      setLocationList([...locationList, { key: locationIndex, cityInfo }]);
+    if (locationIndex < 1) {
+      setLocationList([]);
+      setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
       setChipData([...chipData, { key: chipIndex, label: city }]);
       setChipIndex(() => chipIndex + 1);
       setLocationIndex(() => locationIndex + 1);
@@ -56,13 +60,26 @@ export default function Home() {
       return;
     }
   };
-  let filteredByLocation = [];
 
   useEffect(() => {
-    locationList.forEach((item) => {
-      getProductList(item);
-    });
+    getProductList(locationList);
+    console.log(locationList);
   }, [locationList]);
+
+  useEffect(() => {
+    setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
+    getProductList(locationList);
+    console.log(categoryInfo);
+  }, [categoryInfo]);
+
+  useEffect(() => {
+    setLocationList([]);
+    setLocationIndex(0);
+    setChipIndex(0);
+    setChipData([]);
+    console.log(chipData);
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -107,7 +124,7 @@ export default function Home() {
             </Paper>
           </div>
 
-          <ul className={styles.contents}>{locationList.length > 0 ? <LocationProductList productList={productList} /> : <ProductList filteredByLocation={filteredByLocation} />}</ul>
+          <ul className={styles.contents}>{chipData.length || categoryInfo.bigCategory ? <LocationProductList productList={productList} /> : <ProductList />}</ul>
         </div>
       </div>
       <Footer />

@@ -8,3 +8,4 @@ export { default as profileState } from 'store/profileState';
 
 export { default as locationState } from 'store/locationState';
 export { default as reviewState } from 'store/reviewState';
+export { default as categoryState } from 'store/categoryState';
