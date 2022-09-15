@@ -13,10 +13,7 @@ export default function Scrap_List() {
     const fetchData = async () => {
       try {
         const { data: response } = await item.getItem();
-        console.log(response.results);
-        console.log(response.results[1].likeuser_sets.includes(String(user_id)));
         let res_filter = response.results.filter((i) => i.likeuser_sets.includes(String(user_id)));
-        console.log(res_filter);
         setProductList(res_filter);
       } catch (err) {
         console.log('err: ', err);

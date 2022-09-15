@@ -100,9 +100,7 @@ export default function MyPage() {
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.bottom_size}</p>
-                <p>
-                  내가 찜한 아이템 : <Link to={userInfo.like_item_count === '0' ? <List_Null_Scrap /> : <Scrap_product />}>{userInfo.like_item_count}</Link>
-                </p>
+                <p>내가 찜한 아이템 : {userInfo.like_item_count !== 0 ? <Link to="/Scrap_List">{userInfo.like_item_count}</Link> : <>{userInfo.like_item_count}</>}</p>
               </div>
             </div>
             <div>
