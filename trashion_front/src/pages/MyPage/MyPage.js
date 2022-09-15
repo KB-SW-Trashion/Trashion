@@ -12,12 +12,11 @@ import reviewApi from 'api/reviewApi';
 import userimg from 'assets/image/userimg.png';
 
 export default function MyPage() {
-  const userAuth = useRecoilValue(authState);
-  const [, setUser] = useRecoilState(authState);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const [userAuth, setUser] = useRecoilState(authState); //로그인 정보
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState); //유저 개인 정보
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
-  const [review, setReview] = useRecoilState(reviewState);
+  const [, setReview] = useRecoilState(reviewState);
 
   const handleLogout = async () => {
     console.log(getCookie('access_token'));
@@ -45,6 +44,7 @@ export default function MyPage() {
       reviewApi.getReview().then((res) => {
         setReview(res.data.results);
       });
+      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,
@@ -55,6 +55,7 @@ export default function MyPage() {
         bottom_size: res.data.profile.bottom_size,
         introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
+        likeitem_sets: res.data.likeitem_sets,
         sold_out_count: res.data.sold_out_count,
       });
       if (res.data.social_profile) {
