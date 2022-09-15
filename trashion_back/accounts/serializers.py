@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from item_post.models import Item
+from relationship.models import Like
 
 from .models import *
 from item_post.serializers import ItemSerializer
@@ -45,10 +46,11 @@ class FollowerListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.follower.nickname}'
 
-class ItemListingField(serializers.RelatedField):
-    def to_representation(self, value):
-        return f'{value.likeitem}'     
-        
+class LikeItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = ['likeitem']
+                
 class BlockUserListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.blocked_user.nickname}'        
@@ -75,7 +77,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     follower = FollowerListingField(many=True, read_only=True)
     follower_count = serializers.IntegerField(source='follower.count', read_only=True)
     
-    likeitem_sets = ItemListingField(many=True, read_only=True)
+    likeitem_sets = LikeItemSerializer(many=True, read_only=True)
     like_item_count = serializers.IntegerField(source='likeitem_sets.count', read_only=True)
 
     blocked_user = BlockUserListingField(many=True, read_only=True)

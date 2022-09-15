@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+
 import styles from './Scrap_Product.module.css';
 import userimg from 'assets/image/userimg.png';
 import { useNavigate } from 'react-router-dom';
 import { productState } from 'store';
 import { useRecoilState } from 'recoil';
-import { Scrap_product_img } from 'components';
+import { Scrap_product_img, Product } from 'components';
 
 export default function Scrap_product(product) {
-  useEffect(() => {}, []);
-
-  const profile_img = userimg;
-  const navigate = useNavigate();
   const [, setProduct] = useRecoilState(productState);
+
+  const navigate = useNavigate();
+  const profile_img = userimg;
 
   const goDetail = () => {
     setProduct(product);
