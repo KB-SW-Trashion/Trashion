@@ -62,11 +62,8 @@ const Product_detail = () => {
     });
   };
 
-  const getUserInfo = () => {};
-
   useEffect(() => {
     getProduct();
-    getUserInfo();
   }, []);
 
   return (
