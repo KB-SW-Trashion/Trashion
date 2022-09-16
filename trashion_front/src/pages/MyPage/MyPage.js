@@ -41,7 +41,6 @@ export default function MyPage() {
   };
 
   const handleLogout = async () => {
-    console.log(getCookie('access_token'));
     await authApi
       .getUser()
       .then(() => {
