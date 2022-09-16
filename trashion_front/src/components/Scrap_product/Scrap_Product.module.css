@@ -1,14 +1,13 @@
 .Scrap_productbox {
   width: 960px;
-  height: 100px;
+  /* height: 100px; */
   display: flex;
-  margin: 1rem auto;
+  margin: 3rem auto;
   border: 0.5px solid;
 }
 
 .Scrap_product_img {
-  width: 100px;
-  height: 100px;
+  margin-top: 20px;
   max-width: 100px;
   max-height: 100px;
   margin-right: 16px;
@@ -20,10 +19,13 @@
 }
 
 .Scrap_product_title {
+  margin-top: 18px;
   margin-bottom: 21px;
+  margin-left: 10px;
 }
 
 .Scrap_product_location {
+  margin-left: 10px;
   font-size: small;
   color: #6c6c6c;
 }
@@ -33,10 +35,13 @@
 }
 
 .Scrap_product_price {
+  margin-left: 10px;
   flex: 1;
 }
 
 .Scrap_product_buybutton {
+  margin-right: 25px;
+  margin-bottom: 20px;
   width: 177px;
   height: 40px;
   background-color: #f8bbd0;

@@ -71,7 +71,7 @@
   margin-right: 3rem;
   font-size: large;
   font-weight: bold;
-  padding-bottom: 10rem;
+  padding-bottom: 1rem;
 }
 
 .MyPage_list_title {
@@ -107,7 +107,6 @@
 .Mypage_hr[data-content]::after {
   content: attr(data-content);
   position: relative;
-
   padding: 0 1.5rem;
   top: -0.475em;
   font-size: 3em;
@@ -117,10 +116,19 @@
   color: currentColor;
 }
 
+.Mypage_reviewbox {
+  display: flex;
+}
+
 .MypageProductList {
   width: 1500px;
   margin: 0 auto;
 }
-.Mypage_reviewbox {
+.productBox {
   display: flex;
+}
+.pagination_wrap {
+  width: 350px;
+  margin: 0 auto;
+  margin-bottom: 50px;
 }

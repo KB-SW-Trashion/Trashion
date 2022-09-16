@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton, LocationProductList } from 'components';
+import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton } from 'components';
 import { styled } from '@mui/material/styles';
+import Pagination from 'react-js-pagination';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import hangjungdong from 'utils/hangjungdong';
-import locationApi from 'api/locationApi';
+import itemApi from 'api/itemApi';
 import styles from './Home.module.css';
-import { useRecoilValue, useResetRecoilState, useRecoilState } from 'recoil';
+import './Pagination.css';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { locationState, categoryState } from 'store';
 
 const ListItem = styled('li')(({ theme }) => ({
@@ -23,6 +25,8 @@ export default function Home() {
   const { sido, sigugun, dong } = hangjungdong;
   const [chipData, setChipData] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalItem, setTotalItem] = useState(0);
 
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
@@ -32,10 +36,19 @@ export default function Home() {
   };
 
   const getProductList = async (item) => {
-    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category).then((res) => {
-      setProductList(res.data.results);
-      console.log('res: ', res);
-    });
+    item.cityInfo || item.big_category || item.small_category
+      ? await itemApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category, page).then((res) => {
+          setProductList(res.data.results);
+          setTotalItem(res.data.count);
+        })
+      : await itemApi.getProduct(page).then((res) => {
+          setProductList(res.data.results);
+          setTotalItem(res.data.count);
+        });
+  };
+
+  const handlePageChange = (page) => {
+    setPage(page);
   };
 
   const addLocation = () => {
@@ -63,21 +76,27 @@ export default function Home() {
 
   useEffect(() => {
     getProductList(locationList);
-    console.log(locationList);
+    setPage(1);
   }, [locationList]);
 
   useEffect(() => {
     setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
     getProductList(locationList);
-    console.log(categoryInfo);
+    setPage(1);
   }, [categoryInfo]);
 
   useEffect(() => {
+    getProductList(locationList);
+  }, [page]);
+
+  useEffect(() => {
+    setPage(1);
+    getProductList();
     setLocationList([]);
     setLocationIndex(0);
     setChipIndex(0);
     setChipData([]);
-    console.log(chipData);
+    console.log(productList);
   }, []);
 
   return (
@@ -100,13 +119,14 @@ export default function Home() {
           <div className={styles.locationChipWrap}>
             <Paper
               sx={{
-                display: 'flex',
+                ...(chipData.length ? { display: 'flex' } : { display: 'none' }),
                 justifyContent: 'center',
                 flexWrap: 'wrap',
                 listStyle: 'none',
                 p: 0.5,
                 ml: 14,
-                width: 1300,
+                width: 200,
+                height: 40,
               }}
               component="ul"
             >
@@ -122,11 +142,22 @@ export default function Home() {
                 );
               })}
             </Paper>
+            {categoryInfo.bigCategory && (
+              <span className={styles.categoryText}>
+                카테고리: {categoryInfo.bigCategory} {categoryInfo.smallCategory}
+              </span>
+            )}
           </div>
 
-          <ul className={styles.contents}>{chipData.length || categoryInfo.bigCategory ? <LocationProductList productList={productList} /> : <ProductList />}</ul>
+          <ul className={styles.contents}>
+            <ProductList productList={productList} />
+          </ul>
         </div>
       </div>
+      <div className={styles.pagination_wrap}>
+        <Pagination activePage={page} itemsCountPerPage={8} totalItemsCount={totalItem} pageRangeDisplayed={5} prevPageText={'‹'} nextPageText={'›'} onChange={handlePageChange} />
+      </div>
+
       <Footer />
     </div>
   );

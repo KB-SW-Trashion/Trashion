@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { Navbar, MypageProductList, Review, List_Null_Scrap, Scrap_product, AccountMenu } from 'components';
+import { Navbar, ProductList, Review, List_Null_Scrap, Scrap_product, AccountMenu } from 'components';
 import Fab from '@mui/material/Fab';
 import styles from './MyPage.module.css';
 import { userInfoState, authState, reviewState } from 'store';
@@ -9,14 +9,36 @@ import { setCookie, getCookie } from 'cookies-next';
 import authApi from 'api/authApi';
 import user from 'api/userInfo';
 import reviewApi from 'api/reviewApi';
+import Pagination from 'react-js-pagination';
 import userimg from 'assets/image/userimg.png';
+import item from 'api/itemApi';
+import '../Home/Pagination.css';
 
 export default function MyPage() {
   const [userAuth, setUser] = useRecoilState(authState); //로그인 정보
   const [userInfo, setUserInfo] = useRecoilState(userInfoState); //유저 개인 정보
   const user_id = userAuth.user_id;
   const navigate = useNavigate();
-  const [, setReview] = useRecoilState(reviewState);
+  const [review, setReview] = useRecoilState(reviewState);
+  const [page, setPage] = useState(1);
+
+  const [productList, setProductList] = useState();
+
+  useEffect(() => {
+    item.getMyItem(user_id, page).then((res) => {
+      setProductList(res.data.results);
+    });
+  }, []);
+
+  useEffect(() => {
+    item.getMyItem(user_id, page).then((res) => {
+      setProductList(res.data.results);
+    });
+  }, [page]);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
 
   const handleLogout = async () => {
     console.log(getCookie('access_token'));
@@ -44,7 +66,6 @@ export default function MyPage() {
       reviewApi.getReview().then((res) => {
         setReview(res.data.results);
       });
-      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,
@@ -101,9 +122,7 @@ export default function MyPage() {
                 <p> 팔로잉 : {userInfo.following_amount}</p>
                 <p> 몸무게 : {userInfo.weight}</p>
                 <p> 하의사이즈 : {userInfo.bottom_size}</p>
-                <p>
-                  내가 찜한 아이템 : <Link to={userInfo.like_item_count === '0' ? <List_Null_Scrap /> : <Scrap_product />}>{userInfo.like_item_count}</Link>
-                </p>
+                <p>내가 찜한 아이템 : {userInfo.like_item_count !== 0 ? <Link to="/Scrap_List">{userInfo.like_item_count}</Link> : <>{userInfo.like_item_count}</>}</p>
               </div>
             </div>
             <div>
@@ -128,9 +147,14 @@ export default function MyPage() {
       <div className={styles.MyPage_list}>
         <p className={styles.MyPage_list_title}>내가 쓴 글</p>
         <hr className={styles.Mypage_hr} />
+      </div>
+      <div className={styles.productBox}>
         <div className={styles.MypageProductList}>
-          <MypageProductList user_id={user_id} />
+          <ProductList productList={productList} />
         </div>
+      </div>
+      <div className={styles.pagination_wrap}>
+        <Pagination activePage={page} itemsCountPerPage={8} totalItemsCount={10} pageRangeDisplayed={5} prevPageText={'‹'} nextPageText={'›'} onChange={handlePageChange} />
       </div>
 
       {/* <div className={styles.MyPage_footerbox}>
