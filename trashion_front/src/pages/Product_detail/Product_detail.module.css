@@ -27,15 +27,21 @@
   margin-top: 20px;
   margin-bottom: 20px;
   display: flex;
-  line-height: 30px;
+  line-height: 60px;
 }
 
 .profile_picture_wrap {
   margin-left: 40px;
-  margin-right: 10px;
+  margin-right: 40px;
   border: 1px solid black;
-  width: 30px;
-  height: 30px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+}
+
+.profile_picture_wrap img {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
 }
 

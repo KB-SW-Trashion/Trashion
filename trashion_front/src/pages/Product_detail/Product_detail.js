@@ -42,7 +42,6 @@ const Product_detail = () => {
 
   const getProduct = () => {
     itemApi.getProductInfo(product.id).then((res) => {
-      console.log(res);
       setProduct({
         ...product,
         big_category: res.data.category.big_category,
@@ -61,7 +60,7 @@ const Product_detail = () => {
 
   const getUserInfo = () => {
     userInfo.getUserInfo(user.user_id).then((res) => {
-      console.log(res);
+      setUserInfo({ nickname: res.data.nickname, profile_image: res.data.profile_image.photo });
     });
   };
 
@@ -84,8 +83,10 @@ const Product_detail = () => {
           }
         />
         <div className={styles.profile_wrap}>
-          <div className={styles.profile_picture_wrap}></div>
-          <span className={styles.user_profile}>profile</span>
+          <div className={styles.profile_picture_wrap}>
+            <img src={user_info.profile_image} />
+          </div>
+          <span className={styles.user_profile}>닉네임: {user_info.nickname}</span>
           <span className={styles.location}>
             {cityName} {guName} {dongName}
           </span>
