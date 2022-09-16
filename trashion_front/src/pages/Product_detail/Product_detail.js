@@ -7,12 +7,14 @@ import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
 import itemApi from 'api/itemApi';
+import userInfo from 'api/userInfo';
 import { authState } from 'store';
 
 const Product_detail = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useRecoilState(productState);
   const user = useRecoilValue(authState);
+  const [user_info, setUserInfo] = useState({});
 
   const [cityName, setCityName] = useState('');
   const [guName, setGuName] = useState('');
@@ -40,6 +42,7 @@ const Product_detail = () => {
 
   const getProduct = () => {
     itemApi.getProductInfo(product.id).then((res) => {
+      console.log(res);
       setProduct({
         ...product,
         big_category: res.data.category.big_category,
@@ -48,17 +51,23 @@ const Product_detail = () => {
         seller_weight: res.data.seller_weight,
       });
 
-      setCityName(sido.filter((el) => el.sido === res.data.location_sets[0].location.city)[0]?.codeNm);
-      setGuName(sigugun.filter((el) => el.sido === res.data.location_sets[0].location.city && el.sigugun === res.data.location_sets[0].location.gu)[0]?.codeNm);
+      setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);
+      setGuName(sigugun.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu)[0]?.codeNm);
       setDongName(
-        dong.filter((el) => el.sido === res.data.location_sets[0].location.city && el.sigugun === res.data.location_sets[0].location.gu && el.dong === res.data.location_sets[0].location.dong)[0]
-          ?.codeNm,
+        dong.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu && el.dong === res.data.locationSet[0].location.dong)[0]?.codeNm,
       );
+    });
+  };
+
+  const getUserInfo = () => {
+    userInfo.getUserInfo(user.user_id).then((res) => {
+      console.log(res);
     });
   };
 
   useEffect(() => {
     getProduct();
+    getUserInfo();
   }, []);
 
   return (
