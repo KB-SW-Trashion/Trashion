@@ -76,6 +76,7 @@ const Product_detail = () => {
             <div className={styles.button_wrap}>
               <div className={styles.button_first}>{user.user_id === product.user_id && <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />}</div>
               <div>{user.user_id === product.user_id && <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />}</div>
+              <div>{user.user_id !== product.user_id && <PostButton text={'구매하기'} />}</div>
             </div>
           }
         />
