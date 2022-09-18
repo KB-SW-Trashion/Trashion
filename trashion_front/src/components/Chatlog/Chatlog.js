@@ -17,7 +17,7 @@ const Chatlog = ({ chatList, setRoom }) => {
   // const updated_time = timeForToday(selected_date);
 
   useEffect(() => {}, []);
-  console.log('뭐야시불', chatList);
+
   // const userProfileImg = userInfo.social_profile;
 
   return (

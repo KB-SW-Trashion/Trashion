@@ -6,7 +6,8 @@ from .models import *
 class CustomerRoomSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='item.user_id.nickname')
     last_date = serializers.ReadOnlyField(source='last_time')
-    user_img = serializers.ReadOnlyField(source='seller_profile')
+    user_img = serializers.ImageField(source='seller_profile',read_only= True,use_url=True)
+    last_message = serializers.ReadOnlyField(source='get_last_message')
     class Meta:
         model = Room
         fields = '__all__'
@@ -14,7 +15,7 @@ class CustomerRoomSerializer(serializers.ModelSerializer):
 class SellerRoomSerializer(serializers.ModelSerializer):
     username = serializers.ReadOnlyField(source='user.nickname')
     last_date = serializers.ReadOnlyField(source='last_time')
-    user_img = serializers.ReadOnlyField(source='user_profile')
+    user_img = serializers.ImageField(source='user_profile',read_only= True,use_url=True)
     last_message = serializers.ReadOnlyField(source='get_last_message')
     class Meta:
         model = Room

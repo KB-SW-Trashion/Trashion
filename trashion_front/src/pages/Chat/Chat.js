@@ -11,10 +11,6 @@ export default function Chat() {
     user_id: '',
     code: '',
   });
-  console.log('room', room);
-  useEffect(() => {
-    console.log('??', location.state);
-  }, []);
 
   return (
     <div>

@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from item_post.models import Item
 User = get_user_model()
+from django.conf import settings
 
 # Create your models here.
 
@@ -34,7 +35,8 @@ class Room(models.Model):
             return user.social_profile
         else:
             try:
-                return user.profile_image.photo.url
+                print(user.profile_image.photo.url)
+                return user.profile_image.photo
             except:
                 return ''
 
@@ -44,13 +46,14 @@ class Room(models.Model):
             return user.social_profile
         else:
             try:
-                return user.profile_image.photo.url
+                print(user.profile_image.photo.url)
+                return user.profile_image.photo
             except:
                 return ''
     def get_last_message(self):
         message = self.messages.last()
         if message:
-            return messasge.text
+            return message.text
         else:
             return '채팅을 걸어보세요'
 
