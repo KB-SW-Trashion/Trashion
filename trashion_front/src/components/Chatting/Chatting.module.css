@@ -74,6 +74,7 @@
   bottom: 0;
   padding-bottom: 20px;
   padding-left: 35px;
+  text-align: center;
 }
 
 .chat_input {
@@ -82,4 +83,21 @@
   border: 0.5px solid #d9d9d9;
   border-radius: 30px;
   padding-left: 20px;
+}
+.send_button {
+  background-color: #9abf7f;
+  position: relative;
+  border: 0;
+  padding: 15px 25px;
+  font-size: 14px;
+  display: inline-block;
+  text-align: center;
+  color: white;
+  border-radius: 3rem;
+  box-shadow: 0px 4px 0px #87a86f;
+  margin-top: 5px;
+}
+.send_button:hover {
+  background-color: #d9d9d9;
+  box-shadow: 0px;
 }

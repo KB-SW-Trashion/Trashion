@@ -7,6 +7,7 @@ import { productState } from 'store';
 import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
 import itemApi from 'api/itemApi';
+import chatApi from 'api/chatApi';
 import { authState } from 'store';
 
 const Product_detail = () => {
@@ -19,7 +20,7 @@ const Product_detail = () => {
   const [dongName, setDongName] = useState('');
   const [selectImg, setSelectImg] = useState(product.photos[0] && product.photos[0].photo);
   const { sido, sigugun, dong } = hangjungdong;
-
+  const [likes, setLikes] = useState(0);
   var selected_date = new Date(product.updated_at);
   const updated_time = timeForToday(selected_date);
 
@@ -40,6 +41,7 @@ const Product_detail = () => {
 
   const getProduct = () => {
     itemApi.getProductInfo(product.id).then((res) => {
+      console.log('물품', res.data);
       setProduct({
         ...product,
         big_category: res.data.category.big_category,
@@ -47,7 +49,7 @@ const Product_detail = () => {
         seller_height: res.data.seller_height,
         seller_weight: res.data.seller_weight,
       });
-
+      setLikes(res.data.total_likes);
       setCityName(sido.filter((el) => el.sido === res.data.locationSet[0].location.city)[0]?.codeNm);
       setGuName(sigugun.filter((el) => el.sido === res.data.locationSet[0].location.city && el.sigugun === res.data.locationSet[0].location.gu)[0]?.codeNm);
       setDongName(
@@ -59,6 +61,48 @@ const Product_detail = () => {
   useEffect(() => {
     getProduct();
   }, []);
+  console.log(user, '응 보안좆까');
+  const handlingChatList = async () => {
+    if (!user.access_token) {
+      alert('로그인을 해야 이용할 수 있습니다.');
+      navigate('/login');
+      return;
+    }
+    if (user.user_id === product.user_id) {
+      await chatApi
+        .getSellerChatting()
+        .then((res) => {
+          navigate('/Chat', {
+            state: res.data,
+          });
+        })
+        .catch((err) => console.log('get sellerchatting error', err));
+    } else {
+      await chatApi
+        .getCustomerChatting()
+        .then((res) => {
+          let result = res.data.find((i) => i.user == user.user_id && i.item == product.id);
+          console.log('시발', res, result, user.user_id, product.id);
+          if (result) {
+            navigate('/Chat', {
+              state: res.data,
+            });
+          } else {
+            chatApi
+              .createChatRoom({
+                item_id: product.id,
+              })
+              .then((response) => {
+                navigate('/Chat', {
+                  state: response.data,
+                });
+              })
+              .catch((err) => console.log('create chat room error', err));
+          }
+        })
+        .catch((err) => console.log('get customer chatting error', err));
+    }
+  };
 
   return (
     <>
@@ -122,7 +166,8 @@ const Product_detail = () => {
               <h2>몸무게 : {product.seller_weight}kg</h2>
               <p>사이즈 : {product.size}</p>
             </div>
-            <LikeButton />
+            <LikeButton likes={likes} setLikes={setLikes} />
+            <PostButton text={user.user_id === product.user_id ? '목록보기' : '구매하기'} onClick={handlingChatList} />
           </div>
         </div>
 

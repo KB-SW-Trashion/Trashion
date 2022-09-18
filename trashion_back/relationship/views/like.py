@@ -8,6 +8,16 @@ from ..models import Like
 
 User = get_user_model()
 
+@api_view(['GET'])
+def is_liked(request):
+    user =request.user
+    if user.is_authenticated:
+        exist = Like.objects.filter(likeuser = user, likeitem = request.GET['item_id']).exists()
+        print("얘가눌렀을테넫",exist)
+        return Response({'status':exist})
+    else:
+        return Response({'status':False})
+
 @api_view(['POST'])
 def like(request): #request에 좋아요 할 대상 id 담아서 넘기기
     user_id = request.data['user']
@@ -27,4 +37,5 @@ def like(request): #request에 좋아요 할 대상 id 담아서 넘기기
             likeitem = item
         )
         message = 'Like'
-    return Response({'message':message}, status.HTTP_204_NO_CONTENT)
+    item_like = item.total_like()
+    return Response({'message':message,'like_count':item_like}, status.HTTP_200_OK)

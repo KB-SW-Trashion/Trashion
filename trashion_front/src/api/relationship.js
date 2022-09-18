@@ -1,4 +1,5 @@
 import axios from './config';
+import tokenConfig from './tokenConfig';
 
 export default {
   follow(target) {
@@ -9,5 +10,8 @@ export default {
   },
   block(target) {
     return axios.post('relationship/block/', target);
+  },
+  isLiked(item_id) {
+    return axios.get(`relationship/is_liked/?item_id=${item_id}`, tokenConfig());
   },
 };

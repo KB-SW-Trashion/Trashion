@@ -70,7 +70,7 @@ function Login() {
       .then((res) => {
         setUser({
           isLoggedIn: true,
-          name: res.data.nick_name,
+          name: res.data.nickname,
           email: res.data.email,
           social_img: res.data.social_img,
           user_id: res.data.id,
@@ -142,8 +142,22 @@ function Login() {
     await auth
       .googleAuthenticate(data)
       .then((res) => {
-        saveUserInfo(res.data.access_token, res.data.refresh_token);
-        console.log('데이터', res);
+        auth
+          .updateUserInfo(
+            {
+              social_profile: data.profile_image,
+              name: data.name,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${res.data.access_token}`,
+              },
+            },
+          )
+          .then((response) => {
+            saveUserInfo(res.data.access_token, res.data.refresh_token);
+            console.log('데이터', res);
+          });
       })
       .catch((err) => {
         setIsLoading(false);

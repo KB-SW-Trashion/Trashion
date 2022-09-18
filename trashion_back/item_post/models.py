@@ -31,6 +31,9 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
+    def total_like(self):
+        return self.likeitem_sets.all().count()
+
 class Location(models.Model):
     city = models.CharField(max_length=10)
     gu = models.CharField(max_length=10)

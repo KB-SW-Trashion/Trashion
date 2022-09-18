@@ -1,6 +1,7 @@
+from functools import reduce
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-
+import operator
 from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 
 from rest_framework import status, permissions
@@ -153,50 +154,23 @@ class ItemViewSet(ModelViewSet):
         height = request.GET.get('height', None)
         weight = request.GET.get('weight', None)
         sold_out = request.GET.get('sold_out', None)
-        locations = Location.objects.all()
-        categorys = Category.objects.all()
-        items = []
-        print(big_category, small_category)
-        # 지역별 조회
-        if city is not None:
-            if gu == []:  # city만 보여주기
-                locations = locations.filter(Q(city__in=city))
-            elif dong == []:  # city랑 gu만 보여주기
-                locations = Location.objects.filter(Q(city__in=city) & Q(gu__in=gu))
-            else: # city, gu, dong 다 보여주기
-                locations = Location.objects.filter(Q(city__in=city) & Q(gu__in=gu) & Q(dong__in=dong))
-            location_ids = []
-            for i in locations:
-                location_ids.append(i.id)
-            locationsets = LocationSet.objects.filter(location_id__in=location_ids)
-            for i in locationsets:
-                items.append(i.item_id)
-        # 카테고리 조회
-        if big_category is not None:
-            if small_category == []:
-                categorys = categorys.filter(Q(big_category__in=big_category))
-            else:
-                categorys = categorys.filter(Q(big_category__in=big_category) & Q(small_category__in=small_category))
-            category_ids = []
-            for i in categorys:
-                category_ids.append(i.id)
-            cate_item = Item.objects.filter(category_id__in=category_ids)
-            items.extend(cate_item)
-        # 판매완료/판매중 조회...
-        if sold_out is not None:
-            s_items = Item.objects.filter(sold_out=sold_out)
-            items.extend(s_items)
-        # 키/몸무게 사이즈별 조회
-        if height is not None:
-            height = int(height)
-            if weight is None:
-                s_items = Item.objects.filter(Q(height__range=[height - 3, height + 3]))
-            else:
-                weight = int(weight)
-                s_items = Item.objects.filter(
-                    Q(height__range=[height - 3, height + 3]) & Q(weight__range=[weight - 3, weight + 3])
-                )
-            items.extend(s_items)
+        items = self.get_queryset()
+        if city:
+           items = items.filter(reduce(operator.or_, [ Q(locations_sets__location_id__city__contains=x) for x in city ]))
+           if gu:
+                items = items.filter(reduce(operator.or_, [ Q(locations_sets__location_id__gu__contains=x) for x in gu ]))
+                if dong:
+                    items = items.filter(reduce(operator.or_, [ Q(locations_sets__location_id__dong__contains=x) for x in dong ]))
+        if big_category:
+            items = items.filter(reduce(operator.or_, [ Q(category_id__big_category__contains=x) for x in big_category ]))
+            if small_category:    
+                items = items.filter(reduce(operator.or_, [ Q(category_id__small_category__contains=x) for x in big_category ]))
+        if height:
+            items = items.filter(height=height)
+        if weight:
+            items = items.filter(weight=weight)
+        if sold_out:
+            items = items.filter(sold_outs = sold_out)
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
