@@ -29,7 +29,7 @@ const Chatting = ({ room }) => {
   //     console.log(userInfo);
   //   });
   // };
-  console.log(messages);
+
   const connectSocket = (code) => {
     const webSocketUrl = `ws://${window.location.hostname}:8000/ws/chat/${code}/`;
     const socket = new WebSocket(webSocketUrl);
@@ -47,7 +47,6 @@ const Chatting = ({ room }) => {
       console.log(error);
     };
     ws.current.onmessage = (message) => {
-      console.log('읭?', message);
       const dataFromServer = JSON.parse(message.data);
       console.log('got reply! ', dataFromServer);
 
@@ -98,7 +97,7 @@ const Chatting = ({ room }) => {
     <div className={styles.chattingbox}>
       <div className={styles.opponentInfobox}>
         <div className={styles.Mypage_profileImgbox}>
-          {userAuth ? <img className={styles.Mypage_profileImg} src={userAuth.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
+          {room.user_img ? <img className={styles.Mypage_profileImg} src={room.user_img} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
         </div>
         <div className={styles.Chatting_Nicknamebox}>
           {room.username}

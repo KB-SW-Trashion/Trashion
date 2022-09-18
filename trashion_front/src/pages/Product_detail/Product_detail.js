@@ -66,7 +66,7 @@ const Product_detail = () => {
   useEffect(() => {
     getProduct();
   }, []);
-  console.log(user, '응 보안좆까');
+
   const handlingChatList = async () => {
     if (!user.access_token) {
       alert('로그인을 해야 이용할 수 있습니다.');
@@ -87,7 +87,6 @@ const Product_detail = () => {
         .getCustomerChatting()
         .then((res) => {
           let result = res.data.find((i) => i.user == user.user_id && i.item == product.id);
-          console.log('시발', res, result, user.user_id, product.id);
           if (result) {
             navigate('/Chat', {
               state: res.data,
