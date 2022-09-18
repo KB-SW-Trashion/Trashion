@@ -5,6 +5,7 @@ from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from item_post.models import Item
+from relationship.models import Like
 
 from .models import *
 from item_post.serializers import ItemSerializer
@@ -44,11 +45,7 @@ class FollowingListingField(serializers.RelatedField):
 class FollowerListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.follower.nickname}'
-
-class ItemListingField(serializers.RelatedField):
-    def to_representation(self, value):
-        return f'{value.likeitem}'     
-        
+                
 class BlockUserListingField(serializers.RelatedField):
     def to_representation(self, value):
         return f'{value.blocked_user.nickname}'        
@@ -75,7 +72,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
     follower = FollowerListingField(many=True, read_only=True)
     follower_count = serializers.IntegerField(source='follower.count', read_only=True)
     
-    likeitem_sets = ItemListingField(many=True, read_only=True)
     like_item_count = serializers.IntegerField(source='likeitem_sets.count', read_only=True)
 
     blocked_user = BlockUserListingField(many=True, read_only=True)
@@ -92,7 +88,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ['id', 'email', 'realname', 'nickname', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'likeitem_sets', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
+        fields = ['id', 'email', 'realname', 'nickname', 'social_profile', 'following_count', 'following', 'follower_count', 'follower', 'like_item_count', 'blocked_user', 'profile', 'profile_image', 'item_sets', 'sold_out_count']
     
     def update(self, instance, validated_data):
         images_data = self.context['request'].FILES

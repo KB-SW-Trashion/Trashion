@@ -43,7 +43,7 @@ class Location(models.Model):
         return self.city+" "+self.gu+" "+self.dong
 
 class LocationSet(models.Model):
-    item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='location_sets')
+    item_id = models.ForeignKey(Item, on_delete=models.CASCADE, related_name='location_item_sets')
     location_id = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='location_sets')
 
 class Photo(models.Model):

@@ -183,64 +183,67 @@ function Login() {
   };
 
   return (
-    <div className={styles.wrap}>
-      <div className={styles.area}>
-        <div className={styles.link_wrap}>
-          <div className={styles.home} onClick={() => navigate('/')}>
-            <img src={logo} />
+    <>
+      <div className={styles.loadingBox}>{isLoading && <Progessbar />}</div>
+
+      <div className={isLoading ? styles.loading_wrap : styles.wrap}>
+        <div className={isLoading ? styles.loading_area : styles.area}>
+          <div className={styles.link_wrap}>
+            <div className={styles.home} onClick={() => navigate('/')}>
+              <img src={logo} />
+            </div>
           </div>
+          <form onSubmit={onSubmit}>
+            <div className={styles.wrap_input}>
+              <div className={styles.int_area}>
+                <input type="text" name="email" id="email" required value={email} onChange={onChangeEmail} />
+                <label htmlFor="email">이메일</label>
+                {emailError && <div className={styles.invalid_input}>이메일 형식에 맞게 입력 해 주세요.</div>}
+              </div>
+            </div>
+            <div className={styles.wrap_input}>
+              <div className={styles.int_area}>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  required
+                  value={password}
+                  maxLength={16}
+                  minLength={8}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+                <label htmlFor="password">비밀번호</label>
+              </div>
+            </div>
+            <Forgot />
+            <div className={styles.buttonBox}>
+              <SubmitButton name="로그인" onSubmit={onSubmit} />
+            </div>
+            <div className={styles.social_login_wrap}>
+              <KakaoLoginButton kakaoLogin={kakaoLogin}></KakaoLoginButton>
+            </div>
+            <div className={styles.social_login_wrap}>
+              <div className={styles.google_login}>
+                <GoogleLogin
+                  clientId={clientID}
+                  onSuccess={onSuccess}
+                  responseType={'id_token'}
+                  onFailure={onFailure}
+                  render={(renderProps) => (
+                    <button onClick={renderProps.onClick} className={styles.GoogleLoginbutton}>
+                      <img src={googlelogo} width="25px" className={styles.googlelogo}></img> <font className={styles.googlefont}>구글로 로그인</font>
+                    </button>
+                  )}
+                ></GoogleLogin>
+              </div>
+            </div>
+          </form>
         </div>
-        <div className={styles.loadingBox}>{isLoading && <Progessbar />}</div>
-        <form onSubmit={onSubmit}>
-          <div className={styles.wrap_input}>
-            <div className={styles.int_area}>
-              <input type="text" name="email" id="email" required value={email} onChange={onChangeEmail} />
-              <label htmlFor="email">이메일</label>
-              {emailError && <div className={styles.invalid_input}>이메일 형식에 맞게 입력 해 주세요.</div>}
-            </div>
-          </div>
-          <div className={styles.wrap_input}>
-            <div className={styles.int_area}>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                required
-                value={password}
-                maxLength={16}
-                minLength={8}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                }}
-              />
-              <label htmlFor="password">비밀번호</label>
-            </div>
-          </div>
-          <Forgot />
-          <div className={styles.buttonBox}>
-            <SubmitButton name="로그인" onSubmit={onSubmit} />
-          </div>
-          <div className={styles.social_login_wrap}>
-            <KakaoLoginButton kakaoLogin={kakaoLogin}></KakaoLoginButton>
-          </div>
-          <div className={styles.social_login_wrap}>
-            <div className={styles.google_login}>
-              <GoogleLogin
-                clientId={clientID}
-                onSuccess={onSuccess}
-                responseType={'id_token'}
-                onFailure={onFailure}
-                render={(renderProps) => (
-                  <button onClick={renderProps.onClick} className={styles.GoogleLoginbutton}>
-                    <img src={googlelogo} width="25px" className={styles.googlelogo}></img> <font className={styles.googlefont}>구글로 로그인</font>
-                  </button>
-                )}
-              ></GoogleLogin>
-            </div>
-          </div>
-        </form>
       </div>
-    </div>
+    </>
   );
 }
 

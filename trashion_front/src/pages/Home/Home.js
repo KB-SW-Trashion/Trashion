@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton, LocationProductList } from 'components';
+import { Navbar, Footer, Category, ProductList, LocationCategory, PostButton } from 'components';
 import { styled } from '@mui/material/styles';
+import Pagination from 'react-js-pagination';
 import Chip from '@mui/material/Chip';
 import Paper from '@mui/material/Paper';
 import TagFacesIcon from '@mui/icons-material/TagFaces';
 import hangjungdong from 'utils/hangjungdong';
-import locationApi from 'api/locationApi';
+import itemApi from 'api/itemApi';
 import styles from './Home.module.css';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
-import { locationState } from 'store';
+import './Pagination.css';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { locationState, categoryState } from 'store';
 
 const ListItem = styled('li')(({ theme }) => ({
   margin: theme.spacing(0.5),
@@ -17,22 +19,36 @@ const ListItem = styled('li')(({ theme }) => ({
 export default function Home() {
   const [chipIndex, setChipIndex] = useState(0);
   const [locationIndex, setLocationIndex] = useState(0);
-  const [locationList, setLocationList] = useState([]);
-  const cityInfo = useRecoilValue(locationState);
-  const resetCityInfo = useResetRecoilState(locationState);
+  const [locationList, setLocationList] = useState({});
+  const [cityInfo, setCityInfo] = useRecoilState(locationState);
+  const categoryInfo = useRecoilValue(categoryState);
   const { sido, sigugun, dong } = hangjungdong;
   const [chipData, setChipData] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalItem, setTotalItem] = useState(0);
 
   const handleDelete = (chipToDelete) => () => {
     setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-    setLocationList((locations) => locations.filter((location) => location.key !== chipToDelete.key));
+    setCityInfo({ city: '', dong: '', gu: '' });
+    setLocationList([]);
+    setLocationIndex(0);
   };
 
   const getProductList = async (item) => {
-    await locationApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong).then((res) => {
-      setProductList(res.data);
-    });
+    item.cityInfo || item.big_category || item.small_category
+      ? await itemApi.getfilteredItem(item.cityInfo.city, item.cityInfo.gu, item.cityInfo.dong, item.big_category, item.small_category, page).then((res) => {
+          setProductList(res.data.results);
+          setTotalItem(res.data.count);
+        })
+      : await itemApi.getProduct(page).then((res) => {
+          setProductList(res.data.results);
+          setTotalItem(res.data.count);
+        });
+  };
+
+  const handlePageChange = (page) => {
+    setPage(page);
   };
 
   const addLocation = () => {
@@ -46,8 +62,9 @@ export default function Home() {
       alert('지역을 선택 해 주세요!');
       return;
     }
-    if (locationList.length < 1) {
-      setLocationList([...locationList, { key: locationIndex, cityInfo }]);
+    if (locationIndex < 1) {
+      setLocationList([]);
+      setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
       setChipData([...chipData, { key: chipIndex, label: city }]);
       setChipIndex(() => chipIndex + 1);
       setLocationIndex(() => locationIndex + 1);
@@ -56,13 +73,32 @@ export default function Home() {
       return;
     }
   };
-  let filteredByLocation = [];
 
   useEffect(() => {
-    locationList.forEach((item) => {
-      getProductList(item);
-    });
+    getProductList(locationList);
+    setPage(1);
   }, [locationList]);
+
+  useEffect(() => {
+    setLocationList({ key: locationIndex, cityInfo, big_category: categoryInfo.bigCategory, small_category: categoryInfo.smallCategory });
+    getProductList(locationList);
+    setPage(1);
+  }, [categoryInfo]);
+
+  useEffect(() => {
+    getProductList(locationList);
+  }, [page]);
+
+  useEffect(() => {
+    setPage(1);
+    getProductList();
+    setLocationList([]);
+    setLocationIndex(0);
+    setChipIndex(0);
+    setChipData([]);
+    console.log(productList);
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -83,13 +119,14 @@ export default function Home() {
           <div className={styles.locationChipWrap}>
             <Paper
               sx={{
-                display: 'flex',
+                ...(chipData.length ? { display: 'flex' } : { display: 'none' }),
                 justifyContent: 'center',
                 flexWrap: 'wrap',
                 listStyle: 'none',
                 p: 0.5,
                 ml: 14,
-                width: 1300,
+                width: 200,
+                height: 40,
               }}
               component="ul"
             >
@@ -105,11 +142,22 @@ export default function Home() {
                 );
               })}
             </Paper>
+            {categoryInfo.bigCategory && (
+              <span className={styles.categoryText}>
+                카테고리: {categoryInfo.bigCategory} {categoryInfo.smallCategory}
+              </span>
+            )}
           </div>
 
-          <ul className={styles.contents}>{locationList.length > 0 ? <LocationProductList productList={productList} /> : <ProductList filteredByLocation={filteredByLocation} />}</ul>
+          <ul className={styles.contents}>
+            <ProductList productList={productList} />
+          </ul>
         </div>
       </div>
+      <div className={styles.pagination_wrap}>
+        <Pagination activePage={page} itemsCountPerPage={8} totalItemsCount={totalItem} pageRangeDisplayed={5} prevPageText={'‹'} nextPageText={'›'} onChange={handlePageChange} />
+      </div>
+
       <Footer />
     </div>
   );

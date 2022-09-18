@@ -43,5 +43,13 @@
       { "small_category_id": "3", "small_category_name": "부츠", "big_category_id": "4" },
       { "small_category_id": "4", "small_category_name": "기타", "big_category_id": "4" }
     ]
+  },
+  {
+    "big_category_id": "4",
+    "big_category_name": "원피스",
+    "small_category": [
+      { "small_category_id": "0", "small_category_name": "미니원피스", "big_category_id": "5" },
+      { "small_category_id": "1", "small_category_name": "롱원피스", "big_category_id": "5" }
+    ]
   }
 ]

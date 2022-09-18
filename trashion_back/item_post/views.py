@@ -1,16 +1,25 @@
+<<<<<<< HEAD
 from functools import reduce
+=======
+import operator
+from functools import reduce
+
+>>>>>>> 3906d72633776fcf19a285e3385ead99e19ebdb8
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 import operator
 from dj_rest_auth.jwt_auth import JWTCookieAuthentication
+from django_filters.rest_framework import DjangoFilterBackend
 
 from rest_framework import status, permissions
 from rest_framework.decorators import action
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.pagination import PageNumberPagination
 
 from .models import Item, Category, Photo, StylePhoto
 from .serializers import RetrieveSerializer
@@ -28,10 +37,14 @@ class IsOwner(permissions.BasePermission):
 
 
 class ItemViewSet(ModelViewSet):
-    queryset = Item.objects.all()
+    queryset = Item.objects.all()\
+        .prefetch_related('location_item_sets') #역참조는 prefetch_related, 정참조는 select_related!
     serializer_class = ItemSerializer
     parser_classes = (MultiPartParser, FormParser)
-    filter_backends = [SearchFilter, OrderingFilter]
+    filter_backends = [SearchFilter, OrderingFilter, DjangoFilterBackend, ]
+    filterset_fields = ['location_item_sets__location_id__city','location_item_sets__location_id__gu',
+                        'location_item_sets__location_id__dong',
+                        'category_id__big_category', 'category_id__small_category']
     search_fields = ['description']    # ?search=
     ordering_fields = ['created_at']  # ?ordering=
     ordering = ['-created_at']
@@ -143,7 +156,7 @@ class ItemViewSet(ModelViewSet):
         serializer = self.get_serializer(item)
         return Response(serializer.data)
 
-    # 필터 종합
+
     @action(detail=False, methods=['GET'])
     def filter_all(self, request):
         city = request.GET.getlist('city', None)
@@ -191,151 +204,19 @@ class ItemViewSet(ModelViewSet):
     # 내 아이템 조회
     @action(detail=False, methods=['GET'])
     def my_item(self, request):
-        items = Item.objects.filter(user_id=request.GET.get('user_id'))
-        serializer = self.get_serializer(items, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # 빅카테고리별 아이템 조회('bigCategory'를 받아서 그걸로 분류)
-    @action(detail=False, methods=['GET'])
-    def bigCategory_item(self, request):
-        # user_id = request.GET['user_id']
-        # user = User.objects.get(pk=user_id)
-
-        # blocked_user = Block.objects.filter(blocking_user=user)  # 유저가 차단한 유저
-        # user_blocked = Block.objects.filter(blocked_user=user)  # 유저를 차단한 유저
-
-        # blocked_user_list = []
-        # for user in blocked_user:
-        #     blocked_user_list.append(user.blocked_user.id)
-
-        # user_blocked_list = []
-        # for user in user_blocked:
-        #     user_blocked_list.append(user.blocking_user_id)
-
-        categorys = Category.objects.filter(big_category=request.GET.get('bigCategory'))
-        category_ids = []
-        for i in categorys:
-            category_ids.append(i.id)
-        items = Item.objects.filter(category_id__in=category_ids)
-        # .exclude(user_id__in=blocked_user_list)
-        # items = items.exclude(user_id__in=user_blocked_list)
-        serializer = self.get_serializer(items, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # 카테고리별 아이템 조회('category_id'를 받아서 그걸로 분류)
-    @action(detail=False, methods=['GET'])
-    def category_item(self, request):
-        # user_id = request.GET['user_id']
-        # user = User.objects.get(pk=user_id)
+        paginator = PageNumberPagination()
+        paginator.page_size = 8
+        items = Item.objects.filter(user_id=request.GET.get('user_id')).order_by('-updated_at')
+        results = paginator.paginate_queryset(items, request)
+        serializer = self.get_serializer(results, many=True)
         
-        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
-        
-        # blocked_user_list = []
-        # for user in blocked_user:
-        #     blocked_user_list.append(user.blocked_user.id)
-        
-        # user_blocked_list = []
-        # for user in user_blocked:
-        #     user_blocked_list.append(user.blocking_user_id)
-         
-        items = Item.objects.filter(category_id=request.GET.get('category_id'))
-        # .exclude(user_id__in=blocked_user_list)
-        # items = items.exclude(user_id__in=user_blocked_list)
-        serializer = self.get_serializer(items, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # 지역별 아이템 조회
-    @action(detail=False, methods=['GET'])
-    def location_item(self, request):
-        city = request.GET.getlist('city', None)  # 시 여러개 선택가능
-        gu = request.GET.getlist('gu', None)  # 구는 여러개 선택 가능
-        dong = request.GET.getlist('dong', None)  # 동은 여러개 선택 가능
-        locations = Location.objects.filter(
-            Q(city__in=city) & Q(gu__in=gu) & Q(dong__in=dong)
-        )
-        location_ids = []
-        for i in locations:
-            location_ids.append(i.id)
-
-        # user_id = request.data['user_id']
-        # user = User.objects.get(pk=user_id)
-        
-        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
-        
-        # blocked_user_list = []
-        # for user in blocked_user:
-        #     blocked_user_list.append(user.blocked_user.id)
-        
-        # user_blocked_list = []
-        # for user in user_blocked:
-        #     user_blocked_list.append(user.blocking_user_id)
-
-        locationsets = LocationSet.objects.filter(location_id__in=location_ids)
-        # .exclude(user_id__in=blocked_user_list)
-        # locationsets = locationsets.exclude(user_id__in=user_blocked_list)
-        
-        item_ids = []
-        for i in locationsets:
-            item_ids.append(i.item_id)
-        serializer = self.get_serializer(item_ids, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    # 사이즈별 아이템 조회(입력한 키의 +-3cm, 몸무게의 +-3kg 범주 내의 상품을 조회)
-    @action(detail=False, methods=['GET'])
-    def size_item(self, request):
-        height = int(request.GET.get('height', None))
-        weight = int(request.GET.get('weight', None))
-        
-        # user_id = request.data['user_id']
-        # user = User.objects.get(pk=user_id)
-        
-        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
-        
-        
-        # blocked_user_list = []
-        # for user in blocked_user:
-        #     blocked_user_list.append(user.blocked_user.id)
-        
-        # user_blocked_list = []
-        # for user in user_blocked:
-        #     user_blocked_list.append(user.blocking_user_id)
-        
-        items = Item.objects.filter(
-            Q(height__range=[height-3, height+3]) & Q(weight__range=[weight-3, weight+3])
-        )
-        # .exclude(user_id__in=blocked_user_list)
-        # items = items.exclude(user_id__in=user_blocked_list)
-        
-        serializer = self.get_serializer(items, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return paginator.get_paginated_response(serializer.data)
 
     # 일반 이미지만 모아보기 : 같은 아이템에 사진 여러장일 경우에는 한장만!
     @action(detail=False, methods=['GET'])
     def photo_item_only(self, request):
         item_ids = Photo.objects.distinct().values_list('item_id', flat=True)
-        
-        # user_id = request.data['user_id']
-        # user = User.objects.get(pk=user_id)
-        
-        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
-        
-        
-        # blocked_user_list = []
-        # for user in blocked_user:
-        #     blocked_user_list.append(user.blocked_user.id)
-        
-        # user_blocked_list = []
-        # for user in user_blocked:
-        #     user_blocked_list.append(user.blocking_user_id)        
-        
         items = Item.objects.filter(id__in=item_ids)
-        # .exclude(user_id__in=blocked_user_list)
-        # items = items.exclude(user_id__in=user_blocked_list)
-        
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -343,28 +224,19 @@ class ItemViewSet(ModelViewSet):
     @action(detail=False, methods=['GET'])
     def stylephoto_item_only(self, request):
         item_ids = StylePhoto.objects.distinct().values_list('item_id', flat=True)
-        
-        # user_id = request.data['user_id']
-        # user = User.objects.get(pk=user_id)
-        
-        # blocked_user = Block.objects.filter(blocking_user = user) #유저가 차단한 유저
-        # user_blocked = Block.objects.filter(blocked_user = user)#유저를 차단한 유저
-        
-        
-        # blocked_user_list = []
-        # for user in blocked_user:
-        #     blocked_user_list.append(user.blocked_user.id)
-        
-        # user_blocked_list = []
-        # for user in user_blocked:
-        #     user_blocked_list.append(user.blocking_user_id)     
-        
         items = Item.objects.filter(id__in=item_ids)
-        # .exclude(user_id__in=blocked_user_list)
-        # items = items.exclude(user_id__in=user_blocked_list)
-        
         serializer = self.get_serializer(items, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    @action(detail=False, methods=['GET'])
+    def my_item(self, request):
+        paginator = PageNumberPagination()
+        paginator.page_size = 8
+        items = Item.objects.filter(user_id=request.GET.get('user_id')).order_by('-updated_at')
+        results = paginator.paginate_queryset(items, request)
+        serializer = self.get_serializer(results, many=True)
+        
+        return paginator.get_paginated_response(serializer.data)
 
     # 검색 기능 (description 기준)
     @action(detail=False, methods=['GET'])

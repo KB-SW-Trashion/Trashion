@@ -18,58 +18,60 @@ const Category = () => {
   const [open2, setOpen2] = useState(false);
   const [open3, setOpen3] = useState(false);
   const [open4, setOpen4] = useState(false);
-
-  useEffect(() => {
-    category.getCategoryId().then((res) => {
-      setCategoryList(res.data);
-    });
-  }, []);
-
-  const getCategoryId = () => {
-    const category_filter = categoryList.filter((i) => i.small_category === categoryFilter.smallCategory);
-    setCategoryId(category_filter[0].id);
-  };
+  const [open5, setOpen5] = useState(false);
 
   const handleSmallCategory = (e) => {
-    setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
-    getCategoryId();
-    console.log(categoryId);
-    console.log('categoryFilter: ', categoryFilter);
+    e.target.innerText === '전체' ? setCategoryFilter({ ...categoryFilter, smallCategory: '' }) : setCategoryFilter({ ...categoryFilter, smallCategory: e.target.innerText });
+  };
+
+  const handleClick0 = (e) => {
+    setCategoryFilter({});
+    setOpen1(false);
+    setOpen2(false);
+    setOpen3(false);
+    setOpen4(false);
+    setOpen5(false);
   };
 
   const handleClick1 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
-    // console.log(categoryFilter);
-    // console.log(e);
-
+    setCategoryFilter({ bigCategory: e.target.innerText });
     setOpen1(!open1);
     setOpen2(false);
     setOpen3(false);
     setOpen4(false);
+    setOpen5(false);
   };
   const handleClick2 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
-
+    setCategoryFilter({ bigCategory: e.target.innerText });
     setOpen2(!open2);
     setOpen1(false);
     setOpen3(false);
     setOpen4(false);
+    setOpen5(false);
   };
   const handleClick3 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
-
+    setCategoryFilter({ bigCategory: e.target.innerText });
     setOpen3(!open3);
     setOpen1(false);
     setOpen2(false);
     setOpen4(false);
+    setOpen5(false);
   };
   const handleClick4 = (e) => {
-    setCategoryFilter({ ...categoryFilter, bigCategory: e.target.innerText });
-
+    setCategoryFilter({ bigCategory: e.target.innerText });
     setOpen4(!open4);
     setOpen1(false);
     setOpen2(false);
     setOpen3(false);
+    setOpen5(false);
+  };
+  const handleClick5 = (e) => {
+    setCategoryFilter({ bigCategory: e.target.innerText });
+    setOpen5(!open4);
+    setOpen1(false);
+    setOpen2(false);
+    setOpen3(false);
+    setOpen4(false);
   };
 
   return (
@@ -84,6 +86,16 @@ const Category = () => {
       }
     >
       {/* -----------------------------상의----------------------------- */}
+      <ListItemButton onClick={handleClick0}>
+        <ListItemIcon></ListItemIcon>
+        <ListItemText
+          primary={
+            <Typography type="body2" style={{ color: 'black', fontWeight: 'bold' }}>
+              전체
+            </Typography>
+          }
+        />
+      </ListItemButton>
       <ListItemButton onClick={handleClick1}>
         <ListItemIcon></ListItemIcon>
         <ListItemText
@@ -120,7 +132,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="셔츠/블라우스" onClick={handleSmallCategory} />
+            <ListItemText primary="셔츠 / 블라우스" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -170,7 +182,7 @@ const Category = () => {
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
-            <ListItemText primary="트레이닝 팬츠" onClick={handleSmallCategory} />
+            <ListItemText primary="트레이닝팬츠" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>
@@ -275,6 +287,45 @@ const Category = () => {
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon></ListItemIcon>
             <ListItemText primary="부츠" onClick={handleSmallCategory} />
+          </ListItemButton>
+        </List>
+        <List component="div" disablePadding>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon></ListItemIcon>
+            <ListItemText primary="기타" onClick={handleSmallCategory} />
+          </ListItemButton>
+        </List>
+      </Collapse>
+
+      <ListItemButton onClick={handleClick5}>
+        <ListItemIcon></ListItemIcon>
+        <ListItemText
+          disableTypography
+          primary={
+            <Typography type="body2" style={{ color: 'black', fontWeight: 'bold' }}>
+              원피스
+            </Typography>
+          }
+        />
+      </ListItemButton>
+
+      <Collapse in={open5} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon></ListItemIcon>
+            <ListItemText primary="전체" onClick={handleSmallCategory} />
+          </ListItemButton>
+        </List>
+        <List component="div" disablePadding>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon></ListItemIcon>
+            <ListItemText primary="미니원피스" onClick={handleSmallCategory} />
+          </ListItemButton>
+        </List>
+        <List component="div" disablePadding>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon></ListItemIcon>
+            <ListItemText primary="롱원피스" onClick={handleSmallCategory} />
           </ListItemButton>
         </List>
         <List component="div" disablePadding>

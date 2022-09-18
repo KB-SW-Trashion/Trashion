@@ -8,12 +8,15 @@ import { timeForToday } from 'utils/timeforToday';
 import hangjungdong from 'utils/hangjungdong';
 import itemApi from 'api/itemApi';
 import chatApi from 'api/chatApi';
+import userInfo from 'api/userInfo';
+
 import { authState } from 'store';
 
 const Product_detail = () => {
   const navigate = useNavigate();
   const [product, setProduct] = useRecoilState(productState);
   const user = useRecoilValue(authState);
+  const [user_info, setUserInfo] = useState({});
 
   const [cityName, setCityName] = useState('');
   const [guName, setGuName] = useState('');
@@ -41,7 +44,10 @@ const Product_detail = () => {
 
   const getProduct = () => {
     itemApi.getProductInfo(product.id).then((res) => {
-      console.log('물품', res.data);
+      userInfo.getUserInfo(res.data.user_id).then((res) => {
+        setUserInfo({ nickname: res.data.nickname, profile_image: res.data.profile_image.photo });
+      });
+
       setProduct({
         ...product,
         big_category: res.data.category.big_category,
@@ -114,12 +120,15 @@ const Product_detail = () => {
             <div className={styles.button_wrap}>
               <div className={styles.button_first}>{user.user_id === product.user_id && <PostButton text={'삭제하기'} type={'negative'} onClick={handleRemove} />}</div>
               <div>{user.user_id === product.user_id && <PostButton text={'수정하기'} type={'positive'} onClick={() => navigate(`/edit/${product.id}`)} />}</div>
+              <div>{user.user_id !== product.user_id && <PostButton text={'구매하기'} />}</div>
             </div>
           }
         />
         <div className={styles.profile_wrap}>
-          <div className={styles.profile_picture_wrap}></div>
-          <span className={styles.user_profile}>profile</span>
+          <div className={styles.profile_picture_wrap}>
+            <img src={user_info.profile_image} />
+          </div>
+          <span className={styles.user_profile}>닉네임: {user_info.nickname}</span>
           <span className={styles.location}>
             {cityName} {guName} {dongName}
           </span>

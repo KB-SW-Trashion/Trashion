@@ -1,16 +1,18 @@
 .body {
-  background-color: black;
-  color: white;
+  border-top: 2px solid #f8bbd0;
+  color: black;
   position: absolute;
-  width: 100%;
-
+  width: 99%;
+  bottom: 100;
+  height: 150px;
+  overflow-x: hidden;
   /* bottom: 0; */
 }
 
 .footer_div_left {
   float: left;
-  border-right: 1px solid white;
-  width: 50%;
+  border-right: 1px solid black;
+  width: 49%;
   text-align: center;
 }
 

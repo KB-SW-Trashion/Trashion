@@ -1,9 +1,10 @@
+from dataclasses import field
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
 from review.serializers import ReviewSerializer
 from .models import *
-
+from relationship.models import Like
 User = get_user_model()
 
 class UserSerializer(serializers.ModelSerializer):
@@ -38,11 +39,18 @@ class LocationSetSerializer(serializers.ModelSerializer):
         model = LocationSet
         fields = '__all__'
 
+class LikeSerializer(serializers.RelatedField):
+    def to_representation(self, value):
+        return f'{value.likeuser.id}'
+
+
 class ItemSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
     review = ReviewSerializer(source='review_target', many=True, read_only=True)
     locationSet = LocationSetSerializer(source='location_sets', many=True, read_only=True)
+    likeuser_sets = LikeSerializer(many=True, read_only=True)
+
     class Meta:
         model = Item
         fields = '__all__'
@@ -74,7 +82,7 @@ class RetrieveSerializer(serializers.ModelSerializer):
     photos = PhotoSerializer(source='photo_sets', many=True, read_only=True)
     style_photos = StylePhotoSerializer(source='style_photo_sets', many=True, read_only=True)
     category = CategorySerializer(source='category_id')
-    locationSet = LocationSetSerializer(source='location_sets', many=True)
+    locationSet = LocationSetSerializer(source='location_item_sets', many=True)
     review = ReviewSerializer(source='review_target', many=True, read_only=True)
     seller_height = serializers.ReadOnlyField(source = 'user_id.profile.height')
     seller_weight = serializers.ReadOnlyField(source='user_id.profile.weight') 

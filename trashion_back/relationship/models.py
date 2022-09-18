@@ -13,10 +13,10 @@ class Follow(models.Model):
     
 class Like(models.Model):
     likeuser = models.ForeignKey(User, related_name="likeitem_sets", on_delete=models.CASCADE)
-    likeitem = models.ForeignKey(Item, related_name="likeitem_sets", on_delete=models.CASCADE)
+    likeitem = models.ForeignKey(Item, related_name="likeuser_sets", on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.likeitem.title
+        return f'{self.likeitem}'
 
 class Block(models.Model):
     blocking_user = models.ForeignKey(User, related_name='blocked_user', on_delete=models.CASCADE)
