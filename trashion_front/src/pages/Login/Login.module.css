@@ -7,14 +7,31 @@
   src: url('../../font/Roboto-Medium.ttf') format('turetype');
 }
 
+.loading_wrap {
+  width: 100%;
+  height: 98vh;
+  /* background: rgba(0, 0, 0, 0.1); */
+  background-color: rgb(241, 241, 241);
+
+  opacity: 0.4;
+}
+
 .wrap {
   width: 100%;
-  height: 100vh;
+  height: 98vh;
   background-color: rgb(241, 241, 241);
 }
 
 .link_wrap {
   padding-top: 100px;
+}
+
+.loading_area {
+  width: 470px;
+  height: 100%;
+  margin: 0 auto;
+  background-color: white;
+  opacity: 0.8;
 }
 
 .area {
@@ -98,9 +115,13 @@
 }
 
 .loadingBox {
-  margin: 0 auto;
+  position: absolute;
+  top: 40%;
+  left: 48.5%;
+  z-index: 99;
+  /* margin: 0 auto;
   margin-bottom: 20px;
-  width: 400px;
+  width: 400px; */
 }
 
 .google_login {
