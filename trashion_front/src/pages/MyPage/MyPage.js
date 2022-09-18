@@ -22,7 +22,7 @@ export default function MyPage() {
   const [review, setReview] = useRecoilState(reviewState);
   const [page, setPage] = useState(1);
 
-  const [productList, setProductList] = useState();
+  const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     item.getMyItem(user_id, page).then((res) => {
@@ -65,19 +65,25 @@ export default function MyPage() {
       reviewApi.getReview().then((res) => {
         setReview(res.data.results);
       });
+      console.log(res.data);
       setUserInfo({
         nickname: res.data.nickname,
         following_amount: res.data.following_count,
         follower_amount: res.data.follower_count,
-        height: res.data.profile.height,
-        weight: res.data.profile.weight,
-        top_size: res.data.profile.top_size,
-        bottom_size: res.data.profile.bottom_size,
-        introduce: res.data.profile.introduce,
         like_item_count: res.data.like_item_count,
         likeitem_sets: res.data.likeitem_sets,
         sold_out_count: res.data.sold_out_count,
       });
+      if (res.data.profile) {
+        setUserInfo((userInfo) => ({
+          ...userInfo,
+          height: res.data.profile.height,
+          weight: res.data.profile.weight,
+          top_size: res.data.profile.top_size,
+          bottom_size: res.data.profile.bottom_size,
+          introduce: res.data.profile.introduce,
+        }));
+      }
       if (res.data.social_profile) {
         setUserInfo((userInfo) => ({ ...userInfo, social_profile: res.data.social_profile }));
       } else if (res.data.profile_image) {

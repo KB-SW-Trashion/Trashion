@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'item_post',
     'relationship',
     'review',
+    'chat',
     # django-rest-framework
     'rest_framework',
     'rest_framework.authtoken',
@@ -52,7 +53,8 @@ INSTALLED_APPS = [
     'django_filters',
     # drf_yasg
     'drf_yasg',
-   
+   #thrid-party
+    'channels',
 ]
 
 SITE_ID = 3
@@ -221,3 +223,14 @@ EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://localhost:3000' # 사이
 LOGIN_REDIRECT_URLNAME = 'http://localhost:3000'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
 ACCOUNT_EMAIL_SUBJECT_PREFIX = "Trashion"
+
+
+# 채널 세팅
+
+ASGI_APPLICATION = 'trashion_back.routing.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+} 

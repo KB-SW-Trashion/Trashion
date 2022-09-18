@@ -50,7 +50,7 @@ class ItemSerializer(serializers.ModelSerializer):
     review = ReviewSerializer(source='review_target', many=True, read_only=True)
     locationSet = LocationSetSerializer(source='location_sets', many=True, read_only=True)
     likeuser_sets = LikeSerializer(many=True, read_only=True)
-    
+
     class Meta:
         model = Item
         fields = '__all__'
@@ -86,7 +86,7 @@ class RetrieveSerializer(serializers.ModelSerializer):
     review = ReviewSerializer(source='review_target', many=True, read_only=True)
     seller_height = serializers.ReadOnlyField(source = 'user_id.profile.height')
     seller_weight = serializers.ReadOnlyField(source='user_id.profile.weight') 
-
+    total_likes = serializers.ReadOnlyField(source='total_like')
     class Meta:
         model = Item
         fields = '__all__'

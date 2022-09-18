@@ -131,6 +131,8 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+.wslvenv
+wslvenv/
 .env
 .venv
 .myvenv

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import HeartImg from '../../assets/image/heart_filled.png';
 import EmptyHeartImg from '../../assets/image/heart.png';
 import styles from './LikeButton.module.css';
@@ -6,8 +6,7 @@ import { useRecoilValue } from 'recoil';
 import { productState, authState } from 'store';
 import relationship from 'api/relationship';
 
-const LikeButton = () => {
-  const [likes, setLikes] = useState(0);
+const LikeButton = ({ likes, setLikes }) => {
   const [isClicked, setIsClick] = useState(false);
   const product = useRecoilValue(productState);
   const user = useRecoilValue(authState);
@@ -15,14 +14,21 @@ const LikeButton = () => {
   const user_id = user.user_id;
   const data = { user: user_id, item_id: item_id };
 
-  const handleClick = () => {
-    if (isClicked) {
-      relationship.like(data).then((res) => console.log(res));
-      setLikes(likes - 1);
-    } else {
-      relationship.like(data).then((res) => console.log(res));
-      setLikes(likes + 1);
-    }
+  const checkLike = async () => {
+    await relationship.isLiked(item_id).then((res) => {
+      setIsClick(res.data.status);
+    });
+  };
+
+  useEffect(() => {
+    checkLike();
+  }, []);
+
+  const handleClick = async () => {
+    await relationship.like(data).then((res) => {
+      console.log('???', res.data);
+      setLikes(res.data.like_count);
+    });
     setIsClick(!isClicked);
   };
 

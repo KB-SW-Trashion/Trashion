@@ -1,9 +1,9 @@
+from functools import reduce
 import operator
 from functools import reduce
-
 from django.contrib.auth import get_user_model
 from django.db.models import Q
-
+import operator
 from dj_rest_auth.jwt_auth import JWTCookieAuthentication
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -151,6 +151,37 @@ class ItemViewSet(ModelViewSet):
         item.save()
         serializer = self.get_serializer(item)
         return Response(serializer.data)
+
+
+    @action(detail=False, methods=['GET'])
+    def filter_all(self, request):
+        city = request.GET.getlist('city', None)
+        gu = request.GET.getlist('gu', None)
+        dong = request.GET.getlist('dong', None)
+        big_category = request.GET.getlist('big_category', None)
+        small_category = request.GET.getlist('small_category', None)
+        height = request.GET.get('height', None)
+        weight = request.GET.get('weight', None)
+        sold_out = request.GET.get('sold_out', None)
+        items = self.get_queryset()
+        if city:
+           items = items.filter(reduce(operator.or_, [ Q(locations_sets__location_id__city__contains=x) for x in city ]))
+           if gu:
+                items = items.filter(reduce(operator.or_, [ Q(locations_sets__location_id__gu__contains=x) for x in gu ]))
+                if dong:
+                    items = items.filter(reduce(operator.or_, [ Q(locations_sets__location_id__dong__contains=x) for x in dong ]))
+        if big_category:
+            items = items.filter(reduce(operator.or_, [ Q(category_id__big_category__contains=x) for x in big_category ]))
+            if small_category:    
+                items = items.filter(reduce(operator.or_, [ Q(category_id__small_category__contains=x) for x in big_category ]))
+        if height:
+            items = items.filter(height=height)
+        if weight:
+            items = items.filter(weight=weight)
+        if sold_out:
+            items = items.filter(sold_outs = sold_out)
+        serializer = self.get_serializer(items, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     # 현재 판매중인 아이템 조회 (판매완료 x)
     @action(detail=False, methods=['GET'])

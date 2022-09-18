@@ -14,4 +14,7 @@ export default {
   getUser() {
     return axios.get('dj-rest-auth/user/', tokenConfig());
   },
+  updateUserInfo(data, config) {
+    return axios.post('/accounts/update_user_info/', data, config);
+  },
 };
