@@ -10,8 +10,8 @@ import Fab from '@mui/material/Fab';
 import { Link } from 'react-router-dom';
 
 const Chatting = ({ room }) => {
-  // const userAuth = useRecoilValue(authState);
-  const [userInfo] = useRecoilState(userInfoState);
+  const userAuth = useRecoilValue(authState);
+  // const [userInfo] = useRecoilState(userInfoState);
   // const email = userAuth.email;
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState('');
@@ -29,7 +29,7 @@ const Chatting = ({ room }) => {
   //     console.log(userInfo);
   //   });
   // };
-
+  console.log(messages);
   const connectSocket = (code) => {
     const webSocketUrl = `ws://${window.location.hostname}:8000/ws/chat/${code}/`;
     const socket = new WebSocket(webSocketUrl);
@@ -77,7 +77,7 @@ const Chatting = ({ room }) => {
           type: 'message',
           command: 'new_message',
           message: text,
-          user_id: userInfo.id,
+          user_id: userAuth.user_id,
           room_id: room.id,
         }),
       );
@@ -92,36 +92,38 @@ const Chatting = ({ room }) => {
     }
   }, [room]);
 
-  const userProfileImg = userInfo.social_profile;
+  const userProfileImg = userAuth.social_profile;
 
   return (
     <div className={styles.chattingbox}>
       <div className={styles.opponentInfobox}>
         <div className={styles.Mypage_profileImgbox}>
-          {userProfileImg ? <img className={styles.Mypage_profileImg} src={userInfo.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
+          {userAuth ? <img className={styles.Mypage_profileImg} src={userAuth.social_profile} /> : <img className={styles.Mypage_profileImg} src={userimg} />}
         </div>
         <div className={styles.Chatting_Nicknamebox}>
-          {room.username}[닉넴]
-          <Link to="/Review_Write">
-            <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
-              거래완료
-            </Fab>
-          </Link>
+          {room.username}
+          {room.user !== userAuth.user_id ? (
+            <Link to="/Review_Write">
+              <Fab variant="extended" sx={{ width: '8rem', bgcolor: '#f8bbd0', ml: '1rem', mr: '1rem', fontWeight: 'bolder' }}>
+                거래완료
+              </Fab>
+            </Link>
+          ) : null}
         </div>
 
         <Chatting_drop />
       </div>
       {messages.map((msg) => {
-        if (msg.user_id == userInfo.id) {
+        if (msg.user_id == userAuth.user_id) {
           return (
             <div className={styles.userchattingbox}>
-              <div className={styles.userchatting}>{msg.text}</div>
+              <div className={styles.userchatting}>{msg.message}</div>
             </div>
           );
         } else {
           return (
             <div className={styles.opponentchattingbox}>
-              <div className={styles.opponentchatting}>{msg.text}</div>
+              <div className={styles.opponentchatting}>{msg.message}</div>
             </div>
           );
         }

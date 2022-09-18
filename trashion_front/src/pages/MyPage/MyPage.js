@@ -22,7 +22,7 @@ export default function MyPage() {
   const [review, setReview] = useRecoilState(reviewState);
   const [page, setPage] = useState(1);
 
-  const [productList, setProductList] = useState();
+  const [productList, setProductList] = useState([]);
 
   useEffect(() => {
     item.getMyItem(user_id, page).then((res) => {

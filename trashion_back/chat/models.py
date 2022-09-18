@@ -26,7 +26,7 @@ class Room(models.Model):
         if last:
           date = last.created_at
         else:
-          date = " "
+          date = ""
         return date
     def user_profile(self):
         user = self.user
@@ -34,19 +34,25 @@ class Room(models.Model):
             return user.social_profile
         else:
             try:
-                return user.profile.profile_image.photo.url
+                return user.profile_image.photo.url
             except:
                 return ''
 
     def seller_profile(self):
-        user = self.item.user
+        user = self.item.user_id
         if user.social_profile:
             return user.social_profile
         else:
             try:
-                return user.profile.profile_image.photo.url
+                return user.profile_image.photo.url
             except:
                 return ''
+    def get_last_message(self):
+        message = self.messages.last()
+        if message:
+            return messasge.text
+        else:
+            return '채팅을 걸어보세요'
 
 class Message(models.Model):
     text = models.TextField()

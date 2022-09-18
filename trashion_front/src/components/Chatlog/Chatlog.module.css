@@ -25,6 +25,7 @@
   display: flex;
   width: 244px;
   padding: 7px 0 7px 7px;
+  flex-direction: column;
 }
 
 .chatlogboxleft {
@@ -37,9 +38,24 @@
 }
 
 .update_time {
-  font-size: 14px;
+  font-size: 3px;
+  color: #6c6c6c;
 }
 
 .chatlogboxmiddle {
   padding-left: 7px;
+}
+.chatItem {
+  display: flex;
+  border-bottom: 0.5px solid beige;
+}
+.chatItemHeader {
+  display: flex;
+  flex: 1 1;
+}
+
+.chatItemBottom {
+  font-size: 3px;
+  color: #6c6c6c;
+  font-weight: 100;
 }

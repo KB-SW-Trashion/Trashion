@@ -23,7 +23,7 @@ const Chatlog = ({ chatList, setRoom }) => {
   return (
     <div className={styles.chatlogbox}>
       {chatList.map((item) => (
-        <ChatIndiv key={item.id} chat={item} onClick={setRoom(item)} />
+        <ChatIndiv key={item.id} chat={item} onClick={(e) => setRoom(item)} />
       ))}
     </div>
   );

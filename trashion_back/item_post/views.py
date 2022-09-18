@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 from functools import reduce
-=======
 import operator
 from functools import reduce
-
->>>>>>> 3906d72633776fcf19a285e3385ead99e19ebdb8
 from django.contrib.auth import get_user_model
 from django.db.models import Q
 import operator

@@ -32,7 +32,7 @@ class Item(models.Model):
         return self.title
 
     def total_like(self):
-        return self.likeitem_sets.all().count()
+        return self.likeuser_sets.all().count()
 
 class Location(models.Model):
     city = models.CharField(max_length=10)

@@ -47,7 +47,6 @@ const Product_detail = () => {
       userInfo.getUserInfo(res.data.user_id).then((res) => {
         setUserInfo({ nickname: res.data.nickname, profile_image: res.data.profile_image.photo });
       });
-
       setProduct({
         ...product,
         big_category: res.data.category.big_category,

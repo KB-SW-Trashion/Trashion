@@ -11,6 +11,7 @@ export default function Chat() {
     user_id: '',
     code: '',
   });
+  console.log('room', room);
   useEffect(() => {
     console.log('??', location.state);
   }, []);
@@ -21,9 +22,7 @@ export default function Chat() {
       <div className={styles.chatbox}>
         <div className={styles.chatinnerbox}>
           <div className={styles.chatleftbox}>
-            <div className={styles.chatlist}>
-              <Chatlog chatList={location.state} setRoom={setRoom} />
-            </div>
+            <Chatlog chatList={location.state} setRoom={setRoom} />
           </div>
           <div className={styles.chatrightbox}>
             <Chatting room={room} />
