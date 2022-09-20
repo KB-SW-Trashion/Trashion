@@ -77,8 +77,8 @@ function Login() {
           access_token: access,
           refresh_token: refresh,
         });
-
         setIsLoading(false);
+        navigate('/login');
         console.log('auth', res.data);
       })
       .catch((e) => {
