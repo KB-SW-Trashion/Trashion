@@ -4,8 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
-
-RIDIREC_URL ='http://127.0.0.1:3000/'
+import os
+from dotenv import load_dotenv
+load_dotenv()
+RIDIREC_URL =os.environ.get('EMAIL_REDIRECT_URL')
 
 class ConfirmEmailView(APIView):
     permission_classes = [AllowAny]

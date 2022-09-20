@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'django_cleanup.apps.CleanupConfig',
     # my app
+    'storages',
     'accounts',
     'item_post',
     'relationship',
