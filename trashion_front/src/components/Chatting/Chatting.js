@@ -31,7 +31,7 @@ const Chatting = ({ room }) => {
   // };
 
   const connectSocket = (code) => {
-    const webSocketUrl = `ws://${window.location.hostname}:8000/ws/chat/${code}/`;
+    const webSocketUrl = `ws://api.trashion.click/ws/chat/${code}/`;
     const socket = new WebSocket(webSocketUrl);
     ws.current = socket;
     ws.current.onopen = () => {
