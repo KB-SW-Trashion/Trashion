@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './Footer.module.css';
 
+// eslint-disable-next-line
 const introEx = {
-  0: `Team Kookjia`,
+  0: 'Team Kookjia',
 };
 
 export default function Footer() {
